@@ -1,0 +1,38 @@
+<?php
+
+/*
+|--------------------------------------------------------------------------
+| Web Routes
+|--------------------------------------------------------------------------
+|
+| Here is where you can register web routes for your application. These
+| routes are loaded by the RouteServiceProvider within a group which
+| contains the "web" middleware group. Now create something great!
+|
+*/
+
+Route::get('/', function () {
+    return view('welcome');
+});
+
+
+Route::get('/sso/login', function() {
+    $authsite = 'https://login.eveonline.com/oauth/authorize';
+    $client_id = env('CLIENT_ID');
+    $redirect_uri = env('CALLBACK_URL');
+    $scopes = "esi-corporations.read_structures.v1 esi-characters.read_corporation_roles.v1 esi-universe.read_structures.v1";
+    $state = uniqid();
+    session(['auth_state' => $state]);
+
+    return redirect($authsite . '?response_type=code&redirect_uri=' . $redirect_uri
+           . '&client_id=' . $client_id . '&scope=' . $scopes . '&state=' . $state);
+
+});
+ 
+Route::get('/sso/callback', 'CharacterController@create');
+Route::get('/fetch/{character_id}', 'StructureController@create');
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/home/structure/{structure_id}', 'StructureController@show');
