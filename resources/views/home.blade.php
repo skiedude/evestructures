@@ -3,6 +3,22 @@
 @section('content')
 <div class="container">
 	@include ('layouts.errors');
+            <div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" id="delete_account" aria-labelledby="modal_account">
+              <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                  <div class="modal-body">
+                    <p>Are you sure you want to delete your account? All characters, structures and tokens will be revoked.</p>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    <a href="/account/delete"><button type="button" class="btn btn-danger">Confirm</button></a>
+                  </div>
+                </div> <!-- /.modal-content -->
+              </div> <!-- /.modal-dialog -->
+            </div> <!-- /.modal -->
+
+
+
 	<div class="row">
 		<div class="col-sm-8">
 			<div class="panel panel-primary">
@@ -23,9 +39,23 @@
 							<td><img src="https://image.eveonline.com/Character/{{$char->character_id}}_32.jpg"></td>
 							<td><a href="#{{$char->character_name}}">{{str_replace('_', ' ', $char->character_name)}}</a></td>
 							<td>{{$char->corporation_name}}</td>
-							<td align="right"><a href="/fetch/{{$char->character_id}}"><button class="btn btn-default">Fetch Structures</button></a>
-							<a href="/delete/character/{{$char->character_id}}"><button class="btn btn-danger">Delete</button></a></td>
+							<td align="right"><a href="/fetch/{{$char->character_id}}"><button class="btn btn-default">Fetch</button></a>
+							<button class="btn btn-danger" type="button" data-toggle="modal" data-target="#delete_{{$char->character_id}}">Delete</button>
+							</td>
 						</tr>
+						<div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" id="delete_{{$char->character_id}}" aria-labelledby="modal_{{$char->character_id}}">
+						  <div class="modal-dialog" role="document">
+						    <div class="modal-content">
+						      <div class="modal-body">
+						        <p>Are you sure you want to delete {{$char->character_name}}. This also removes all structures attached to this character.</p>
+						      </div>
+						      <div class="modal-footer">
+						        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+						        <a href="/delete/{{$char->character_id}}"><button type="button" class="btn btn-danger">Confirm</button></a>
+						      </div>
+						    </div> <!-- /.modal-content -->
+						  </div> <!-- /.modal-dialog -->
+						</div> <!-- /.modal -->
 						@endforeach
 						@else
 						<tr>

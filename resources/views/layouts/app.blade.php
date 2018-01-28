@@ -64,6 +64,9 @@
                                             {{ csrf_field() }}
                                         </form>
                                     </li>
+																		<li>
+																			<a href="#" data-toggle="modal" data-target="#delete_account" >Delete Account</a>
+																		</li>
                                 </ul>
                             </li>
                         @endguest

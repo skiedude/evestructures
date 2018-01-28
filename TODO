@@ -1,8 +1,17 @@
-github repo
-Deletes
+<DONE>github repo
 <DONE>Email setup
-Job queueing?
+<DONE>Deletes character
+<DONE>Deletes Account/char/structures/token revoke
+<DONE>Revoke Tokens on delete character
+
+
+Google analytics
+ads
+Job queueing? Automatic updates every night?
 limit refreshes based off cache timer of 1hr? every 3 hours? once a day?
 footer with disclaimer
 Home page with FAQ
 Demo Account? (static data)
+Filter by type_id on /home
+Filter by fueled/not fueled
+Scroll to top page on /home

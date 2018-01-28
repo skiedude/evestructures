@@ -115,10 +115,10 @@ class StructureController extends Controller
 		//Delete Structures and relations that aren't returned in the API call
     foreach($current_structures as $cs) {
 			if(!in_array($cs->structure_id, $api_structures)) {
-				Structure::where('structure_id', $cs->structure_id)->delete();
-        StructureService::where('structure_id', $cs->structure_id)->delete();
-        StructureState::where('structure_id', $cs->structure_id)->delete();
-        StructureVul::where('structure_id', $cs->structure_id)->delete();
+				Structure::where('structure_id', $cs->structure_id)->where('character_id', $character->character_id)->delete();
+        StructureService::where('structure_id', $cs->structure_id)->where('character_id', $character->character_id)->delete();
+        StructureState::where('structure_id', $cs->structure_id)->where('character_id', $character->character_id)->delete();
+        StructureVul::where('structure_id', $cs->structure_id)->where('character_id', $character->character_id)->delete();
 			}
 		}
 
@@ -147,9 +147,9 @@ class StructureController extends Controller
 				}
 
     		Structure::updateOrCreate(
-    		  ['structure_id' => $strct->structure_id, 'user_id' => \Auth::id()],
+    		  ['structure_id' => $strct->structure_id, 'character_id' => $character->character_id],
     		  ['structure_name' => $unv->name,
-    		   'character_id' => $character->character_id,
+					 'user_id' => \Auth::id(),
 					 'corporation_id' => $character->corporation_id,
 					 'type_id' => $strct->type_id,
 					 'system_id' => $strct->system_id,
@@ -162,6 +162,7 @@ class StructureController extends Controller
 
     		$current_services = StructureService::select('name')
 													->where('structure_id', $strct->structure_id)
+													->where('character_id', $character->character_id)
 													->get();  
 
         if(isset($strct->services)) {
@@ -174,15 +175,16 @@ class StructureController extends Controller
 						if(!in_array($cs->name, $api_services)) {
         			StructureService::where('structure_id', $strct->structure_id)
 																->where('name', $cs->name)
+																->where('character_id', $character->character_id)
 																->delete();
 						}
 					}
 
 					foreach($strct->services as $sr) {
 						StructureService::updateOrCreate(
-							['structure_id' => $strct->structure_id, 'name' => $sr->name],
+							['structure_id' => $strct->structure_id, 'character_id' => $character->character_id],
 							['state' => $sr->state,
-							 'character_id' => $character->character_id]
+							 'name' => $sr->name]
 						);
 					}
 				}
@@ -190,7 +192,7 @@ class StructureController extends Controller
 				$state_timer_end = static::prettyTime($strct->state_timer_end);
 				$state_timer_start = static::prettyTime($strct->state_timer_start);
 				StructureState::updateOrCreate(
-					['structure_id' => $strct->structure_id],
+					['structure_id' => $strct->structure_id, 'character_id' => $character->character_id],
 					['state_timer_start' => $state_timer_start,
 					 'state_timer_end' => $state_timer_end]
 				);
@@ -201,7 +203,6 @@ class StructureController extends Controller
     	  return redirect()->to('/home')->with('alert', [$alert]);
     	} catch (\Exception $e) {
     	  //Everything else
-dd($e);
     	  $alert = "We failed to pull the Structure name from ESI, Try again later.";
     	  return redirect()->to('/home')->with('alert', [$alert]);
     	}

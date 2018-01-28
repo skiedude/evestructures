@@ -11,10 +11,7 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
+Route::get('/', 'WelcomeController@index');
 
 Route::get('/sso/login', function() {
     $authsite = 'https://login.eveonline.com/oauth/authorize';
@@ -36,3 +33,6 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/home/structure/{structure_id}', 'StructureController@show');
+
+Route::get('/delete/{character_id}', 'CharacterController@destroy');
+Route::get('/account/delete', 'HomeController@deleteAccount');

@@ -6,12 +6,70 @@ use Illuminate\Http\Request;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\ServerException;
-use \App\Character;
+use App\Character;
+use App\Structure;
+use App\StructureService;
+use App\StructureState;
 
 
 class CharacterController extends Controller
 {
 
+  public function __construct() {
+	      $this->middleware('auth');
+	}
+
+	public static function destroy($character_id, $account_del = null) {
+    $character = Character::where('user_id', \Auth::id())->where('character_id', $character_id)->first();
+    if(is_null($character)) {
+      $alert = "Character not found on this account";
+      return redirect()->to('/home')->with('alert', [$alert]);
+    }
+		try {
+			Character::where('character_id', $character->character_id)->delete();
+			Structure::where('character_id', $character->character_id)->delete();
+			StructureService::where('character_id', $character->character_id)->delete();
+			StructureState::where('character_id', $character->character_id)->delete();
+
+    	$client = new Client();
+    	$authsite = 'https://login.eveonline.com/oauth/revoke';
+    	$tokens = array($character->refresh_token, $character->access_token);
+    	foreach($tokens as $tk) {
+    	  $token_headers = [
+    	    'headers' => [
+    	      'Authorization' => 'Basic ' . base64_encode(env('CLIENT_ID') . ':' . env('SECRET_KEY')),
+    	      'User-Agent' => env('USERAGENT'),
+    	      'Content-Type' => 'application/x-www-form-urlencoded',
+    	    ],
+    	    'form_params' => [
+    	      'token' => $tk
+    	    ]
+    	  ];
+    	  $result = $client->post($authsite, $token_headers);
+    	}
+
+
+			if(!isset($account_del)) {
+				$success = "Successfully deleted $character->character_name, structures and revoked ESI privileges";
+      	return redirect()->to('/home')->with('success', [$success]);
+			} else {
+				return 1;
+			}
+		} catch (ClientException $e) {
+      //4xx error, usually encountered when token has been revoked on CCP website
+			// They already revoked it, so just continue and delete the data
+    } catch (ServerException $e ) {
+      $alert = "We received a 5xx error from ESI, this usually means an issue on CCP's end, please try again later.";
+      //5xx error, usually and issue with ESI
+			return redirect()->to('/')->with('alert', [$alert]);
+    } catch (\Exception $e) {
+      //Everything else
+      $alert = "We failed to revoke your tokens, please try again later.";
+			return redirect()->to('/')->with('alert', [$alert]);
+    }
+   
+			return redirect()->to('/')->with('alert', [$alert]);
+	}
 
 	public function create(Request $request) {
     if( session('auth_state') == $request->state ) {
@@ -131,7 +189,7 @@ class CharacterController extends Controller
       ['access_token' => $resp->access_token,
       'expires' => $expires_new]
     );
-    //TODO ADD CATCH FOR DELETED ACCESS
+
     } catch (ClientException $e) {
       //4xx error, usually encountered when token has been revoked on CCP website
 			$alert = "We failed to refresh our access with your tokens. This usually means they were revoked on the CCP API website. Try re-adding your character.";
@@ -142,7 +200,6 @@ class CharacterController extends Controller
 			return redirect()->to('/home')->with('alert', [$alert]);
     } catch (\Exception $e) {
       //Everything else
-			dd($e);
       $alert = "We failed to refresh your tokens, please try again later.";
 			return redirect()->to('/home')->with('alert', [$alert]);
     }
