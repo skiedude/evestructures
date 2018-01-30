@@ -129,6 +129,39 @@ class StructureController extends Controller
     	    WHERE solarSystemID = ?';
 			$system_name = \DB::connection('mysql2')->select($query, [$strct->system_id]);
 
+			switch ($strct->type_id) {
+				case 35825:
+					$type_name = 'Raitaru';
+					break;
+				case 35826:
+					$type_name = 'Azbel';
+					break;
+				case 35827:
+					$type_name = 'Sotiyo';
+					break;
+				case 35832:
+					$type_name = 'Astrahus';
+					break;
+				case 35833:
+					$type_name = 'Fortizar';
+					break;
+				case 35834:
+					$type_name = 'Keepstar';
+					break;
+				case 40340:
+					$type_name = 'Upwell_Palatine_Keepstar';
+					break;
+				case 35835:
+					$type_name = 'Athanor';
+					break;
+				case 35836:
+					$type_name = 'Tatara';
+					break;
+				default:
+					$type_name = 'Unknown';
+					break;
+			}
+
 			try {
 				$unv_url = "/v1/universe/structures/$strct->structure_id/";
 				$resp = $client->get($unv_url, $auth_headers);
@@ -152,6 +185,7 @@ class StructureController extends Controller
 					 'user_id' => \Auth::id(),
 					 'corporation_id' => $character->corporation_id,
 					 'type_id' => $strct->type_id,
+					 'type_name' => $type_name,
 					 'system_id' => $strct->system_id,
            'system_name' => $system_name[0]->solarSystemName,
 					 'profile_id' => $strct->profile_id,
@@ -165,7 +199,8 @@ class StructureController extends Controller
 													->where('character_id', $character->character_id)
 													->get();  
 
-        if(isset($strct->services)) {
+        if(count($current_services) > 0 && isset($strct->services)) {
+					//IF we have both current and api services, compare and delete ones that don't exist anymore in API
  					$api_services = array();
 					foreach($strct->services as $sr) {
  						array_push($api_services, $sr->name);
@@ -179,7 +214,15 @@ class StructureController extends Controller
 																->delete();
 						}
 					}
+				} elseif(count($current_services) > 0 && !isset($strct->services)) {
+						//IF no services are returned, delete them all
+						StructureService::where('structure_id', $strct->structure_id)
+															->where('character_id', $character->character_id)
+															->delete();
 
+				}
+
+        if(isset($strct->services)) {
 					foreach($strct->services as $sr) {
 						StructureService::updateOrCreate(
 							['structure_id' => $strct->structure_id, 'character_id' => $character->character_id],
@@ -203,6 +246,7 @@ class StructureController extends Controller
     	  return redirect()->to('/home')->with('alert', [$alert]);
     	} catch (\Exception $e) {
     	  //Everything else
+				dd($e);
     	  $alert = "We failed to pull the Structure name from ESI, Try again later.";
     	  return redirect()->to('/home')->with('alert', [$alert]);
     	}

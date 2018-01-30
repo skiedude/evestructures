@@ -13,7 +13,7 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-          <a href="/account/delete"><button type="button" class="btn btn-danger">Confirm</button></a>
+          <button type="button" class="btn btn-danger" >Confirm</button>
         </div>
       </div> <!-- /.modal-content -->
     </div> <!-- /.modal-dialog -->
@@ -40,7 +40,7 @@
 							<td><img src="https://image.eveonline.com/Character/{{$char->character_id}}_32.jpg"></td>
 							<td><a href="#{{$char->character_name}}">{{str_replace('_', ' ', $char->character_name)}}</a></td>
 							<td>{{$char->corporation_name}}</td>
-							<td align="right"><a href="/fetch/{{$char->character_id}}"><button class="btn btn-default">Fetch</button></a>
+							<td align="right"><button class="btn btn-default">Fetch</button>
 							<button class="btn btn-danger" type="button" data-toggle="modal" data-target="#delete_{{$char->character_id}}">Delete</button>
 							</td>
 						</tr>
@@ -52,7 +52,7 @@
 						      </div>
 						      <div class="modal-footer">
 						        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-						        <a href="/delete/{{$char->character_id}}"><button type="button" class="btn btn-danger">Confirm</button></a>
+						        <button type="button" class="btn btn-danger">Confirm</button>
 						      </div>
 						    </div> <!-- /.modal-content -->
 						  </div> <!-- /.modal-dialog -->
@@ -85,7 +85,7 @@
 						@if($str->character_id == $char->character_id)
 						<tr>
 							<td><img src="https://image.eveonline.com/Type/{{$str->type_id}}_32.png"></td>
-							<td><a href="/home/structure/{{$str->structure_id}}">{{$str->structure_name}}</a></td>
+							<td><a href="/demo/structure/{{$str->structure_id}}">{{$str->structure_name}}</a></td>
 							<td>{{$str->system_name}}</td>
 							<td>{{$str->fuel_expires}}</td>
 						</tr>
@@ -122,9 +122,7 @@
 	  <div class="col-sm-3 col-sm-offset-1">
 			<div class="panel panel-warning">
 				<div class="panel-heading"><h3 class="panel-title"><strong>Add Character</strong></h3></div>
-				<a href="/sso/login">
 					<img src="/images/small_black_login.png" alt="Login Button" class="pager center-block">
-				</a> 
 			</div> <!-- close add character panel -->
 		</div> <!-- close col-sm-3 -->
 	</div> <!-- close row -->

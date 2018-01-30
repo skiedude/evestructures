@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateStructuresTable extends Migration
+class CreateDemoStructuresTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,8 @@ class CreateStructuresTable extends Migration
      */
     public function up()
     {
-        Schema::create('structures', function (Blueprint $table) {
+        Schema::create('demo_structures', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('user_id');
             $table->bigInteger('character_id');
             $table->bigInteger('corporation_id');
             $table->bigInteger('structure_id');
@@ -38,6 +37,6 @@ class CreateStructuresTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('structures');
+        Schema::dropIfExists('demo_structures');
     }
 }

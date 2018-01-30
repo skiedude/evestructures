@@ -12,6 +12,8 @@
 */
 
 Route::get('/', 'WelcomeController@index');
+Route::get('/demo', 'DemoController@index')->name('demo');
+Route::get('/demo/structure/{structure_id}', 'DemoController@show');
 
 Route::get('/sso/login', function() {
     $authsite = 'https://login.eveonline.com/oauth/authorize';
