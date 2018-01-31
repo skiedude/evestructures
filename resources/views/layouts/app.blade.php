@@ -23,6 +23,8 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <link href="/css/main.css" rel="stylesheet">
+		<script type="text/javascript" src="/js/functions.js"></script>
 		<script src="https://use.fontawesome.com/822abcf540.js"></script>
 </head>
 <body style="background-attachment:fixed;background-color:#35383D;background-size:cover;" background="/images/nebula.jpg">

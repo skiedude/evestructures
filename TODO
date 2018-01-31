@@ -8,12 +8,11 @@
 <DONE>create prod site, populate env file and database creation
 <DONE>Google analytics
 <DONE>ads
+<DONE>limit refreshes based off cache timer of 1hr? every 3 hours? once a day?
+<DONE>footer with disclaimer
+<DONE>Scroll to top page on /home
 
 
-
-limit refreshes based off cache timer of 1hr? every 3 hours? once a day?
-footer with disclaimer
-Scroll to top page on /home
 
 
 <LATER>Filter by type_id on /home
