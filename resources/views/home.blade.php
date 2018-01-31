@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
+
 <div class="container">
 	@include ('layouts.errors');
 
@@ -22,6 +23,19 @@
 
 	<div class="row">
 		<div class="col-sm-8">
+		@if(env('APP_ENV') == 'prod')
+		<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+		<!-- EveStructures 1 -->
+		<ins class="adsbygoogle"
+		     style="display:block"
+		     data-ad-client="ca-pub-5085064832720602"
+		     data-ad-slot="5537335125"
+		     data-ad-format="auto"></ins>
+		<script>
+		(adsbygoogle = window.adsbygoogle || []).push({});
+		</script>
+		<br />
+		@endif
 			<div class="panel panel-primary">
 				<div class="panel-heading"><h3 class="panel-title"><strong>Characters</strong></h3></div>
 				<table class="table table-responsive table-condensed table-striped">
@@ -116,6 +130,7 @@
 				</table>
 			</div>
 			@endif
+
 
 		</div> <!-- close col-sm-8 -->
 

@@ -72,6 +72,20 @@
 
 					</div> <!-- end media -->
 			</div> <!-- end panel -->
+
+			@if(env('APP_ENV') == 'prod')
+			<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+			<!-- EveStructures 2 -->
+			<ins class="adsbygoogle"
+			     style="display:block"
+			     data-ad-client="ca-pub-5085064832720602"
+			     data-ad-slot="7756304355"
+			     data-ad-format="auto"></ins>
+			<script>
+			(adsbygoogle = window.adsbygoogle || []).push({});
+			</script>
+			@endif
+
 		</div>
 	</div> <!-- end row -->
 </div> <!-- close container -->
