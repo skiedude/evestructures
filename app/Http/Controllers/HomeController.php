@@ -37,15 +37,17 @@ class HomeController extends Controller
 
  			$alert = session()->pull('alert');
       $success = session()->pull('success');
+      $warning = session()->pull('warning');
       $alert = $alert[0];
       $success = $success[0];
+			$warning = $warning[0];
 
 
 			$characters = User::find(auth()->id())->characters;	
 			$structures = User::find(auth()->id())->structures;	
 
 
-      return view('home', compact(['characters', 'structures', 'alert', 'success']));
+      return view('home', compact(['characters', 'structures', 'alert', 'success', 'warning']));
     }
 
 		public function deleteAccount() {

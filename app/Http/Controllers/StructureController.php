@@ -41,6 +41,19 @@ class StructureController extends Controller
 			return redirect()->to('/home')->with('alert', [$alert]);
 		}
 
+		if(isset($character->last_fetch)){
+			$now = new \DateTime();
+			$last_fetch = new \DateTime($character->last_fetch);
+			$diff = date_diff($now, $last_fetch);
+			if($diff->h < 1) {
+				//$new_time = $last_fetch->add(new \DateInterval('PT1H')); 
+				//$new_time = $new_time->format('Y-m-d H:i');
+				$new_min = (60 - $diff->i);
+				$warning = "CCP caches structure data for up to 1 hour. Please try again in $new_min minute(s)";
+				return redirect()->to('/home')->with('warning', [$warning]);
+			}
+		}
+
 		$client = new Client(['base_uri' => 'https://esi.tech.ccp.is/']);
     $refresh = CharacterController::tokenRefresh($character->character_id);
 
@@ -252,7 +265,10 @@ class StructureController extends Controller
     	}
 
 		}	
-			$success = "Successfully added structures.";
+
+			$new_fetch = new \DateTime();
+			Character::where('user_id', \Auth::id())->where('character_id', $character_id)->update(['last_fetch' => $new_fetch]);
+			$success = "Successfully added/updated structures.";
       return redirect()->to('/home')->with('success', [$success]);
 	}
 

@@ -23,6 +23,7 @@ class CreateCharactersTable extends Migration
             $table->string('access_token');
             $table->string('refresh_token');
             $table->integer('expires');
+            $table->dateTime('last_fetch')->nullable();
             $table->timestamps();
         });
     }

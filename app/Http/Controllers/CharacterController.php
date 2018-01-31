@@ -151,8 +151,7 @@ class CharacterController extends Controller
       return redirect()->to('/home'); 
 
       } else {
-      //TODO REDIRECT TO WELCOME WITH $ALERT
-      dd("State Mismatch, try again");
+      return redirect()->to('/')->with('alert', ['State mismatch, try again']); 
     }
 
 	}
