@@ -50,7 +50,10 @@
                 <div class="collapse navbar-collapse" id="app-navbar-collapse">
                     <!-- Left Side Of Navbar -->
                     <ul class="nav navbar-nav">
+											<li><a>|</a></li>
 											<li><a href="{{ route('demo') }}">Demo View</a></li>
+                      <li><a>|</a></li>
+											<li><a href="https://eveskillboard.com" target="_blank">EveSkillboard</a></li>
                     </ul>
 
                     <!-- Right Side Of Navbar -->
