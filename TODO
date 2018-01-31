@@ -5,11 +5,12 @@
 <DONE>Revoke Tokens on delete character
 <DONE>Home page with FAQ
 <DONE>Demo Account? (static data)
+<DONE>create prod site, populate env file and database creation
+<DONE>Google analytics
+<DONE>ads
 
 
-create prod site, populate env file and database creation
-Google analytics
-ads
+
 limit refreshes based off cache timer of 1hr? every 3 hours? once a day?
 footer with disclaimer
 Scroll to top page on /home
