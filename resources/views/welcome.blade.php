@@ -6,7 +6,7 @@
 
 <div class="container">
 	<div class="blog-main">
-	  <div class="panel panel-default">
+	  <div class="panel panel-primary">
 	    <div class="panel-heading"><h3 class="panel-title"><strong>What is EveStructures?</strong></h3></div>
 	      <div class="panel-body">
 					<p>EveStructures creates a consolidated view of all your in-game player owned stations. No longer do you need to login in dozens of characters to check fuel timers, service status or even to remember all the structures you have!</p>
@@ -27,15 +27,16 @@
 				</div>
 	  </div>
 
-	  <div class="panel panel-default">
+	  <div class="panel panel-primary">
 	    <div class="panel-heading"><h3 class="panel-title"><strong>Why do I have to register, not just sign in with SSO?</strong></h3></div>
 	      <div class="panel-body">
 					<p>The main benefit of EveStructures is the ability to view multiple characters in one place. Signing on through a single character means you are limited to that Characters scope. By making an account, we can now associate multiple characters to one user.</p>
 					<p>Emails are used for password reset mails. You are more than welcome to use a spam, junk or burner email</p>
+					<p>This also allows you to have one login for all your Station Managers in your Corporation/Alliance. <strong>It is not required for you to have your own account</strong>.</p>
 				</div>
 	  </div>
 
-	  <div class="panel panel-default">
+	  <div class="panel panel-primary">
 	    <div class="panel-heading"><h3 class="panel-title"><strong>What permissions does EveStructures request?</strong></h3></div>
 	      <div class="panel-body">
 					<p>The scopes required to pull all the necessary info are:
