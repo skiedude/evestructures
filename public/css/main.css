@@ -8,3 +8,20 @@ cursor: pointer; /* Add a mouse pointer on hover */
 padding: 15px; /* Some padding */
 }
 
+
+.one_day {
+	color:red;
+	font-weight:bold;
+
+}
+
+.thirty_less {
+	color:orange;
+	font-weight:bold;
+
+}
+
+.thirty_plus {
+	color:green;
+	font-weight:bold;
+}

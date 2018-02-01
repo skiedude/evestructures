@@ -12,7 +12,9 @@
 <DONE>footer with disclaimer
 <DONE>Scroll to top page on /home
 
-
+Show days left rather then a time stamp, make the timestamp a hover over value
+Status light next to fuel? Green/yellow/off, or colored text based off time left
+Email notifications when fuel is low? Let the user define when? or just do a 30d,7d,1d ?
 
 
 <LATER>Filter by type_id on /home

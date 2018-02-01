@@ -26,6 +26,8 @@ class CreateStructuresTable extends Migration
             $table->string('system_name');
             $table->integer('profile_id');
             $table->string('fuel_expires')->nullable();
+            $table->string('fuel_time_left')->nullable();
+            $table->integer('fuel_days_left')->nullable();
             $table->string('unanchors_at')->nullable();
             $table->timestamps();
         });

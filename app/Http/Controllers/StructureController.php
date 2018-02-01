@@ -46,8 +46,6 @@ class StructureController extends Controller
 			$last_fetch = new \DateTime($character->last_fetch);
 			$diff = date_diff($now, $last_fetch);
 			if($diff->h < 1) {
-				//$new_time = $last_fetch->add(new \DateInterval('PT1H')); 
-				//$new_time = $new_time->format('Y-m-d H:i');
 				$new_min = (60 - $diff->i);
 				$warning = "CCP caches structure data for up to 1 hour. Please try again in $new_min minute(s)";
 				return redirect()->to('/home')->with('warning', [$warning]);
@@ -182,8 +180,14 @@ class StructureController extends Controller
 
 				if(isset($strct->fuel_expires)) {
           $fuel_expires = static::prettyTime($strct->fuel_expires);
+					$now = new \DateTime();
+					$diff = date_diff($now,$fuel_expires);
+				  $fuel_time_left = $diff->d . 'd ' . $diff->h . ':' . $diff->i . ':' . $diff->s;
+					$fuel_days_left = $diff->d;
 				} else {
 					$fuel_expires = "n/a";
+					$fuel_time_left = null;
+					$fuel_days_left = null;
 				}
 
 				if(isset($strct->unanchors_at)) {
@@ -203,6 +207,8 @@ class StructureController extends Controller
            'system_name' => $system_name[0]->solarSystemName,
 					 'profile_id' => $strct->profile_id,
 					 'fuel_expires' => $fuel_expires,
+					 'fuel_time_left' => $fuel_time_left,
+					 'fuel_days_left' => $fuel_days_left,
 					 'unanchors_at' => $unanchors_at
 					]
     		);
