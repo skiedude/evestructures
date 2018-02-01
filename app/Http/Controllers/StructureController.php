@@ -179,11 +179,12 @@ class StructureController extends Controller
 				$unv = json_decode($resp->getBody());
 
 				if(isset($strct->fuel_expires)) {
-          $fuel_expires = static::prettyTime($strct->fuel_expires);
+          $fuel_expires_datetime = new \DateTime($strct->fuel_expires);
 					$now = new \DateTime();
-					$diff = date_diff($now,$fuel_expires);
+					$diff = date_diff($now,$fuel_expires_datetime);
 				  $fuel_time_left = $diff->d . 'd ' . $diff->h . ':' . $diff->i . ':' . $diff->s;
 					$fuel_days_left = $diff->d;
+          $fuel_expires = static::prettyTime($strct->fuel_expires);
 				} else {
 					$fuel_expires = "n/a";
 					$fuel_time_left = null;
