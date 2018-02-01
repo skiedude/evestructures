@@ -37,7 +37,7 @@
 						</thead>
 						@foreach($characters as $char) <!-- Loop over characters -->
 						<tr>
-							<td><img src="https://image.eveonline.com/Character/{{$char->character_id}}_32.jpg"></td>
+							<td><img src="https://imageserver.eveonline.com/Character/{{$char->character_id}}_32.jpg"></td>
 							<td><a href="#{{$char->character_name}}">{{str_replace('_', ' ', $char->character_name)}}</a></td>
 							<td>{{$char->corporation_name}}</td>
 							<td align="right"><button class="btn btn-default">Fetch</button>
@@ -69,7 +69,7 @@
 			@if(isset($structures) && count($structures))
 			@foreach($characters as $char) <!-- Loop over characters -->
 			<div class="panel panel-primary" id="{{$char->character_name}}">
-				<div class="panel-heading"><h3 class="panel-title"> <img src="https://image.eveonline.com/Character/{{$char->character_id}}_32.jpg">&nbsp<strong>{{str_replace('_', ' ', $char->character_name)}}</strong> | {{$char->corporation_name}}</h3></div>
+				<div class="panel-heading"><h3 class="panel-title"> <img src="https://imageserver.eveonline.com/Character/{{$char->character_id}}_32.jpg">&nbsp<strong>{{str_replace('_', ' ', $char->character_name)}}</strong> | {{$char->corporation_name}}</h3></div>
 				<table class="table table-condensed">
 					<tbody>
 						<thead>
@@ -84,7 +84,7 @@
 						@foreach($structures as $str) <!-- Loop over structures -->
 						@if($str->character_id == $char->character_id)
 						<tr>
-							<td><img src="https://image.eveonline.com/Type/{{$str->type_id}}_32.png"></td>
+							<td><img src="https://imageserver.eveonline.com/Type/{{$str->type_id}}_32.png"></td>
 							<td><a href="/demo/structure/{{$str->structure_id}}">{{$str->structure_name}}</a></td>
 							<td>{{$str->system_name}}</td>
 							<td>{{$str->fuel_expires}}</td>

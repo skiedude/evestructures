@@ -11,7 +11,7 @@
 				</div>
 					<div class="media" style="padding:10px">
 						<div class="media-left">
-							<img src="https://image.eveonline.com/Type/{{$structure->type_id}}_64.png">
+							<img src="https://imageserver.eveonline.com/Type/{{$structure->type_id}}_64.png">
 						</div>
 						<div class="media-body">
 							<h3 class="media-heading">{{$structure->structure_name}}</h3>
