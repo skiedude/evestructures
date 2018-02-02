@@ -40,7 +40,7 @@ composer install
 
 ### Environment File
 We need to update/add some values to the .env file. (If one is not created, copy the .env.example to be .env
-Populate the following in the .env file (add if missing)
+Update the following in the .env file (add if missing)
 ```
 DB_DATABASE_SDE= //name of the sde database you created
 USERAGENT= //used for the HTTP requests
@@ -49,8 +49,8 @@ CLIENT_ID=  //retrieved from your developer account
 SECRET_KEY= // retrieved from your developer account
 APP_NAME=  //used in the emails
 APP_ENV=prod  //use prod
-APP_URL = //url of your website for the emails
-
+APP_URL= //url of your website for the emails
+SITE_NAME= //used in disclaimer
 DB_DATABASE= // 2nd database you created
 DB_USERNAME= // username that has access to both databases
 DB_PASSWORD= // password for ^ user
@@ -95,3 +95,6 @@ From here you should be able to hit your Website in the browser, and play around
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
+
+## Donate
+If you liked EveStructures, please consider donating ISK in game to [Brock Khans](https://evewho.com/pilot/Brock+Khans) or [PayPal](paypal.me/skiedude)
