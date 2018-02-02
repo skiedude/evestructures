@@ -124,19 +124,8 @@
 			@endif
 
 		@if(env('APP_ENV') == 'prod')
-		<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-		<!-- EveStructures 1 -->
-		<ins class="adsbygoogle"
-		     style="display:block"
-		     data-ad-client="ca-pub-5085064832720602"
-		     data-ad-slot="5537335125"
-		     data-ad-format="auto"></ins>
-		<script>
-		(adsbygoogle = window.adsbygoogle || []).push({});
-		</script>
-		<br />
+			@includeIf('google.ads_home')
 		@endif
-
 
 		</div> <!-- close col-sm-8 -->
 
