@@ -25,3 +25,8 @@ padding: 15px; /* Some padding */
 	color:green;
 	font-weight:bold;
 }
+
+.link-unstyled, .link-unstyled:link, .link-unstyled:hover {
+  color: inherit;
+	text-decoration: inherit;
+}

@@ -3,6 +3,9 @@ This provides a consolidated view of all your structures across multiple Eve Onl
 
 EveStrucutures is built with the Laravel PHP Framework. For more info on [Laravel](https://laravel.com/docs/5.5)
 
+## Donate
+If you liked EveStructures, please consider donating ISK in game to [Brock Khans](https://evewho.com/pilot/Brock+Khans) or [PayPal](paypal.me/skiedude)
+
 ## Prequisite Installs
 * [php] >= 7.0.0
 * [mysql] - Download for your OS
@@ -62,7 +65,7 @@ Here is what mine looks like using httpd on Centos 7
 ```
 <VirtualHost *:80>
   ServerName structures.eveskillboard.com
-  DocumentRoot "/var/www/html/skillboard/public"
+  DocumentRoot "/var/www/html/structures/public"
 </VirtualHost>
 ```
 or SSL
@@ -89,6 +92,32 @@ https://stackoverflow.com/a/37266353
 ```
 alias fixstorage='sudo chgrp -R apache storage bootstrap/cache && sudo chmod -R ug+rwx storage bootstrap/cache'
 ```
+### Supervisord
+Supervisord takes care of running the jobs as they enter the queue.
+[Supervisord Setup Instructions](https://laravel.com/docs/5.5/queues#supervisor-configuration)
+For Centos7 my files in conf.d needed to be .ini
+Example config that I use
+```
+[program:laravel-worker]
+process_name=%(program_name)s_%(process_num)02d
+command=php /UPDATE_PATH_TO_INSTALL/artisan queue:work --sleep=3 --tries=3 --timeout=10
+autostart=true
+autorestart=true
+user=UPDATE_TO_YOUR_USER
+numprocs=2
+redirect_stderr=true
+stdout_logfile=/UPDATE_PATH_TO_INSTALL/worker.log
+
+```
+
+### Cron
+Updating Structures every 3 hours, and checking for Fuel Notifications to send are run via the Schedule feature of Laravel. This requires running a cron once a minute to see if there are any tasks to schedule (this also schedules the jobs that get passed to supervisord).
+
+Create a cron with the following entry
+[Laravel Scheduler](https://laravel.com/docs/5.5/scheduling#introduction)
+```
+* * * * * php /path-to-your-project/artisan schedule:run >> /dev/null 2>&1
+```
 
 From here you should be able to hit your Website in the browser, and play around with it.
 
@@ -96,5 +125,4 @@ From here you should be able to hit your Website in the browser, and play around
 
 This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
 
-## Donate
-If you liked EveStructures, please consider donating ISK in game to [Brock Khans](https://evewho.com/pilot/Brock+Khans) or [PayPal](paypal.me/skiedude)
+

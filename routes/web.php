@@ -11,6 +11,8 @@
 |
 */
 
+Route::get('/discord', 'HomeController@discord');
+
 Route::get('/', 'WelcomeController@index');
 Route::get('/demo', 'DemoController@index')->name('demo');
 Route::get('/demo/structure/{structure_id}', 'DemoController@show');
@@ -38,3 +40,6 @@ Route::get('/home/structure/{structure_id}', 'StructureController@show');
 
 Route::get('/delete/{character_id}', 'CharacterController@destroy');
 Route::get('/account/delete', 'HomeController@deleteAccount');
+
+Route::post('/webhook/{character_id}', 'WebhookController@store');
+Route::delete('/webhook/delete/{character_id}', 'WebhookController@destroy');

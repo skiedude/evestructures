@@ -16,6 +16,7 @@
     <link href="/css/main.css" rel="stylesheet">
 		<script type="text/javascript" src="/js/functions.js"></script>
 		<script src="https://use.fontawesome.com/822abcf540.js"></script>
+		<link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon">
 </head>
 <body style="background-attachment:fixed;background-color:#35383D;background-size:cover;" background="/images/nebula.jpg">
     <div id="app">
@@ -33,13 +34,15 @@
 
                     <!-- Branding Image -->
                     <a class="navbar-brand" href="{{ url('/') }}">
-                      {{env('APP_NAME')}} 
+										<span><img src="/images/brand.png" style="height:32px;width:25px;" alt="Khan Dynasty"></span>
                     </a>
                 </div>
 
                 <div class="collapse navbar-collapse" id="app-navbar-collapse">
                     <!-- Left Side Of Navbar -->
                     <ul class="nav navbar-nav">
+
+                      <li><a href="/">{{env('APP_NAME')}}</a></li>
 											<li><a>|</a></li>
 											<li><a href="{{ route('demo') }}">Demo View</a></li>
                       <li><a>|</a></li>
