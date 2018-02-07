@@ -6,10 +6,12 @@
     "type": "project",
     "require": {
         "php": ">=7.0.0",
+        "doctrine/dbal": "^2.5",
         "fideloper/proxy": "~3.3",
         "guzzlehttp/guzzle": "~6.0",
         "laravel/framework": "5.5.*",
         "laravel/tinker": "~1.0",
+        "nopjmp/discord-webhooks": "^0.2.2",
         "orangehill/iseed": "^2.5"
     },
     "require-dev": {

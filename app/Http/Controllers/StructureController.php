@@ -17,10 +17,10 @@ use App\StructureVul;
 
 class StructureController extends Controller
 {
+
   public function __construct() {
       $this->middleware('auth');
   }
-
 
 	public function show($structure_id) {
 		$structure = Structure::where('user_id', \Auth::id())->where('structure_id', $structure_id)->first();
@@ -35,6 +35,8 @@ class StructureController extends Controller
 	}
 
 	public function create($character_id) {
+
+		$tz = array("T", "Z");
 		$character = Character::where('user_id', \Auth::id())->where('character_id', $character_id)->first();
 		if(is_null($character)) {
 			$alert = "Character not found on this account";
@@ -178,13 +180,16 @@ class StructureController extends Controller
 				$resp = $client->get($unv_url, $auth_headers);
 				$unv = json_decode($resp->getBody());
 
+				//Use for fuel testing
+				//$strct->fuel_expires = '2018-02-08T06:0:00Z';
+        
 				if(isset($strct->fuel_expires)) {
           $fuel_expires_datetime = new \DateTime($strct->fuel_expires);
 					$now = new \DateTime();
 					$diff = date_diff($now,$fuel_expires_datetime);
 				  $fuel_time_left = $diff->d . 'd ' . $diff->h . ':' . $diff->i . ':' . $diff->s;
 					$fuel_days_left = $diff->d;
-          $fuel_expires = static::prettyTime($strct->fuel_expires);
+					$fuel_expires = str_replace($tz, " ", $strct->fuel_expires);
 				} else {
 					$fuel_expires = "n/a";
 					$fuel_time_left = null;
@@ -192,7 +197,7 @@ class StructureController extends Controller
 				}
 
 				if(isset($strct->unanchors_at)) {
-          $unanchors_at = static::prettyTime($strct->fuel_expires);
+          $unanchors_at = str_replace($tz, " ", $strct->unanchors_at);
 				} else {
 					$unanchors_at = "n/a";
 				}
@@ -251,9 +256,9 @@ class StructureController extends Controller
 						);
 					}
 				}
-
-				$state_timer_end = static::prettyTime($strct->state_timer_end);
-				$state_timer_start = static::prettyTime($strct->state_timer_start);
+				
+				$state_timer_start = str_replace($tz, " ", $strct->state_timer_start);
+				$state_timer_end = str_replace($tz, " ", $strct->state_timer_end);
 				StructureState::updateOrCreate(
 					['structure_id' => $strct->structure_id, 'character_id' => $character->character_id],
 					['state_timer_start' => $state_timer_start,
@@ -279,9 +284,4 @@ class StructureController extends Controller
       return redirect()->to('/home')->with('success', [$success]);
 	}
 
-	public function prettyTime($d) {
-		$date = new \DateTime($d);
-		$pretty_date = $date->format('Y-m-d H:i');
-		return $pretty_date;
-	}
 }
