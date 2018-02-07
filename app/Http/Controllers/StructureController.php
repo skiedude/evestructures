@@ -181,14 +181,14 @@ class StructureController extends Controller
 				$unv = json_decode($resp->getBody());
 
 				//Use for fuel testing
-				//$strct->fuel_expires = '2018-02-08T06:0:00Z';
+				//$strct->fuel_expires = '2018-02-08T12:0:00Z';
         
 				if(isset($strct->fuel_expires)) {
           $fuel_expires_datetime = new \DateTime($strct->fuel_expires);
 					$now = new \DateTime();
 					$diff = date_diff($now,$fuel_expires_datetime);
-				  $fuel_time_left = $diff->d . 'd ' . $diff->h . ':' . $diff->i . ':' . $diff->s;
-					$fuel_days_left = $diff->d;
+				  $fuel_time_left = $diff->days. 'd ' . $diff->h . ':' . $diff->i . ':' . $diff->s;
+					$fuel_days_left = $diff->days;
 					$fuel_expires = str_replace($tz, " ", $strct->fuel_expires);
 				} else {
 					$fuel_expires = "n/a";
