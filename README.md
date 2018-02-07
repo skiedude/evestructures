@@ -94,7 +94,7 @@ alias fixstorage='sudo chgrp -R apache storage bootstrap/cache && sudo chmod -R 
 ```
 ### Supervisord
 Supervisord takes care of running the jobs as they enter the queue.
-[Supervisord Setup Instructions](https://laravel.com/docs/5.5/queues#supervisor-configuration)
+[Supervisord Setup Instructions](https://laravel.com/docs/5.5/queues#supervisor-configuration).    
 For Centos7 my files in conf.d needed to be .ini
 Example config that I use
 ```
