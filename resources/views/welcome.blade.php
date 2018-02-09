@@ -2,7 +2,7 @@
 @extends('layouts.app')
 
 @section('content')
-@include('layouts.errors');
+@include('layouts.errors')
 
 <div class="container">
 	<div class="blog-main">

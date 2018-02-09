@@ -3,7 +3,7 @@
 @section('content')
 
 <div class="container">
-	@include ('layouts.errors');
+	@include ('layouts.errors')
 	<button onclick="topFunction()" id="scrollBtn" class="btn btn-info"><i class="fa fa-arrow-up" aria-hidden="true"></i></button>
 
 	<!-- Account delete modal -->

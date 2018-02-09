@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="container">
-	@include ('layouts.errors');
+	@include ('layouts.errors')
 
 	<!-- Account delete modal -->
   <div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" id="delete_account" aria-labelledby="modal_account">
