@@ -10,7 +10,7 @@
       <div class="panel-heading"><h3 class="panel-title"><strong>What is EveStructures?</strong></h3></div>
         <div class="panel-body">
           <p>EveStructures creates a consolidated view of all your in-game player owned stations. No longer do you need to login in dozens of characters to check fuel timers, service status or even to remember all the structures you have!</p>
-          <p>Now, from one view you can see everything on the fly. Structures are grouped by the character that has access to view them, and shows the most pertinent information:
+          <p>Now, from one view you can see everything on the fly. Structures are grouped by the character that has access to view them, and shows the most pertinent information:</p>
             <ul>
               <li>Name</li> 
               <li>System</li>
@@ -23,7 +23,8 @@
               <li>unanchor timer</li>  
               <li>and much more!</li>
             </ul>
-          Check out the <a href="/demo">Demo view</a> to see how it works</p>
+          <p>Create and save a <a href="https://support.discordapp.com/hc/en-us/articles/228383668-Intro-to-Webhooks" target="_blank">Discord Webhook</a> for each character you want to receive notifications on. EveStructureBot will let you know when you have <7days and <24h fuel left on your structures, so you never run out again!</p>
+          <p>Check out the <a href="/demo">Demo view</a> to see how it works.</p>
         </div>
     </div>
 
