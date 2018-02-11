@@ -45,18 +45,23 @@ composer install
 We need to update/add some values to the .env file. (If one is not created, copy the .env.example to be .env
 Update the following in the .env file (add if missing)
 ```
-DB_DATABASE_SDE= //name of the sde database you created
-USERAGENT= //used for the HTTP requests
-CALLBACK_URL=https://URL_GOES_HERE.COM/sso/callback  //update the URL there in the middle, adjust for non https
-CLIENT_ID=  //retrieved from your developer account
-SECRET_KEY= // retrieved from your developer account
 APP_NAME=  //used in the emails
 APP_ENV=prod  //use prod
 APP_URL= //url of your website for the emails
 SITE_NAME= //used in disclaimer
+
+DB_DATABASE_SDE= //name of the sde database you created
 DB_DATABASE= // 2nd database you created
 DB_USERNAME= // username that has access to both databases
 DB_PASSWORD= // password for ^ user
+QUEUE_DRIVER= //use database if you intend to use supervisord
+
+MAIL_* // based off what mail setup you wish to use
+
+USERAGENT= //used for the HTTP requests
+CALLBACK_URL=https://URL_GOES_HERE.COM/sso/callback  //update the URL there in the middle, adjust for non https
+CLIENT_ID=  //retrieved from your developer account
+SECRET_KEY= // retrieved from your developer account
 ```
 
 ### Web Service
