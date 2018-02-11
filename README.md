@@ -17,7 +17,7 @@ If you liked EveStructures, please consider donating ISK in game to [Brock Khans
 [Eve Online Developer](https://developers.eveonline.com/) - You will need to setup your own developer application that uses
 * esi-universe.read_structures.v1 
 * esi-corporations.read_structures.v1 
-* esi-characters.read_corporation_roles.v1
+* esi-characters.read_corporation_roles.v1  
 Set the callback url to 
 ```
 http(s)://your_domain.com/sso/callback
@@ -95,7 +95,7 @@ alias fixstorage='sudo chgrp -R apache storage bootstrap/cache && sudo chmod -R 
 ### Supervisord
 Supervisord takes care of running the jobs as they enter the queue.
 [Supervisord Setup Instructions](https://laravel.com/docs/5.5/queues#supervisor-configuration).    
-For Centos7 my files in conf.d needed to be .ini
+For Centos7 my files in conf.d needed to be .ini  
 Example config that I use
 ```
 [program:laravel-worker]
@@ -120,6 +120,13 @@ Create a cron with the following entry
 ```
 
 From here you should be able to hit your Website in the browser, and play around with it.
+
+### Commands
+These are run on a schedule already, but if you want to run on demand, use the following commands:
+```
+php artisan update:structures //Kick off a Job for each Character to update their structure data from ESI
+php artisan check:fuel //Run the Fuel check and send notifications if required
+```
 
 ## License
 

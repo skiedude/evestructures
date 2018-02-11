@@ -4,9 +4,6 @@ namespace App\Console;
 
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
-use App\Jobs\StructureUpdate;
-use App\Jobs\LowFuelCheck;
-use App\Character;
 
 class Kernel extends ConsoleKernel
 {
@@ -29,17 +26,8 @@ class Kernel extends ConsoleKernel
     {
         // $schedule->command('inspire')
         //          ->hourly();
-        try {
-          $characters = Character::all();
-          foreach($characters as $character) {
-            //Run Every 3 Hours
-            $schedule->job(new StructureUpdate($character))->cron('0 */3 * * *');
-          }
-        } catch (\Exception $e){
-          //Catch new migrate commands when characters table doesn't exist yet
-        }
-
-        $schedule->job(new LowFuelCheck())->hourly();
+      $schedule->command('update:structures')->cron('0 */3 * * *');
+      $schedule->command('check:fuel')->hourly();
     }
 
     /**
