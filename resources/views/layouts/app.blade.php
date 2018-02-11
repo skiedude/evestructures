@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="{{ app()->getLocale() }}">
 <head>
-		@includeIf('google.analytics')
-		<meta charset="utf-8">
+    @includeIf('google.analytics')
+    <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -14,9 +14,9 @@
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <link href="/css/main.css" rel="stylesheet">
-		<script type="text/javascript" src="/js/functions.js"></script>
-		<script src="https://use.fontawesome.com/822abcf540.js"></script>
-		<link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon">
+    <script type="text/javascript" src="/js/functions.js"></script>
+    <script src="https://use.fontawesome.com/822abcf540.js"></script>
+    <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon">
 </head>
 <body style="background-attachment:fixed;background-color:#35383D;background-size:cover;" background="/images/nebula.jpg">
     <div id="app">
@@ -33,8 +33,8 @@
                     </button>
 
                     <!-- Branding Image -->
-                    <a class="navbar-brand" href="{{ url('/') }}">
-										<span><img src="/images/brand.png" style="height:32px;width:25px;" alt="Khan Dynasty"></span>
+                    <a href="{{ url('/') }}">
+                    <img class="navbar-brand" src="/images/brand.png" alt="Khan Dynasty">
                     </a>
                 </div>
 
@@ -42,11 +42,13 @@
                     <!-- Left Side Of Navbar -->
                     <ul class="nav navbar-nav">
 
-                      <li><a href="/">{{env('APP_NAME')}}</a></li>
-											<li><a>|</a></li>
-											<li><a href="{{ route('demo') }}">Demo View</a></li>
-                      <li><a>|</a></li>
-											<li><a href="https://eveskillboard.com" target="_blank">EveSkillboard</a></li>
+                      <li><a href="{{ route('demo') }}">Demo View</a></li>
+                      <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Tools <span class="caret"></span></a>
+                          <ul class="dropdown-menu">
+                            <li><a href="https://eveskillboard.com" target="_blank">EveSkillboard</a></li>
+                          </ul>
+                      </li>
                     </ul>
 
                     <!-- Right Side Of Navbar -->
@@ -56,7 +58,7 @@
                             <li><a href="{{ route('login') }}">Login</a></li>
                             <li><a href="{{ route('register') }}">Register</a></li>
                         @else
-														<li><a href="{{ route('home') }}">Home</a></li>
+                            <li><a href="{{ route('home') }}">Home</a></li>
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true">
                                     {{ Auth::user()->name }} <span class="caret"></span>
@@ -74,9 +76,9 @@
                                             {{ csrf_field() }}
                                         </form>
                                     </li>
-																		<li>
-																			<a href="#" data-toggle="modal" data-target="#delete_account" >Delete Account</a>
-																		</li>
+                                    <li>
+                                      <a href="#" data-toggle="modal" data-target="#delete_account" >Delete Account</a>
+                                    </li>
                                 </ul>
                             </li>
                         @endguest

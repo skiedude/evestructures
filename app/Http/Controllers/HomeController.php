@@ -27,44 +27,36 @@ class HomeController extends Controller
      */
     public function index()
     {
-				//Add Character Link -- DONE
-				//Get Characters if they have them -- DONE
-					// show Characters Name/Corporation -- DONE
-					// Delete Button TODO
-			  //Get structures if they have them -- DONE
-					// Show Structure Name/Corporation/Location/Fuel Left -- DONE
-					//Refresh Button? Limit to cache timer? TODO
-
- 			$alert = session()->pull('alert');
+      $alert = session()->pull('alert');
       $success = session()->pull('success');
       $warning = session()->pull('warning');
       $alert = $alert[0];
       $success = $success[0];
-			$warning = $warning[0];
+      $warning = $warning[0];
 
 
-			$characters = User::find(auth()->id())->characters;	
-			$structures = User::find(auth()->id())->structures;	
+      $characters = User::find(auth()->id())->characters; 
+      $structures = User::find(auth()->id())->structures; 
 
 
       return view('home', compact(['characters', 'structures', 'alert', 'success', 'warning']));
     }
 
-		public function deleteAccount() {
-			$user = User::find(\Auth::id());
-			$characters = User::find(auth()->id())->characters;	
-			foreach ($characters as $character) {
-				CharacterController::destroy($character->character_id, 1);
-			}
-			\Auth::logout();
+    public function deleteAccount() {
+      $user = User::find(\Auth::id());
+      $characters = User::find(auth()->id())->characters; 
+      foreach ($characters as $character) {
+        CharacterController::destroy($character->character_id, 1);
+      }
+      \Auth::logout();
 
-			if($user->delete()) {
+      if($user->delete()) {
 
-				$success = "Successfully deleted your acccount, all your characters, structures and revoked all ESI privileges. Come back soon!";
-				return redirect()->to('/')->with('success', [$success]);
-			} else {
-				$alert = "Failed to delete account, contact Brock Khans in game for help.";
-				return redirect()->to('/')->with('alert', [$alert]);
-			}
-		}	
+        $success = "Successfully deleted your acccount, all your characters, structures and revoked all ESI privileges. Come back soon!";
+        return redirect()->to('/')->with('success', [$success]);
+      } else {
+        $alert = "Failed to delete account, contact Brock Khans in game for help.";
+        return redirect()->to('/')->with('alert', [$alert]);
+      }
+    } 
 }

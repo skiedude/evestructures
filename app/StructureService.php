@@ -6,6 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class StructureService extends Model
 {
-	protected $guarded = [];
+  protected $guarded = [];
     //
 }

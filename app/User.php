@@ -28,13 +28,13 @@ class User extends Authenticatable
     ];
 
 
-		public function characters() {
-			return $this->hasMany(Character::class);
-		}
+    public function characters() {
+      return $this->hasMany(Character::class);
+    }
 
-		public function structures() {
-			return $this->hasMany(Structure::class);
-		}
+    public function structures() {
+      return $this->hasMany(Structure::class);
+    }
 
 
 }

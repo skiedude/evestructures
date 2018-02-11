@@ -29,17 +29,17 @@ class Kernel extends ConsoleKernel
     {
         // $schedule->command('inspire')
         //          ->hourly();
-				try {
-					$characters = Character::all();
-					foreach($characters as $character) {
-						//Run Every 3 Hours
-						$schedule->job(new StructureUpdate($character))->cron('0 */3 * * *');
-					}
-				} catch (\Exception $e){
-					//Catch new migrate commands when characters table doesn't exist yet
-				}
+        try {
+          $characters = Character::all();
+          foreach($characters as $character) {
+            //Run Every 3 Hours
+            $schedule->job(new StructureUpdate($character))->cron('0 */3 * * *');
+          }
+        } catch (\Exception $e){
+          //Catch new migrate commands when characters table doesn't exist yet
+        }
 
-				$schedule->job(new LowFuelCheck())->hourly();
+        $schedule->job(new LowFuelCheck())->hourly();
     }
 
     /**

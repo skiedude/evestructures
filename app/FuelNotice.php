@@ -6,6 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class FuelNotice extends Model
 {
-	protected $guarded = [];
+  protected $guarded = [];
     //
 }
