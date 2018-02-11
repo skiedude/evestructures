@@ -7,7 +7,7 @@
     <div class="col-sm-8 col-sm-offset-2">
       <div class="panel panel-primary">
         <div class="panel-heading"> 
-          <a href="/demo" style="color:white" ><i class="fa fa-arrow-circle-left" aria-hidden="true"></i> Back</a>
+          <a href="{{ url('/demo') }}" style="color:white" ><i class="fa fa-arrow-circle-left" aria-hidden="true"></i> Back</a>
         </div>
           <div class="media" style="padding:10px">
             <div class="media-left">

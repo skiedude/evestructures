@@ -34,7 +34,7 @@
           @foreach($characters as $char)
             <p><strong>{{str_replace('_', ' ', $char->character_name)}}</strong></p>
             @isset($char->discord_webhook)
-              <form method="POST" action="/webhook/delete/{{$char->character_id}}">
+              <form>
               <div class="form-group">
               <p><h6>{{$char->discord_webhook}}</h6></p>
                 {{ csrf_field() }}
@@ -120,7 +120,7 @@
             @if($str->character_id == $char->character_id)
             <tr>
               <td><img src="https://imageserver.eveonline.com/Type/{{$str->type_id}}_32.png"></td>
-              <td><a href="/demo/structure/{{$str->structure_id}}">{{$str->structure_name}}</a></td>
+              <td><a href="{{ url('/demo/structure') }}/{{$str->structure_id}}">{{$str->structure_name}}</a></td>
               <td>{{$str->system_name}}</td>
               @if(is_null($str->fuel_days_left))
               <td>{{$str->fuel_expires}}</td>

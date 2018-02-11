@@ -13,12 +13,10 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
-    <link href="/css/main.css" rel="stylesheet">
-    <script type="text/javascript" src="/js/functions.js"></script>
-    <script src="https://use.fontawesome.com/822abcf540.js"></script>
-    <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon">
+    <link href="{{ asset('/css/main.css') }}" rel="stylesheet">
+    <link rel="shortcut icon" href="{{ asset('/images/favicon.ico') }}" type="image/x-icon">
 </head>
-<body style="background-attachment:fixed;background-color:#35383D;background-size:cover;" background="/images/nebula.jpg">
+<body style="background-attachment:fixed;background-color:#35383D;background-size:cover;" background="{{ asset('/images/nebula.jpg') }}">
     <div id="app">
         <nav class="navbar navbar-default navbar-static-top">
             <div class="container">
@@ -34,7 +32,7 @@
 
                     <!-- Branding Image -->
                     <a href="{{ url('/') }}">
-                    <img class="navbar-brand" src="/images/brand.png" alt="Khan Dynasty">
+                    <img class="navbar-brand" src="{{ asset('/images/brand.png') }}" alt="Khan Dynasty">
                     </a>
                 </div>
 
@@ -92,5 +90,7 @@
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('/js/functions.js') }}"></script>
+    <script src="https://use.fontawesome.com/822abcf540.js"></script>
 </body>
 </html>

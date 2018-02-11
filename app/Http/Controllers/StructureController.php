@@ -181,7 +181,7 @@ class StructureController extends Controller
         $unv = json_decode($resp->getBody());
 
         //Use for fuel testing
-        $strct->fuel_expires = '2018-02-14T12:0:00Z';
+        //$strct->fuel_expires = '2018-02-14T12:0:00Z';
         
         if(isset($strct->fuel_expires)) {
           $fuel_expires_datetime = new \DateTime($strct->fuel_expires);
