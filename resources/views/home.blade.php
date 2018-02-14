@@ -59,7 +59,6 @@
         </div>
       </div>
       </div> <!-- close discord_webhook panel -->
-
       <div class="panel panel-primary">
         <div class="panel-heading"><h3 class="panel-title"><strong>Characters</strong></h3></div>
         <table class="table table-responsive table-condensed table-striped">
@@ -115,6 +114,7 @@
               <th></th>
               <th>Station Name</th>
               <th>System</th>
+              <th>State</th>
               <th>Fuel</th>
             </tr>
             </thead>
@@ -125,6 +125,7 @@
               <td><img src="https://imageserver.eveonline.com/Type/{{$str->type_id}}_32.png"></td>
               <td><a href="{{ url('/home/structure') }}/{{$str->structure_id}}">{{$str->structure_name}}</a></td>
               <td>{{$str->system_name}}</td>
+              <td>{{ucwords($str->state)}}</td>
               @if(is_null($str->fuel_days_left))
               <td>{{$str->fuel_expires}}</td>
               @else

@@ -10,6 +10,7 @@ use App\Character;
 use App\Structure;
 use App\StructureService;
 use App\StructureState;
+use App\StructureVul;
 
 
 class CharacterController extends Controller
@@ -30,6 +31,7 @@ class CharacterController extends Controller
       Structure::where('character_id', $character->character_id)->delete();
       StructureService::where('character_id', $character->character_id)->delete();
       StructureState::where('character_id', $character->character_id)->delete();
+      StructureVul::where('character_id', $character->character_id)->delete();
 
       $client = new Client();
       $authsite = 'https://login.eveonline.com/oauth/revoke';

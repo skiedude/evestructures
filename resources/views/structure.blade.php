@@ -4,7 +4,7 @@
 <div class="container">
   @include ('layouts.errors')
   <div class="row">
-    <div class="col-sm-8 col-sm-offset-2">
+    <div class="col-sm-12">
       <div class="panel panel-primary">
         <div class="panel-heading"> 
           <a href="{{ url('/home') }}" style="color:white" ><i class="fa fa-arrow-circle-left" aria-hidden="true"></i> Back</a>
@@ -15,9 +15,8 @@
             </div>
             <div class="media-body">
               <h3 class="media-heading">{{$structure->structure_name}}</h3>
-              
               <div class="row">
-                <div class="col-sm-6">
+                <div class="col-sm-4">
                   <div class="panel panel-success">
                     <table class="table table-condensed table-bordered">
                       <tr>
@@ -37,16 +36,24 @@
                     </table>
                   </div>
                 </div>
-                <div class="col-sm-6">
+                <div class="col-sm-4">
                   <div class="panel panel-success">
                     <table class="table table-condensed table-bordered">
                       <tr>
-                        <th>Info Name</th>
-                        <th>Value</th>
+                        <th>Info</th>
+                        <th></th>
                       </tr>
                       <tr>
-                        <td>Unanchors</td>
-                        <td>{{$structure->unanchors_at}}</td>
+                        <td>Current State</td>
+                        <td>{{ucwords($state->state)}}</td>
+                      </tr>
+                      <tr>
+                        <td>Current State Start</td>
+                        <td>@isset($state->state_timer_start) {{$state->state_timer_start}} @else n/a @endisset</td>
+                      </tr>
+                      <tr>
+                        <td>Current State End</td>
+                        <td>@isset($state->state_timer_end) {{$state->state_timer_end}} @else n/a @endisset</td>
                       </tr>
                       <tr>
                         <td>System</td>
@@ -57,18 +64,45 @@
                         <td>{{$structure->fuel_expires}}</td>
                       </tr>
                       <tr>
-                        <td>Current State Starts</td>
-                        <td>{{$state[0]->state_timer_start}}</td>
-                      </tr>
-                      <tr>
-                        <td>Current State Ends</td>
-                        <td>{{$state[0]->state_timer_end}}</td>
+                        <td>Unanchors at</td>
+                        <td>{{$structure->unanchors_at}}</td>
                       </tr>
                     </table>
                   </div>
                 </div>
-              </div>
-            </div>
+                <div class="col-sm-4">
+                  <div class="panel panel-success">
+                    <table class="table table-condensed table-bordered">
+                      <tr>
+                        <th>Reinforce Schedule</th>
+                        <th></th>
+                      </tr>
+                      <tr>
+                        <td>Reinforce Day</td>
+                        <td>{{$vul->day}}</td>
+                      </tr>
+                      <tr>
+                        <td>Reinforce Hour</td>
+                        <td>{{$vul->hour}}:00</td>
+                      </tr>
+                      <tr>
+                        <td>Pending Reinforce Day</td>
+                        <td>{{$vul->next_day}}</td>
+                      </tr>
+                      <tr>
+                        <td>Pending Reinforce Hour</td>
+                        <td>@isset($vul->next_hour) {{$vul->next_hour}}:00 @else @endisset</td>
+                      </tr>
+                      <tr>
+                        <td>Pending Reinforce Applies</td>
+                        <td>{{$vul->next_reinforce_apply}}</td>
+                      </tr>
+
+                    </table>
+                  </div>
+                </div>
+              </div> <!-- end row -->
+            </div> <!-- end media-body-->
 
           </div> <!-- end media -->
       </div> <!-- end panel -->

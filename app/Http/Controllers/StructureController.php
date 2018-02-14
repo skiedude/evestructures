@@ -29,9 +29,10 @@ class StructureController extends Controller
       return redirect()->to('/home')->with('alert', [$alert]);
     }
     $services = StructureService::where('character_id', $structure->character_id)->where('structure_id', $structure_id)->get();
-    $state = StructureState::where('structure_id', $structure_id)->get();
+    $state = StructureState::where('character_id', $structure->character_id)->where('structure_id', $structure_id)->first();
+    $vul = StructureVul::where('character_id', $structure->character_id)->where('structure_id', $structure_id)->first();
 
-    return view('structure', compact(['structure', 'services', 'state']));
+    return view('structure', compact(['structure', 'services', 'state', 'vul']));
   }
 
   public function create($character_id) {
@@ -102,10 +103,9 @@ class StructureController extends Controller
     } 
 
     try {
-      $structure_url = "/v1/corporations/$character->corporation_id/structures/";
+      $structure_url = "/v2/corporations/$character->corporation_id/structures/";
       $resp = $client->get($structure_url, $auth_headers);
       $esi_structures = json_decode($resp->getBody());
-
     } catch (ServerException $e ) {
       $alert = "We received a 5xx error from ESI, this usually means an issue on CCP's end, please try again later.";
       //5xx error, usually and issue with ESI
@@ -180,7 +180,6 @@ class StructureController extends Controller
         $resp = $client->get($unv_url, $auth_headers);
         $unv = json_decode($resp->getBody());
 
-        
         if(isset($strct->fuel_expires)) {
           $fuel_expires_datetime = new \DateTime($strct->fuel_expires);
           $now = new \DateTime();
@@ -200,6 +199,8 @@ class StructureController extends Controller
           $unanchors_at = "n/a";
         }
 
+        $state = str_replace("_", " " , $strct->state);
+
         Structure::updateOrCreate(
           ['structure_id' => $strct->structure_id, 'character_id' => $character->character_id],
           ['structure_name' => $unv->name,
@@ -213,7 +214,8 @@ class StructureController extends Controller
            'fuel_expires' => $fuel_expires,
            'fuel_time_left' => $fuel_time_left,
            'fuel_days_left' => $fuel_days_left,
-           'unanchors_at' => $unanchors_at
+           'unanchors_at' => $unanchors_at,
+           'state' => $state
           ]
         );
 
@@ -255,21 +257,39 @@ class StructureController extends Controller
           }
         }
         
-        $state_timer_start = str_replace($tz, " ", $strct->state_timer_start);
-        $state_timer_end = str_replace($tz, " ", $strct->state_timer_end);
+        $state_timer_start = isset($strct->state_timer_start) ? str_replace($tz, " ", $strct->state_timer_start) : null;
+        $state_timer_end = isset($strct->state_timer_end) ? str_replace($tz, " ", $strct->state_timer_end) : null;
+
         StructureState::updateOrCreate(
           ['structure_id' => $strct->structure_id, 'character_id' => $character->character_id],
           ['state_timer_start' => $state_timer_start,
-           'state_timer_end' => $state_timer_end]
+           'state_timer_end' => $state_timer_end,
+           'state' => $state]
         );
 
+        $days = array('Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday');
+        $next_day = null;
+        $next_hour = null;
+        $next_apply = null;
+
+        if(isset($strct->next_reinforce_apply)) {
+          //Set if they exist
+          $next_day = $days[$strct->next_reinforce_weekday];
+          $next_hour = $strct->next_reinforce_hour;
+          $next_apply = str_replace($tz, " ", $strct->next_reinforce_apply); 
+        }
+
+        StructureVul::updateOrCreate(
+          ['structure_id' => $strct->structure_id, 'character_id' => $character->character_id],
+          ['day' => $days[$strct->reinforce_weekday], 'hour' => $strct->reinforce_hour,
+           'next_day' => $next_day, 'next_hour' => $next_hour, 'next_reinforce_apply' => $next_apply] 
+        );
       } catch (ServerException $e ) {
         $alert = "We received a 5xx error from ESI, this usually means an issue on CCP's end, please try again later.";
         //5xx error, usually and issue with ESI
         return redirect()->to('/home')->with('alert', [$alert]);
       } catch (\Exception $e) {
         //Everything else
-        dd($e);
         $alert = "We failed to pull the Structure name from ESI, Try again later.";
         return redirect()->to('/home')->with('alert', [$alert]);
       }

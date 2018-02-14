@@ -11,6 +11,7 @@ use App\Character;
 use App\Structure;
 use App\StructureService;
 use App\StructureState;
+use App\StructureVul;
 use App\FuelNotice;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ClientException;
@@ -93,7 +94,7 @@ class StructureUpdate implements ShouldQueue
       } 
 
       try {
-        $structure_url = "/v1/corporations/{$this->character->corporation_id}/structures/";
+        $structure_url = "/v2/corporations/{$this->character->corporation_id}/structures/";
         $resp = $client->get($structure_url, $auth_headers);
         $esi_structures = json_decode($resp->getBody());
 
@@ -190,6 +191,8 @@ class StructureUpdate implements ShouldQueue
             $unanchors_at = "n/a";
           }
 
+          $state = str_replace("_", " " , $strct->state);
+
           Structure::updateOrCreate(
             ['structure_id' => $strct->structure_id, 'character_id' => $this->character->character_id],
             ['structure_name' => $unv->name,
@@ -203,7 +206,8 @@ class StructureUpdate implements ShouldQueue
              'fuel_expires' => $fuel_expires,
              'fuel_time_left' => $fuel_time_left,
              'fuel_days_left' => $fuel_days_left,
-             'unanchors_at' => $unanchors_at
+             'unanchors_at' => $unanchors_at,
+             'state' => $state
             ]
           );
 
@@ -245,13 +249,34 @@ class StructureUpdate implements ShouldQueue
             }
           }
 
-          $state_timer_start = str_replace($tz, " ", $strct->state_timer_start);
-          $state_timer_end = str_replace($tz, " ", $strct->state_timer_end);
+          $state_timer_start = isset($strct->state_timer_start) ? str_replace($tz, " ", $strct->state_timer_start) : null;
+          $state_timer_end = isset($strct->state_timer_end) ? str_replace($tz, " ", $strct->state_timer_end) : null;
+
           StructureState::updateOrCreate(
             ['structure_id' => $strct->structure_id, 'character_id' => $this->character->character_id],
             ['state_timer_start' => $state_timer_start,
-             'state_timer_end' => $state_timer_end]
+             'state_timer_end' => $state_timer_end,
+             'state' => $state]
           );
+
+          $days = array('Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday');
+          $next_day = null;
+          $next_hour = null;
+          $next_apply = null;
+
+          if(isset($strct->next_reinforce_apply)) {
+            //Set if they exist
+            $next_day = $days[$strct->next_reinforce_weekday];
+            $next_hour = $strct->next_reinforce_hour;
+            $next_apply = str_replace($tz, " ", $strct->next_reinforce_apply);
+          }
+
+          StructureVul::updateOrCreate(
+            ['structure_id' => $strct->structure_id, 'character_id' => $this->character->character_id],
+            ['day' => $days[$strct->reinforce_weekday], 'hour' => $strct->reinforce_hour,
+             'next_day' => $next_day, 'next_hour' => $next_hour, 'next_reinforce_apply' => $next_apply]
+          );
+
 
         } catch (ServerException $e ) {
           //5xx error, usually and issue with ESI
