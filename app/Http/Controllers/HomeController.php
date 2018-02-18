@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use DB;
 use Illuminate\Http\Request;
 use App\User;
 use App\Character;
@@ -34,11 +35,15 @@ class HomeController extends Controller
       $success = $success[0];
       $warning = $warning[0];
 
-
       $characters = User::find(auth()->id())->characters; 
-      $structures = User::find(auth()->id())->structures; 
-
-
+      $structures = DB::table('users')
+                    ->join('characters', 'users.id', '=', 'characters.user_id')
+                    ->join('structures', 'structures.corporation_id', '=', 'characters.corporation_id')
+                    ->where('users.id',  auth()->id())
+                    ->where('characters.is_manager', TRUE)
+                    ->select('structures.*')
+                    ->distinct()
+                    ->get();
       return view('home', compact(['characters', 'structures', 'alert', 'success', 'warning']));
     }
 

@@ -120,7 +120,7 @@
             </thead>
 
             @foreach($structures as $str) <!-- Loop over structures -->
-            @if($str->character_id == $char->character_id)
+            @if($str->corporation_id == $char->corporation_id && $char->is_manager == TRUE)
             <tr>
               <td><img src="https://imageserver.eveonline.com/Type/{{$str->type_id}}_32.png"></td>
               <td><a href="{{ url('/home/structure') }}/{{$str->structure_id}}">{{$str->structure_name}}</a></td>

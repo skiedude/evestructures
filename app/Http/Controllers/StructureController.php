@@ -9,6 +9,7 @@ use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\ServerException;
 use App\Http\Controllers\CharacterController;
 use App\Character;
+use App\User;
 use App\Structure;
 use App\StructureService;
 use App\StructureState;
@@ -23,14 +24,23 @@ class StructureController extends Controller
   }
 
   public function show($structure_id) {
-    $structure = Structure::where('user_id', \Auth::id())->where('structure_id', $structure_id)->first();
+    $characters = User::find(auth()->id())->characters;
+    $corp_ids = array();
+    foreach ($characters as $char) {
+      if($char->is_manager == FALSE) {
+        continue;
+      }
+      array_push($corp_ids, $char->corporation_id);
+    }
+
+    $structure = Structure::whereIn('corporation_id', $corp_ids )->where('structure_id', $structure_id)->first();
     if(is_null($structure)) {
       $alert = "Structure not found on this account";
       return redirect()->to('/home')->with('alert', [$alert]);
     }
-    $services = StructureService::where('character_id', $structure->character_id)->where('structure_id', $structure_id)->get();
-    $state = StructureState::where('character_id', $structure->character_id)->where('structure_id', $structure_id)->first();
-    $vul = StructureVul::where('character_id', $structure->character_id)->where('structure_id', $structure_id)->first();
+    $services = StructureService::where('structure_id', $structure_id)->get();
+    $state = StructureState::where('structure_id', $structure_id)->first();
+    $vul = StructureVul::where('structure_id', $structure_id)->first();
 
     return view('structure', compact(['structure', 'services', 'state', 'vul']));
   }
@@ -99,8 +109,14 @@ class StructureController extends Controller
 
     if(!in_array("Station_Manager", $roles->roles)) {
       $alert = "Character $character->character_name doesn't have the Station Manager Role, this is required to pull Corporation Structures. Once added please wait at least 60 minutes before trying again.";
+      $character->is_manager = FALSE;
+      $character->save();
       return redirect()->to('/home')->with('alert', [$alert]);
-    } 
+    } else {
+      $character->is_manager = TRUE;
+      $character->save();
+
+    }
 
     try {
       $structure_url = "/v2/corporations/$character->corporation_id/structures/";
@@ -117,7 +133,7 @@ class StructureController extends Controller
     }
 
     $current_structures = Structure::select('structure_id')
-                          ->where('character_id', $character->character_id)
+                          ->where('corporation_id', $character->corporation_id)
                           ->get();  
 
     $api_structures = array();
@@ -128,10 +144,10 @@ class StructureController extends Controller
     //Delete Structures and relations that aren't returned in the API call
     foreach($current_structures as $cs) {
       if(!in_array($cs->structure_id, $api_structures)) {
-        Structure::where('structure_id', $cs->structure_id)->where('character_id', $character->character_id)->delete();
-        StructureService::where('structure_id', $cs->structure_id)->where('character_id', $character->character_id)->delete();
-        StructureState::where('structure_id', $cs->structure_id)->where('character_id', $character->character_id)->delete();
-        StructureVul::where('structure_id', $cs->structure_id)->where('character_id', $character->character_id)->delete();
+        Structure::where('structure_id', $cs->structure_id)->where('corporation_id', $cs->corporation_id)->delete();
+        StructureService::where('structure_id', $cs->structure_id)->where('corporation_id', $cs->corporation_id)->delete();
+        StructureState::where('structure_id', $cs->structure_id)->where('corporation_id', $cs->corporation_id)->delete();
+        StructureVul::where('structure_id', $cs->structure_id)->where('corporation_id', $cs->corporation_id)->delete();
       }
     }
 
@@ -202,9 +218,8 @@ class StructureController extends Controller
         $state = str_replace("_", " " , $strct->state);
 
         Structure::updateOrCreate(
-          ['structure_id' => $strct->structure_id, 'character_id' => $character->character_id],
+          ['structure_id' => $strct->structure_id],
           ['structure_name' => $unv->name,
-           'user_id' => \Auth::id(),
            'corporation_id' => $character->corporation_id,
            'type_id' => $strct->type_id,
            'type_name' => $type_name,
@@ -221,7 +236,6 @@ class StructureController extends Controller
 
         $current_services = StructureService::select('name')
                           ->where('structure_id', $strct->structure_id)
-                          ->where('character_id', $character->character_id)
                           ->get();  
 
         if(count($current_services) > 0 && isset($strct->services)) {
@@ -235,14 +249,12 @@ class StructureController extends Controller
             if(!in_array($cs->name, $api_services)) {
               StructureService::where('structure_id', $strct->structure_id)
                                 ->where('name', $cs->name)
-                                ->where('character_id', $character->character_id)
                                 ->delete();
             }
           }
         } elseif(count($current_services) > 0 && !isset($strct->services)) {
             //IF no services are returned, delete them all
             StructureService::where('structure_id', $strct->structure_id)
-                              ->where('character_id', $character->character_id)
                               ->delete();
 
         }
@@ -250,7 +262,7 @@ class StructureController extends Controller
         if(isset($strct->services)) {
           foreach($strct->services as $sr) {
             StructureService::updateOrCreate(
-              ['structure_id' => $strct->structure_id, 'character_id' => $character->character_id],
+              ['structure_id' => $strct->structure_id],
               ['state' => $sr->state,
                'name' => $sr->name]
             );
@@ -261,7 +273,7 @@ class StructureController extends Controller
         $state_timer_end = isset($strct->state_timer_end) ? str_replace($tz, " ", $strct->state_timer_end) : null;
 
         StructureState::updateOrCreate(
-          ['structure_id' => $strct->structure_id, 'character_id' => $character->character_id],
+          ['structure_id' => $strct->structure_id],
           ['state_timer_start' => $state_timer_start,
            'state_timer_end' => $state_timer_end,
            'state' => $state]
@@ -280,7 +292,7 @@ class StructureController extends Controller
         }
 
         StructureVul::updateOrCreate(
-          ['structure_id' => $strct->structure_id, 'character_id' => $character->character_id],
+          ['structure_id' => $strct->structure_id],
           ['day' => $days[$strct->reinforce_weekday], 'hour' => $strct->reinforce_hour,
            'next_day' => $next_day, 'next_hour' => $next_hour, 'next_reinforce_apply' => $next_apply] 
         );
@@ -290,6 +302,7 @@ class StructureController extends Controller
         return redirect()->to('/home')->with('alert', [$alert]);
       } catch (\Exception $e) {
         //Everything else
+        dd($e);
         $alert = "We failed to pull the Structure name from ESI, Try again later.";
         return redirect()->to('/home')->with('alert', [$alert]);
       }

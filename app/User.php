@@ -32,9 +32,4 @@ class User extends Authenticatable
       return $this->hasMany(Character::class);
     }
 
-    public function structures() {
-      return $this->hasMany(Structure::class);
-    }
-
-
 }
