@@ -115,7 +115,7 @@ class StructureUpdate implements ShouldQueue
       }
 
       $current_structures = Structure::select('structure_id')
-                            ->('corporation_id', $this->character->corporation_id)
+                            ->where('corporation_id', $this->character->corporation_id)
                             ->get();  
 
       $api_structures = array();
