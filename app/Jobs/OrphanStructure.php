@@ -9,9 +9,6 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Log;
 use App\Structure;
-use App\StructureService;
-use App\StructureState;
-use App\StructureVul;
 
 class OrphanStructure implements ShouldQueue
 {
@@ -39,12 +36,10 @@ class OrphanStructure implements ShouldQueue
         $characters = Structure::find($structure->structure_id)->characters;
         if(count($characters) < 1) {
           Log::debug("Deleting $structure->structure_name and attached services, states and vuls , no owners found");
+          Structure::find($structure->structure_id)->services()->delete();
+          Structure::find($structure->structure_id)->states()->delete();
+          Structure::find($structure->structure_id)->vuls()->delete();
           $structure->delete();
-
-          StructureService::where('structure_id', $structure->structure_id)->delete();
-          StructureState::where('structure_id', $structure->structure_id)->delete();
-          StructureVul::where('structure_id', $structure->structure_id)->delete();
-
         }
       }
     }

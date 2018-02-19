@@ -126,10 +126,10 @@ class StructureUpdate implements ShouldQueue
       //Delete Structures and relations that aren't returned in the API call
       foreach($current_structures as $cs) {
         if(!in_array($cs->structure_id, $api_structures)) {
-          Structure::where('structure_id', $cs->structure_id)->where('corporation_id', $cs->corporation_id)->delete();
-          StructureService::where('structure_id', $cs->structure_id)->where('corporation_id', $cs->corporation_id)->delete();
-          StructureState::where('structure_id', $cs->structure_id)->where('corporation_id', $cs->corporation_id)->delete();
-          StructureVul::where('structure_id', $cs->structure_id)->where('corporation_id', $cs->corporation_id)->delete();
+          Structure::find($cs->structure_id)->services()->delete();
+          Structure::find($cs->structure_id)->states()->delete();
+          Structure::find($cs->structure_id)->vuls()->delete();
+          Structure::where('structure_id', $cs->structure_id)->delete();
         }
       }
 
