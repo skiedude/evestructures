@@ -302,7 +302,6 @@ class StructureController extends Controller
         return redirect()->to('/home')->with('alert', [$alert]);
       } catch (\Exception $e) {
         //Everything else
-        dd($e);
         $alert = "We failed to pull the Structure name from ESI, Try again later.";
         return redirect()->to('/home')->with('alert', [$alert]);
       }
