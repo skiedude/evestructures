@@ -28,11 +28,7 @@ class CharacterController extends Controller
     }
     try {
       Character::where('character_id', $character->character_id)->delete();
-      Structure::where('character_id', $character->character_id)->delete();
-      StructureService::where('character_id', $character->character_id)->delete();
-      StructureState::where('character_id', $character->character_id)->delete();
-      StructureVul::where('character_id', $character->character_id)->delete();
-
+  
       $client = new Client();
       $authsite = 'https://login.eveonline.com/oauth/revoke';
       $tokens = array($character->refresh_token, $character->access_token);

@@ -113,24 +113,24 @@
             <tr>
               <th></th>
               <th>Station Name</th>
-              <th>System</th>
               <th>State</th>
               <th>Fuel</th>
+              <th>Updated</th>
             </tr>
             </thead>
 
             @foreach($structures as $str) <!-- Loop over structures -->
-            @if($str->character_id == $char->character_id)
+            @if($str->corporation_id == $char->corporation_id && $char->is_manager == TRUE)
             <tr>
               <td><img src="https://imageserver.eveonline.com/Type/{{$str->type_id}}_32.png"></td>
               <td><a href="{{ url('/home/structure') }}/{{$str->structure_id}}">{{$str->structure_name}}</a></td>
-              <td>{{$str->system_name}}</td>
               <td>{{ucwords($str->state)}}</td>
               @if(is_null($str->fuel_days_left))
               <td>{{$str->fuel_expires}}</td>
               @else
               <td class="@if($str->fuel_days_left <= 1)one_day @elseif($str->fuel_days_left < 30)thirty_less @elseif($str->fuel_days_left >= 30)thirty_plus @else @endif">{{$str->fuel_time_left}}</td>
               @endif
+              <td>{{$str->updated_at}}</td>
             </tr>
             @endif
             @endforeach

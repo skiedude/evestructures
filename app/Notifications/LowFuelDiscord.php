@@ -45,7 +45,7 @@ class LowFuelDiscord extends Notification
         $embed->description(':warning: **Fuel Alert** :warning:');
         $embed->color( 15105570 );
         $embed->thumbnail("https://imageserver.eveonline.com/Type/{$this->structure->type_id}_64.png");
-        $embed->author(env('APP_NAME'). 'Bot', null, "https://imageserver.eveonline.com/Character/{$this->structure->character_id}_64.jpg");
+        $embed->author(env('APP_NAME'). 'Bot', null, "https://imageserver.eveonline.com/Character/{$notifiable->character_id}_64.jpg");
         $embed->field('Fuel Remaining', $this->structure->fuel_time_left, TRUE);
         $embed->field('Fuel Expiration', $this->structure->fuel_expires, TRUE);
         $embed->field('System', $this->structure->system_name, TRUE);

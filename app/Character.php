@@ -10,9 +10,18 @@ class Character extends Model
   use Notifiable;
 
   protected $guarded = [];
-    //
+  public $incrementing = false;
+  protected $primaryKey = 'character_id';
+
   public function routeNotificationForDiscord() {
     $this->discord_webhook;
   }
-    
+
+  public function corporation_id() {
+    return $this->corporation_id;
+  }
+   
+  public function structures() {
+    return $this->hasMany('App\Structure', 'corporation_id', 'corporation_id');
+  }
 }

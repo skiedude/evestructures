@@ -89,9 +89,15 @@ class StructureUpdate implements ShouldQueue
 
       if(!in_array("Station_Manager", $roles->roles)) {
         $alert = "Character {$this->character->character_name} doesn't have the Station Manager Role, this is required to pull Corporation Structures. Once added please wait at least 60 minutes before trying again.";
+        $this->character->is_manager = FALSE;
+        $this->character->save;
         Log::error("{$this->character->character_name} does not have the Station Manager role");
         return;
-      } 
+      } else {
+        $this->character->is_manager = TRUE;
+        $this->character->save;
+
+      }
 
       try {
         $structure_url = "/v2/corporations/{$this->character->corporation_id}/structures/";
@@ -109,7 +115,7 @@ class StructureUpdate implements ShouldQueue
       }
 
       $current_structures = Structure::select('structure_id')
-                            ->where('character_id', $this->character->character_id)
+                            ->where('corporation_id', $this->character->corporation_id)
                             ->get();  
 
       $api_structures = array();
@@ -120,10 +126,10 @@ class StructureUpdate implements ShouldQueue
       //Delete Structures and relations that aren't returned in the API call
       foreach($current_structures as $cs) {
         if(!in_array($cs->structure_id, $api_structures)) {
-          Structure::where('structure_id', $cs->structure_id)->where('character_id', $this->character->character_id)->delete();
-          StructureService::where('structure_id', $cs->structure_id)->where('character_id', $this->character->character_id)->delete();
-          StructureState::where('structure_id', $cs->structure_id)->where('character_id', $this->character->character_id)->delete();
-          StructureVul::where('structure_id', $cs->structure_id)->where('character_id', $this->character->character_id)->delete();
+          Structure::find($cs->structure_id)->services()->delete();
+          Structure::find($cs->structure_id)->states()->delete();
+          Structure::find($cs->structure_id)->vuls()->delete();
+          Structure::where('structure_id', $cs->structure_id)->delete();
         }
       }
 
@@ -194,9 +200,8 @@ class StructureUpdate implements ShouldQueue
           $state = str_replace("_", " " , $strct->state);
 
           Structure::updateOrCreate(
-            ['structure_id' => $strct->structure_id, 'character_id' => $this->character->character_id],
+            ['structure_id' => $strct->structure_id],
             ['structure_name' => $unv->name,
-             'user_id' => $this->character->user_id,
              'corporation_id' => $this->character->corporation_id,
              'type_id' => $strct->type_id,
              'type_name' => $type_name,
@@ -209,11 +214,10 @@ class StructureUpdate implements ShouldQueue
              'unanchors_at' => $unanchors_at,
              'state' => $state
             ]
-          );
+          )->touch();
 
           $current_services = StructureService::select('name')
                             ->where('structure_id', $strct->structure_id)
-                            ->where('character_id', $this->character->character_id)
                             ->get();  
 
           if(count($current_services) > 0 && isset($strct->services)) {
@@ -227,14 +231,12 @@ class StructureUpdate implements ShouldQueue
               if(!in_array($cs->name, $api_services)) {
                 StructureService::where('structure_id', $strct->structure_id)
                                   ->where('name', $cs->name)
-                                  ->where('character_id', $this->character->character_id)
                                   ->delete();
               }
             }
           } elseif(count($current_services) > 0 && !isset($strct->services)) {
               //IF no services are returned, delete them all
               StructureService::where('structure_id', $strct->structure_id)
-                                ->where('character_id', $this->character->character_id)
                                 ->delete();
 
           }
@@ -242,7 +244,7 @@ class StructureUpdate implements ShouldQueue
           if(isset($strct->services)) {
             foreach($strct->services as $sr) {
               StructureService::updateOrCreate(
-                ['structure_id' => $strct->structure_id, 'character_id' => $this->character->character_id],
+                ['structure_id' => $strct->structure_id],
                 ['state' => $sr->state,
                  'name' => $sr->name]
               );
@@ -253,7 +255,7 @@ class StructureUpdate implements ShouldQueue
           $state_timer_end = isset($strct->state_timer_end) ? str_replace($tz, " ", $strct->state_timer_end) : null;
 
           StructureState::updateOrCreate(
-            ['structure_id' => $strct->structure_id, 'character_id' => $this->character->character_id],
+            ['structure_id' => $strct->structure_id],
             ['state_timer_start' => $state_timer_start,
              'state_timer_end' => $state_timer_end,
              'state' => $state]
@@ -272,7 +274,7 @@ class StructureUpdate implements ShouldQueue
           }
 
           StructureVul::updateOrCreate(
-            ['structure_id' => $strct->structure_id, 'character_id' => $this->character->character_id],
+            ['structure_id' => $strct->structure_id],
             ['day' => $days[$strct->reinforce_weekday], 'hour' => $strct->reinforce_hour,
              'next_day' => $next_day, 'next_hour' => $next_hour, 'next_reinforce_apply' => $next_apply]
           );
