@@ -214,7 +214,7 @@ class StructureUpdate implements ShouldQueue
              'unanchors_at' => $unanchors_at,
              'state' => $state
             ]
-          );
+          )->touch();
 
           $current_services = StructureService::select('name')
                             ->where('structure_id', $strct->structure_id)
