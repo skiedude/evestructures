@@ -1,6 +1,8 @@
 # EveStructures
 This provides a consolidated view of all your structures across multiple Eve Online Corporations. Gathers and displays important data like fuel, services, locations, states and much more.
 
+Join Our [Discord!](https://discord.gg/5vUQxMP)  
+
 EveStrucutures is built with the Laravel PHP Framework. For more info on [Laravel](https://laravel.com/docs/5.5)
 
 ## Donate
