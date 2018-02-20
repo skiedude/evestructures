@@ -89,14 +89,11 @@ class StructureUpdate implements ShouldQueue
 
       if(!in_array("Station_Manager", $roles->roles)) {
         $alert = "Character {$this->character->character_name} doesn't have the Station Manager Role, this is required to pull Corporation Structures. Once added please wait at least 60 minutes before trying again.";
-        $this->character->is_manager = FALSE;
-        $this->character->save;
+        Character::where('character_id', $this->character->character_id)->update(['is_manager' => FALSE]);
         Log::error("{$this->character->character_name} does not have the Station Manager role");
         return;
       } else {
-        $this->character->is_manager = TRUE;
-        $this->character->save;
-
+        Character::where('character_id', $this->character->character_id)->update(['is_manager' => TRUE]);
       }
 
       try {
