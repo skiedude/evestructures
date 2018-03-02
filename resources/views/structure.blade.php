@@ -16,32 +16,12 @@
             <div class="media-body">
               <h3 class="media-heading">{{$structure->structure_name}}</h3>
               <div class="row">
+                
                 <div class="col-sm-4">
                   <div class="panel panel-success">
                     <table class="table table-condensed table-bordered">
                       <tr>
-                        <th>Service Name</th>
-                        <th>Status</th>
-                      </tr>
-                      @if(count($services))
-                      @foreach($services as $svc)
-                      <tr>
-                        <td>{{$svc->name}}</td>
-                        <td @if($svc->state == "online") style="color:green;" @else style="color:red" @endif>
-                          <strong>{{$svc->state}}</strong>
-                        </td>
-                      </tr>
-                      @endforeach
-                      @endif
-                    </table>
-                  </div>
-                </div>
-                <div class="col-sm-4">
-                  <div class="panel panel-success">
-                    <table class="table table-condensed table-bordered">
-                      <tr>
-                        <th>Info</th>
-                        <th></th>
+                        <th colspan="2">Info</th>
                       </tr>
                       <tr>
                         <td>Current State</td>
@@ -74,8 +54,7 @@
                   <div class="panel panel-success">
                     <table class="table table-condensed table-bordered">
                       <tr>
-                        <th>Reinforce Schedule</th>
-                        <th></th>
+                        <th colspan="2">Reinforce Schedule</th>
                       </tr>
                       <tr>
                         <td>Reinforce Day</td>
@@ -101,7 +80,59 @@
                     </table>
                   </div>
                 </div>
+                <div class="col-sm-4">
+                  <div class="panel panel-success">
+                    <table class="table table-condensed table-bordered">
+                      <tr>
+                        <th>Service Name</th>
+                        <th>Status</th>
+                      </tr>
+                      @if(count($services))
+                      @foreach($services as $svc)
+                      <tr>
+                        <td>{{$svc->name}}</td>
+                        <td @if($svc->state == "online") style="color:green;" @else style="color:red" @endif>
+                          <strong>{{$svc->state}}</strong>
+                        </td>
+                      </tr>
+                      @endforeach
+                      @endif
+                    </table>
+                  </div>
+                </div>
               </div> <!-- end row -->
+              @if(!is_null($extraction))
+              <div class="row">
+                <div class="col-sm-4">
+                  <div class="panel panel-success">
+                    <table class="table table-condensed table-bordered">
+                      <tr>
+                        <th colspan="3">Extraction</th>
+                      </tr>
+                      <tr>
+                        <td>Location</td>
+                        <td colspan="2">{{$extraction->moon_name}}</td>
+                      </tr>
+                      <tr>
+                        <td>Extraction Start</td>
+                        <td>{{$extraction->extraction_start_time}}</td>
+                        <td>{{$extraction->extraction_start_time->diffForHumans()}}</td>
+                      </tr>
+                      <tr>
+                        <td>Chunk Arrival</td>
+                        <td>{{$extraction->chunk_arrival_time}}</td>
+                        <td>{{$extraction->chunk_arrival_time->diffForHumans()}}</td>
+                      </tr>
+                      <tr>
+                        <td>Auto Fracture</td>
+                        <td>{{$extraction->natural_decay_time}}</td>
+                        <td>{{$extraction->natural_decay_time->diffForHumans()}}</td>
+                      </tr>
+                    </table>
+                  </div>
+                </div>
+              </div> <!-- end row -->
+              @endif
             </div> <!-- end media-body-->
 
           </div> <!-- end media -->

@@ -20,6 +20,7 @@ If you liked EveStructures, please consider donating ISK in game to [Brock Khans
 * esi-universe.read_structures.v1 
 * esi-corporations.read_structures.v1 
 * esi-characters.read_corporation_roles.v1  
+* esi-industry.read_corporation_mining.v1  
 Set the callback url to 
 ```
 http(s)://your_domain.com/sso/callback

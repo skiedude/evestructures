@@ -21,7 +21,7 @@ Route::get('/sso/login', function() {
     $authsite = 'https://login.eveonline.com/oauth/authorize';
     $client_id = env('CLIENT_ID');
     $redirect_uri = env('CALLBACK_URL');
-    $scopes = "esi-corporations.read_structures.v1 esi-characters.read_corporation_roles.v1 esi-universe.read_structures.v1";
+    $scopes = "esi-corporations.read_structures.v1 esi-characters.read_corporation_roles.v1 esi-universe.read_structures.v1 esi-industry.read_corporation_mining.v1";
     $state = uniqid();
     session(['auth_state' => $state]);
 
