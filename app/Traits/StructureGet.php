@@ -97,6 +97,7 @@ trait StructureGet {
         Structure::find($cs->structure_id)->services()->delete();
         Structure::find($cs->structure_id)->states()->delete();
         Structure::find($cs->structure_id)->vuls()->delete();
+        Structure::find($cs->structure_id)->extractions()->delete();
         Structure::where('structure_id', $cs->structure_id)->delete();
       }
     }
