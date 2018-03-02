@@ -26,5 +26,9 @@ class Structure extends Model
       return $this->hasMany('App\StructureVul', 'structure_id', 'structure_id');
     }
 
+    public function extractions() {
+      return $this->hasOne('App\Extractions', 'structure_id', 'structure_id');
+    }
+
 }
 
