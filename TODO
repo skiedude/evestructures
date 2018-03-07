@@ -1,24 +1,19 @@
-<DONE>github repo
-<DONE>Email setup
-<DONE>Deletes character
-<DONE>Deletes Account/char/structures/token revoke
-<DONE>Revoke Tokens on delete character
-<DONE>Home page with FAQ
-<DONE>Demo Account? (static data)
-<DONE>create prod site, populate env file and database creation
-<DONE>Google analytics
-<DONE>ads
-<DONE>limit refreshes based off cache timer of 1hr? every 3 hours? once a day?
-<DONE>footer with disclaimer
-<DONE>Scroll to top page on /home
-<DONE>Show days left rather then a time stamp, make the timestamp a hover over value
-
-Email notifications when fuel is low? Let the user define when? or just do a 30d,7d,1d ?
-Discord notifications instead of Email?
-Update demo page fuel time
-
-
-<LATER>Filter by type_id on /home
-<LATER>Filter by fueled/not fueled
-<LATER>Job queueing? Automatic updates every night?
-
+Notification Manager:
+ - new way to handle notifications to be more dynamic?
+    * Maybe a switch case and pass in the notification type
+    * maybe we just make a notification for each type
+ - Test webhook button
+ - Check boxes to enable/disable types of notifications Per character
+   -- Requires webhook to be there to see these options
+   -- just under the webhook box, one update to rule them all?
+    * Low fuel
+    * unacnhoring almost started/ending
+    * shield state change
+      -- table to track this?
+    * extraction started
+    * extraction ready
+    * extraction auto fractured
+  - Notification history view?
+    * tracked in a table, user_id/character_id keys
+  - One job to check all of these? Or seperate jobs
+  - move webhook from characters table to notification_managers table
