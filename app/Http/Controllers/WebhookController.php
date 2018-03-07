@@ -27,21 +27,21 @@ class WebhookController extends Controller
     $character->save();
 
     $success = "Successfully added/updated your Discord Webhook for $character->character_name";
-    return redirect()->to('/home')->with('success', [$success]);
+    return redirect()->to('/home/notifications')->with('success', [$success]);
   }
 
   public function destroy($character_id, Request $request) {
     $character = Character::where('user_id', \Auth::id())->where('character_id', $character_id)->first();
       if(is_null($character)) {
         $alert = "Character not found on this account";
-        return redirect()->to('/home')->with('alert', [$alert]);
+        return redirect()->to('/home/notifications')->with('alert', [$alert]);
       }
       
     $character->discord_webhook = null;
     $character->save();
 
     $success = "Successfully deleted your Discord Webhook for $character->character_name";
-    return redirect()->to('/home')->with('success', [$success]);
+    return redirect()->to('/home/notifications')->with('success', [$success]);
   }
 
 }
