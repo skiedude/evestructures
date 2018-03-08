@@ -32,4 +32,7 @@ class User extends Authenticatable
       return $this->hasMany(Character::class);
     }
 
+    public function notifications() {
+      return $this->hasMany(NotificationManager::class);
+    }
 }
