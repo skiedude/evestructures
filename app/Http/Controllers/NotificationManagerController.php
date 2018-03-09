@@ -13,7 +13,13 @@ class NotificationManagerController extends Controller
   }
 
   public function index() {
-    
+    $alert = session()->pull('alert');
+    $success = session()->pull('success');
+    $warning = session()->pull('warning');
+    $alert = $alert[0];
+    $success = $success[0];
+    $warning = $warning[0];
+
     $notifications = DB::table('users')
               ->join('characters', 'users.id', '=', 'characters.user_id')
               ->leftJoin('notification_managers', 'characters.character_id', '=', 'notification_managers.character_id')
@@ -22,6 +28,6 @@ class NotificationManagerController extends Controller
               ->select('characters.character_name', 'characters.character_id as char_id', 'notification_managers.*')
               ->get();
 
-    return view('notification_manager', compact(['notifications']));
+    return view('notification_manager', compact(['notifications','alert','warning','success']));
   }
 }

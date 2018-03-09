@@ -19,9 +19,10 @@ class LowFuelDiscord extends Notification
      *
      * @return void
      */
-    public function __construct(\App\Structure $structure)
+    public function __construct(\App\Structure $structure, \App\Character $character)
     {
       $this->structure = $structure;
+      $this->character = $character;
     }
 
     /**
@@ -56,7 +57,7 @@ class LowFuelDiscord extends Notification
 
         return $client->send();
       } catch (\Exception $e) {
-        Log::error("Failed to send discord notification for $notifiable->character_name on account $notificable->user_id , $e->getMessage()");
+        Log::error("Failed to send discord notification for {$this->character->character_name} on account $notificable->user_id , $e->getMessage()");
       }
     }
 }

@@ -1,9 +1,9 @@
 @extends('layouts.app')
 
 @section('content')
-@include ('layouts.errors')
 
 <div class="container">
+@include ('layouts.errors')
   <div class="panel panel-primary">
     <div class="panel-heading">
       <h3 class="panel-title"><strong>Notifications</strong></h3>
@@ -15,7 +15,7 @@
         <form method="POST" action="{{ url('/webhook') }}/{{$notify->char_id}}">
           {{ csrf_field() }}
           <div class="form-group">
-            <input type="text" class="form-control" name="discord_webhook" id="discord_webhook" width="10" value="{{$notify->discord_webhook ?? 'Insert Webhook'}}" required>
+            <input type="text" class="form-control" name="discord_webhook" id="discord_webhook" width="10" value="{{$notify->discord_webhook ?? ''}}" required>
             <div class="checkbox">
               <label>
                 <input type="checkbox" name="low_fuel" value="enable" @if(isset($notify->low_fuel) && $notify->low_fuel == TRUE) checked @endif>
@@ -43,6 +43,14 @@
             <button type="submit" class="btn btn-success btn-xs">@isset($notify->discord_webhook) Update @else Add @endisset</button>
           </div>
         </form>
+        @isset($notify->discord_webhook)
+        <form method="GET" action="{{ url('/webhook/test') }}/{{$notify->char_id}}" style="float:left;padding-right:3px;">
+        <div class="form-group">
+          {{ csrf_field() }}
+          <button type="submit" class="btn btn-primary btn-xs">Test</button>
+        </div>
+        </form>
+        @endisset
         <form method="POST" action="{{ url('/webhook/delete') }}/{{$notify->char_id}}">
         <div class="form-group">
           {{ csrf_field() }}
@@ -50,6 +58,7 @@
           <button type="submit" class="btn btn-danger btn-xs">Delete</button>
         </div>
         </form>
+        <br />
       <hr>
       @endforeach
     @endif

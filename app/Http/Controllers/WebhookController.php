@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Character;
 use App\NotificationManager;
+use App\Notifications\testDiscord;
 
 class WebhookController extends Controller
 {
@@ -55,4 +56,24 @@ class WebhookController extends Controller
     return redirect()->to('/home/notifications')->with('success', [$success]);
   }
 
+  public function testDiscord($character_id) {
+
+    $notification = NotificationManager::where('user_id', \Auth::id())->where('character_id', $character_id)->first();
+    if (!isset($notification->discord_webhook)) {
+      $alert = "No discord_webhook found";
+      return redirect()->to('/home/notifications')->with('alert', [$alert]);
+    }
+
+    $character = Character::where('user_id', \Auth::id())->where('character_id', $character_id)->first();
+      if(is_null($character)) {
+        $alert = "Character not found on this account";
+        return redirect()->to('/home/notifications')->with('alert', [$alert]);
+      }
+
+    $notification->notify(new testDiscord($character));
+
+    $success = "Test Successfully Sent";
+    return redirect()->to('/home/notifications')->with('success', [$success]);
+
+  }
 }

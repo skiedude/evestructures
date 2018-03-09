@@ -1,19 +1,15 @@
 Notification Manager:
- - new way to handle notifications to be more dynamic?
-    * Maybe a switch case and pass in the notification type
-    * maybe we just make a notification for each type
- - Test webhook button
- - Check boxes to enable/disable types of notifications Per character
-   -- Requires webhook to be there to see these options
-   -- just under the webhook box, one update to rule them all?
+    * just make a notification for each type
+DONE - Test webhook button
+DONE - Check boxes to enable/disable types of notifications Per character
+DONE   -- Requires webhook to be there to see these options
+DONE   -- just under the webhook box, one update to rule them all?
     * Low fuel
     * unacnhoring almost started/ending
     * shield state change
-      -- table to track this?
+      -- compare to current state if exists
     * extraction started
     * extraction ready
     * extraction auto fractured
-  - Notification history view?
-    * tracked in a table, user_id/character_id keys
-  - One job to check all of these? Or seperate jobs
-  - move webhook from characters table to notification_managers table
+DONE  - move webhook from characters table to notification_managers table
+DONE - update fuelcheck job to not check character for webhook
