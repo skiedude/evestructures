@@ -22,10 +22,10 @@ class NotificationManagerController extends Controller
 
     $notifications = DB::table('users')
               ->join('characters', 'users.id', '=', 'characters.user_id')
-              ->leftJoin('notification_managers', 'characters.character_id', '=', 'notification_managers.character_id')
+              ->leftJoin('notification_info', 'characters.character_id', '=', 'notification_info.character_id')
               ->where('users.id',  auth()->id())
               ->where('characters.is_manager', TRUE)
-              ->select('characters.character_name', 'characters.character_id as char_id', 'notification_managers.*')
+              ->select('characters.character_name', 'characters.character_id as char_id', 'notification_info.*')
               ->get();
 
     return view('notification_manager', compact(['notifications','alert','warning','success']));

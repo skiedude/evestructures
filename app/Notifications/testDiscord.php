@@ -19,9 +19,10 @@ class testDiscord extends Notification
      *
      * @return void
      */
-    public function __construct(\App\Character $character)
+    public function __construct(\App\Character $character, $webhook)
     {
       $this->character = $character;
+      $this->webhook = $webhook;
     }
 
     /**
@@ -38,7 +39,7 @@ class testDiscord extends Notification
 
     public function toDiscord($notifiable) {
       try {
-        $client = new Client($notifiable->discord_webhook);
+        $client = new Client($notifiable->{$this->webhook});
 
         $embed = new Embed();
         $embed->description(':white_check_mark: **Webhook Test** :white_check_mark:');
@@ -46,14 +47,15 @@ class testDiscord extends Notification
         $embed->color( 0x0000a0 );
         $embed->author(env('APP_NAME'). 'Bot', null, "https://imageserver.eveonline.com/Character/{$notifiable->character_id}_64.jpg");
         $embed->field('Test Message', 'Ahoy Champion', TRUE);
+        $embed->field('Webhook', "$this->webhook", TRUE);
 
         $client->username(env('APP_NAME'))
                 ->avatar(env('APP_URL') . "/images/avatar.png")
                 ->embed($embed);
-        Log::debug("Sent Test Discord notification for {$this->character->character_name}");
+        Log::debug("Sent Test Discord notification for {$this->character->character_name} for webhook $this->webhook");
         return $client->send();
       } catch (\Exception $e) {
-        Log::error("Failed to send <TEST> discord notification for {$this->character->character_name} on account $notificable->user_id , $e->getMessage()");
+        Log::error("Failed to send <TEST> discord notification for {$this->character->character_name} on account $notifiable->user_id , $e");
       }
     }
 }

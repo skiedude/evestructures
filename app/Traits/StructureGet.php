@@ -143,6 +143,16 @@ trait StructureGet {
       }
 
       try {
+
+        $current_state = Structure::find($strct->structure_id);
+        $current_state = isset($current_state->state) ? $current_state->state : null;
+
+        if(!is_null($current_state)) {
+          $current_state = str_replace(' ', '_', $current_state);
+          if($current_state != $strct->state) {
+            \Artisan::call('strct:state', ['structure_id' => $strct->structure_id, 'old_state' => $current_state, 'new_state' => $strct->state]);
+          }
+        }
         $unv_url = "/v1/universe/structures/$strct->structure_id/";
         $resp = $client->get($unv_url, $auth_headers);
         $unv = json_decode($resp->getBody());

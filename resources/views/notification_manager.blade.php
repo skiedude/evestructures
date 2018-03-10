@@ -9,60 +9,95 @@
       <h3 class="panel-title"><strong>Notifications</strong></h3>
     </div>
     <div class="panel-body">
-    @if(isset($notifications) && count($notifications))
-      @foreach($notifications as $notify)
-        <p><strong>{{str_replace('_', ' ', $notify->character_name)}}</strong></p>
-        <form method="POST" action="{{ url('/webhook') }}/{{$notify->char_id}}">
-          {{ csrf_field() }}
+      @if(isset($notifications) && count($notifications))
+        @foreach($notifications as $notify)
+
+      <div class="row">
+      <div class="col-sm-8">
+          <h3>{{str_replace('_', ' ', $notify->character_name)}}</h3>
+          <form method="POST" action="{{ url('/webhook/delete') }}/{{$notify->char_id}}">
           <div class="form-group">
-            <input type="text" class="form-control" name="discord_webhook" id="discord_webhook" width="10" value="{{$notify->discord_webhook ?? ''}}" required>
-            <div class="checkbox">
-              <label>
-                <input type="checkbox" name="low_fuel" value="enable" @if(isset($notify->low_fuel) && $notify->low_fuel == TRUE) checked @endif>
-                Low Fuel
-              </label>
-            </div>
-            <div class="checkbox">
-              <label>
-                <input type="checkbox" name="strct_state" value="enable" @if(isset($notify->strct_state) && $notify->strct_state == TRUE) checked @endif>
-               Structure States 
-              </label>
-            </div>
-            <div class="checkbox">
-              <label>
-                <input type="checkbox" name="extractions" value="enable" @if(isset($notify->extractions) && $notify->extractions == TRUE) checked @endif>
-                Extractions
-              </label>
-            </div>
-            <div class="checkbox">
-              <label>
-                <input type="checkbox" name="unanchor" value="enable" @if(isset($notify->unanchor) && $notify->unanchor == TRUE) checked @endif>
-                Unanchor
-              </label>
-            </div>
-            <button type="submit" class="btn btn-success btn-xs">@isset($notify->discord_webhook) Update @else Add @endisset</button>
+            {{ csrf_field() }}
+            {{ method_field('DELETE') }}
+            <button type="submit" class="btn btn-danger btn-xs">Delete All</button>
           </div>
-        </form>
-        @isset($notify->discord_webhook)
-        <form method="GET" action="{{ url('/webhook/test') }}/{{$notify->char_id}}" style="float:left;padding-right:3px;">
+          </form>
+
+          <form method="POST" action="{{ url('/webhook') }}/{{$notify->char_id}}">
+            {{ csrf_field() }}
+            <div class="form-group">
+              <label for="fuel_webhook">Low Fuel Webhook</label>
+              <input type="text" class="form-control" name="fuel_webhook" id="fuel_webhook" value="{{$notify->fuel_webhook ?? ''}}">
+            </div>
+            <div class="form-group">
+              <button type="submit" class="btn btn-success btn-xs">Update</button>
+            </div>
+          </form>
+
+          <form method="POST" action="{{ url('/webhook') }}/{{$notify->char_id}}">
+            {{ csrf_field() }}
+            <div class="form-group">
+              <label for="state_webhook">Structure State Webhook</label>
+              <input type="text" class="form-control" name="state_webhook" id="state_webhook" width="10" value="{{$notify->state_webhook ?? ''}}">
+            </div>
+            <div class="form-group">
+              <button type="submit" class="btn btn-success btn-xs">Update</button>
+            </div>
+          </form>
+
+          <form method="POST" action="{{ url('/webhook') }}/{{$notify->char_id}}">
+            {{ csrf_field() }}
+            <div class="form-group">
+              <label for="unanchor_webhook">Unanchor Webhook</label>
+              <input type="text" class="form-control" name="unanchor_webhook" id="unanchor_webhook" width="10" value="{{$notify->unanchor_webhook ?? ''}}" >
+            </div>
+            <div class="form-group">
+              <button type="submit" class="btn btn-success btn-xs">Update</button>
+            </div>
+          </form>
+
+          <form method="POST" action="{{ url('/webhook') }}/{{$notify->char_id}}">
+            {{ csrf_field() }}
+            <div class="form-group">
+              <label for="extraction_webhook">Extractions Webhook</label>
+              <input type="text" class="form-control" name="extraction_webhook" id="extraction_webhook" width="10" value="{{$notify->extraction_webhook ?? ''}}" >
+            </div>
+            <div class="form-group">
+              <button type="submit" class="btn btn-success btn-xs">Update</button>
+            </div>
+          </form>
+
+      </div> <!-- close col-sm-8 -->
+      <div class="col-sm-4">
+        <form method="POST" action="{{ url('/webhook/test') }}/{{$notify->char_id}}">
         <div class="form-group">
           {{ csrf_field() }}
+          <select class="form-control" name="webhook_test">
+            @isset($notify->fuel_webhook)
+              <option value="fuel_webhook">Low Fuel</option>
+            @endisset
+            @isset($notify->state_webhook)
+              <option value="state_webhook">Structure State</option>
+            @endisset
+            @isset($notify->unanchor_webhook)
+              <option value="unanchor_webhook">Unanchor</option>
+            @endisset
+            @isset($notify->extraction_webhook)
+              <option value="extraction_webhook">Extraction</option>
+            @endisset
+          </select>
+          </div>
+          <div class="form-group">
           <button type="submit" class="btn btn-primary btn-xs">Test</button>
         </div>
         </form>
-        @endisset
-        <form method="POST" action="{{ url('/webhook/delete') }}/{{$notify->char_id}}">
-        <div class="form-group">
-          {{ csrf_field() }}
-          {{ method_field('DELETE') }}
-          <button type="submit" class="btn btn-danger btn-xs">Delete</button>
-        </div>
-        </form>
-        <br />
+      </div><!-- end col-sm-4 -->
+      </div><!-- close row -->
       <hr>
-      @endforeach
-    @endif
-  </div>
+        @endforeach
+      @endif
+
+  </div> <!-- close panelbody -->
   </div> <!-- close discord_webhook panel -->
 </div> <!-- close container -->
 @endsection

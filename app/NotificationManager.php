@@ -10,7 +10,7 @@ class NotificationManager extends Model
   use Notifiable;
 
   protected $guarded = [];
-
+  protected $table = 'notification_info';
   public function routeNotificationForDiscord() {
     $this->discord_webhook;
   }
