@@ -45,6 +45,24 @@ trait MoonExtractions {
       $ext_start_time = new \DateTime($ext->extraction_start_time);
       $chunk_arr_time = new \DateTime($ext->chunk_arrival_time);
       $nat_decay_time = new \DateTime($ext->natural_decay_time);
+// We will use this code once we get the public slugs setup, and we allow the owner
+// to specify when they plan on fracturing (manual vs auto)
+
+//      $now = new \DateTime();
+//
+//      $diff = date_diff($now, $chunk_arr_time);
+//      $diffe = date_diff($chunk_arr_time, $now);
+//
+//      Log::error("days $diffe->days");
+//      Log::error("h $diffe->h");
+//
+//      if($diff->days == 0 && $diff->h <= 2 && $diff->invert == 0) {
+//        //Manual Fracture Ready Soon
+//      }
+//
+//      if($diff->days == 0 && $diff->h <= 2 && $diff->invert == 1) {
+//        //Time is in the past, could be fractured 
+//      }
 
       Extractions::updateOrCreate(
         ['structure_id' => $ext->structure_id, 'moon_id' => $ext->moon_id],

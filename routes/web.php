@@ -36,6 +36,7 @@ Route::get('/fetch/{character_id}', 'StructureController@create');
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/home/notifications', 'NotificationManagerController@index')->name('notifications');
 Route::get('/home/structure/{structure_id}', 'StructureController@show');
 
 Route::get('/delete/{character_id}', 'CharacterController@destroy');
@@ -43,3 +44,4 @@ Route::get('/account/delete', 'HomeController@deleteAccount');
 
 Route::post('/webhook/{character_id}', 'WebhookController@store');
 Route::delete('/webhook/delete/{character_id}', 'WebhookController@destroy');
+Route::post('/webhook/test/{character_id}', 'WebhookController@testDiscord');

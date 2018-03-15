@@ -130,10 +130,14 @@ Create a cron with the following entry
 From here you should be able to hit your Website in the browser, and play around with it.
 
 ### Commands
-These are run on a schedule already, but if you want to run on demand, use the following commands:
+Custom Commands (Some of these already run on a schedule, but can be ran manually):
 ```
 php artisan update:structures //Kick off a Job for each Character to update their structure data from ESI
 php artisan check:fuel //Run the Fuel check and send notifications if required
+php artisan check:orphans //Checks for structures with no matching characters of the same corporation_id (cleans up old data)
+php artisan check:unanchor //Checks for structures unanchoring and sends notifications if its the right time left
+php artisan extraction:daily //Sends a message for the extractions coming up in the next 7 days
+php artisan strct:state {structure_id} {old_state} {new_state} //Sends a notification that the State of a Structure changed
 ```
 
 ## License

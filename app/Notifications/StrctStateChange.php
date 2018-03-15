@@ -10,7 +10,7 @@ use \DiscordWebhooks\Embed;
 use App\Channels\DiscordChannel;
 use Log;
 
-class LowFuelDiscord extends Notification
+class StrctStateChange extends Notification
 {
     use Queueable;
 
@@ -19,10 +19,12 @@ class LowFuelDiscord extends Notification
      *
      * @return void
      */
-    public function __construct(\App\Structure $structure, \App\Character $character)
+    public function __construct(\App\Structure $structure, \App\Character $character, $old_state, $new_state)
     {
       $this->structure = $structure;
       $this->character = $character;
+      $this->old_state = $old_state;
+      $this->new_state = $new_state;
     }
 
     /**
@@ -39,16 +41,20 @@ class LowFuelDiscord extends Notification
 
     public function toDiscord($notifiable) {
       try {
-        $client = new Client($notifiable->fuel_webhook);
-
+        $client = new Client($notifiable->state_webhook);
         $embed = new Embed();
+
+        if($this->new_state == 'shield_vulnerable') {
+          $embed->color( 0x24d04a );
+        } else {
+           $embed->color( 0xff2d32 );
+        }
+        $embed->description(":no_entry: **Structure Changed State** :no_entry:");
         $embed->title("{$this->structure->structure_name}", env('APP_URL') . "/home/structure/{$this->structure->structure_id}");
-        $embed->description(':warning: **Fuel Alert** :warning:');
-        $embed->color( 15105570 );
         $embed->thumbnail("https://imageserver.eveonline.com/Type/{$this->structure->type_id}_64.png");
         $embed->author(env('APP_NAME'). 'Bot', null, "https://imageserver.eveonline.com/Character/{$notifiable->character_id}_64.jpg");
-        $embed->field('Fuel Remaining', $this->structure->fuel_time_left, TRUE);
-        $embed->field('Fuel Expiration', $this->structure->fuel_expires, TRUE);
+        $embed->field('Old State', $this->old_state, TRUE);
+        $embed->field('New State', $this->new_state, TRUE);
         $embed->field('System', $this->structure->system_name, TRUE);
 
         $client->username(env('APP_NAME'))
@@ -57,7 +63,7 @@ class LowFuelDiscord extends Notification
 
         return $client->send();
       } catch (\Exception $e) {
-        Log::error("Failed to send LowFuel discord notification for {$this->character->character_name} on account $notifiable->user_id , $e");
+        Log::error("Failed to send structure state change discord notification for {$this->character->character_name} on account $notifiable->user_id , $e");
       }
     }
 }

@@ -1,24 +1,5 @@
-<DONE>github repo
-<DONE>Email setup
-<DONE>Deletes character
-<DONE>Deletes Account/char/structures/token revoke
-<DONE>Revoke Tokens on delete character
-<DONE>Home page with FAQ
-<DONE>Demo Account? (static data)
-<DONE>create prod site, populate env file and database creation
-<DONE>Google analytics
-<DONE>ads
-<DONE>limit refreshes based off cache timer of 1hr? every 3 hours? once a day?
-<DONE>footer with disclaimer
-<DONE>Scroll to top page on /home
-<DONE>Show days left rather then a time stamp, make the timestamp a hover over value
-
-Email notifications when fuel is low? Let the user define when? or just do a 30d,7d,1d ?
-Discord notifications instead of Email?
-Update demo page fuel time
-
-
-<LATER>Filter by type_id on /home
-<LATER>Filter by fueled/not fueled
-<LATER>Job queueing? Automatic updates every night?
-
+Extraction Slug:
+  * Allow user to create a public/password protected extractions page to share
+  * Allow user to input ore/value of belt to be displayed
+  * If authed show a button to send notification Now that belt was fractured (for manual fractures)
+  * allow user to define if they manual or auto fracture (helps with notifications)

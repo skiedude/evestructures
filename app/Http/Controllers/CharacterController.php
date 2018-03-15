@@ -7,11 +7,7 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\ServerException;
 use App\Character;
-use App\Structure;
-use App\StructureService;
-use App\StructureState;
-use App\StructureVul;
-
+use App\NotificationManager;
 
 class CharacterController extends Controller
 {
@@ -46,6 +42,7 @@ class CharacterController extends Controller
         $result = $client->post($authsite, $token_headers);
       }
 
+      NotificationManager::where('user_id', \Auth::id())->where('character_id', $character_id)->delete();
 
       if(!isset($account_del)) {
         $success = "Successfully deleted $character->character_name, structures and revoked ESI privileges";

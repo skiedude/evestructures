@@ -24,12 +24,11 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('inspire')
-        //          ->hourly();
       $schedule->command('check:orphans')->weekly();
       $schedule->command('update:structures')->hourly();
       $schedule->command('check:fuel')->hourlyAt(30);
-
+      $schedule->command('check:unanchor')->hourlyAt(15);
+      $schedule->command('extraction:daily')->dailyAt('13:00');
     }
 
     /**

@@ -10,7 +10,7 @@ use \DiscordWebhooks\Embed;
 use App\Channels\DiscordChannel;
 use Log;
 
-class LowFuelDiscord extends Notification
+class testDiscord extends Notification
 {
     use Queueable;
 
@@ -19,10 +19,10 @@ class LowFuelDiscord extends Notification
      *
      * @return void
      */
-    public function __construct(\App\Structure $structure, \App\Character $character)
+    public function __construct(\App\Character $character, $webhook)
     {
-      $this->structure = $structure;
       $this->character = $character;
+      $this->webhook = $webhook;
     }
 
     /**
@@ -39,25 +39,23 @@ class LowFuelDiscord extends Notification
 
     public function toDiscord($notifiable) {
       try {
-        $client = new Client($notifiable->fuel_webhook);
+        $client = new Client($notifiable->{$this->webhook});
 
         $embed = new Embed();
-        $embed->title("{$this->structure->structure_name}", env('APP_URL') . "/home/structure/{$this->structure->structure_id}");
-        $embed->description(':warning: **Fuel Alert** :warning:');
-        $embed->color( 15105570 );
-        $embed->thumbnail("https://imageserver.eveonline.com/Type/{$this->structure->type_id}_64.png");
+        $embed->description(':white_check_mark: **Webhook Test** :white_check_mark:');
+        $embed->title("Test Notification for {$this->character->character_name}");
+        $embed->color( 0x0000a0 );
         $embed->author(env('APP_NAME'). 'Bot', null, "https://imageserver.eveonline.com/Character/{$notifiable->character_id}_64.jpg");
-        $embed->field('Fuel Remaining', $this->structure->fuel_time_left, TRUE);
-        $embed->field('Fuel Expiration', $this->structure->fuel_expires, TRUE);
-        $embed->field('System', $this->structure->system_name, TRUE);
+        $embed->field('Test Message', 'Ahoy Champion', TRUE);
+        $embed->field('Webhook', "$this->webhook", TRUE);
 
         $client->username(env('APP_NAME'))
                 ->avatar(env('APP_URL') . "/images/avatar.png")
                 ->embed($embed);
-
+        Log::debug("Sent Test Discord notification for {$this->character->character_name} for webhook $this->webhook");
         return $client->send();
       } catch (\Exception $e) {
-        Log::error("Failed to send LowFuel discord notification for {$this->character->character_name} on account $notifiable->user_id , $e");
+        Log::error("Failed to send <TEST> discord notification for {$this->character->character_name} on account $notifiable->user_id , $e");
       }
     }
 }
