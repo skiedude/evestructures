@@ -43,6 +43,7 @@ class StructureUpdate implements ShouldQueue
       switch ($refresh) {
         case "not_expired":
           //Good to go
+          Log::debug("Token was not expired for {$this->character->character_name}");
           break;
 
         case "refreshed":
@@ -52,6 +53,7 @@ class StructureUpdate implements ShouldQueue
           break;
 
         default:
+          Log::error("Refresh function returned an unknown value for {$this->character->character_name}");
           break;
       }
 

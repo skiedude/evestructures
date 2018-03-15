@@ -8,6 +8,7 @@ use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\ServerException;
 use App\Character;
 use App\NotificationManager;
+use Log;
 
 class CharacterController extends Controller
 {
@@ -159,6 +160,7 @@ class CharacterController extends Controller
 
       return "not_expired";
     }
+
     $refresh_token = $entry->refresh_token;
 
     try {
@@ -186,14 +188,17 @@ class CharacterController extends Controller
 
     } catch (ClientException $e) {
       //4xx error, usually encountered when token has been revoked on CCP website
+      Log::error("ClientException caught in token refresh: " . $e->getMessage());
       $alert = "We failed to refresh our access with your tokens. This usually means they were revoked on the CCP API website. Try re-adding your character.";
       return redirect()->to('/home')->with('alert', [$alert]);
     } catch (ServerException $e ) {
+      Log::error("ServerException caught in token refresh: " . $e->getMessage());
       $alert = "We received a 5xx error from ESI, this usually means an issue on CCP's end, pleas try again later.";
       //5xx error, usually and issue with ESI
       return redirect()->to('/home')->with('alert', [$alert]);
     } catch (\Exception $e) {
       //Everything else
+      Log::error("Exception caught in token refresh: " . $e->getMessage());
       $alert = "We failed to refresh your tokens, please try again later.";
       return redirect()->to('/home')->with('alert', [$alert]);
     }
