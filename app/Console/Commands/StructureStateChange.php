@@ -47,8 +47,8 @@ class StructureStateChange extends Command
         Log::debug("Starting Structure State Change Notification for {$structure->structure_name} owned by {$character->character_name}");
 
         $notification = NotificationManager::where('character_id', $character->character_id)->first();
-        if(!isset($notification->discord_webhook) || is_null($notification->discord_webhook) || $notification->strct_state == FALSE) {
-          Log::debug("Ending Structure State Change Notification for $structure->structure_name for $character->character_name, no discord_webhook or state alerts disabled");
+        if(!isset($notification->state_webhook) || is_null($notification->state_webhook)) {
+          Log::debug("Ending Structure State Change Notification for $structure->structure_name for $character->character_name, no state_webhook");
           continue;
         }
 

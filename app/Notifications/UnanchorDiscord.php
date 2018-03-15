@@ -40,7 +40,7 @@ class UnanchorDiscord extends Notification
 
     public function toDiscord($notifiable) {
       try {
-        $client = new Client($notifiable->discord_webhook);
+        $client = new Client($notifiable->unanchor_webhook);
 
         $embed = new Embed();
 
@@ -64,7 +64,7 @@ class UnanchorDiscord extends Notification
 
         return $client->send();
       } catch (\Exception $e) {
-        Log::error("Failed to send discord notification for {$this->character->character_name} on account $notifiable->user_id , $e");
+        Log::error("Failed to send unanchor discord notification for {$this->character->character_name} on account $notifiable->user_id , $e");
       }
     }
 }

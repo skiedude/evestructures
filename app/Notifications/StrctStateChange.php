@@ -41,7 +41,7 @@ class StrctStateChange extends Notification
 
     public function toDiscord($notifiable) {
       try {
-        $client = new Client($notifiable->discord_webhook);
+        $client = new Client($notifiable->state_webhook);
         $embed = new Embed();
 
         if($this->new_state == 'shield_vulnerable') {
