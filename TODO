@@ -1,15 +1,5 @@
-Notification Manager:
-    * just make a notification for each type
-DONE - Test webhook button
-DONE - Check boxes to enable/disable types of notifications Per character
-DONE   -- Requires webhook to be there to see these options
-DONE   -- just under the webhook box, one update to rule them all?
-    * Low fuel
-    * unacnhoring almost started/ending
-    * shield state change
-      -- compare to current state if exists
-    * extraction started
-    * extraction ready
-    * extraction auto fractured
-DONE  - move webhook from characters table to notification_managers table
-DONE - update fuelcheck job to not check character for webhook
+Extraction Slug:
+  * Allow user to create a public/password protected extractions page to share
+  * Allow user to input ore/value of belt to be displayed
+  * If authed show a button to send notification Now that belt was fractured (for manual fractures)
+  * allow user to define if they manual or auto fracture (helps with notifications)
