@@ -223,9 +223,8 @@ trait StructureGet {
         if(isset($strct->services)) {
           foreach($strct->services as $sr) {
             StructureService::updateOrCreate(
-              ['structure_id' => $strct->structure_id],
-              ['state' => $sr->state,
-               'name' => $sr->name]
+              ['structure_id' => $strct->structure_id, 'name' => $sr->name],
+              ['state' => $sr->state]
             );
           }
         }
