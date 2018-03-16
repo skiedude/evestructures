@@ -54,6 +54,7 @@ class StructureUpdate implements ShouldQueue
 
         default:
           Log::error("Refresh function returned an unknown value for {$this->character->character_name}");
+          return;
           break;
       }
 
