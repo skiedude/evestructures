@@ -31,19 +31,9 @@ class PublicExtraction extends Controller
           continue;
         }
         $extraction = Structure::find($structure->structure_id)->extractions;
+        $data = ExtractionData::where('structure_id', $structure->structure_id)->first();
         if(!is_null($extraction)) {
-          $manual_fracture_time = new \DateTime($extraction->chunk_arrival_time);
-          $auto_fracture_time = new \DateTime($extraction->natural_decay_time);
-          $now = new \DateTime();
-          $diff = date_diff($now, $manual_fracture_time);
 
-          if ($diff->invert == 0) {
-            $extraction->upcoming = TRUE;
-          } else {
-            $extraction->current = TRUE;
-          }
-
-          $data = ExtractionData::where('structure_id', $structure->structure_id)->first();
           if(!is_null($data)) {
             $extraction->value = $data->value;
             $extraction->ores = $data->ores;
