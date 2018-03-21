@@ -12,7 +12,7 @@ use Log;
 class PublicExtraction extends Controller
 {
     public function index($corporation_id, $slug) {
-      $slug = Slug::where('slug_name', $slug)->first();
+      $slug = Slug::where('slug_name', $slug)->where('corporation_id', $corporation_id)->first();
       if(is_null($slug) || $slug->enabled == FALSE) {
         $alert = "This Public Extraction page has been removed, disabled or doesn't exist";
         return redirect()->to("/")->with('alert', [$alert]);
@@ -33,7 +33,6 @@ class PublicExtraction extends Controller
         $extraction = Structure::find($structure->structure_id)->extractions;
         $data = ExtractionData::where('structure_id', $structure->structure_id)->first();
         if(!is_null($extraction)) {
-
           if(!is_null($data)) {
             $extraction->value = $data->value;
             $extraction->ores = $data->ores;
