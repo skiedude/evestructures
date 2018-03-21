@@ -11,6 +11,7 @@ use App\StructureService;
 use App\StructureState;
 use App\StructureVul;
 use App\Extractions;
+use App\ExtractionData;
 use App\Traits\StructureGet;
 use App\Traits\MoonExtractions;
 
@@ -42,8 +43,9 @@ class StructureController extends Controller
     $state = StructureState::where('structure_id', $structure_id)->first();
     $vul = StructureVul::where('structure_id', $structure_id)->first();
     $extraction = Extractions::where('structure_id', $structure_id)->first();
+    $extraction_data = ExtractionData::where('structure_id', $structure_id)->first();
 
-    return view('structure', compact(['structure', 'services', 'state', 'vul', 'extraction']));
+    return view('structure', compact(['structure', 'services', 'state', 'vul', 'extraction', 'extraction_data']));
   }
 
   public function create($character_id) {
@@ -93,4 +95,34 @@ class StructureController extends Controller
     return redirect()->to('/home')->with('success', [$update]);
   }
 
+  public function updateExtraction($structure_id, Request $request) {
+    $characters = User::find(auth()->id())->characters;
+    $corp_ids = array();
+    foreach ($characters as $char) {
+      if($char->is_manager == FALSE) {
+        continue;
+      }
+      array_push($corp_ids, $char->corporation_id);
+    }
+
+    $structure = Structure::whereIn('corporation_id', $corp_ids )->where('structure_id', $structure_id)->first();
+    if(is_null($structure)) {
+      $alert = "Structure not found on this account";
+      return redirect()->to('/home')->with('alert', [$alert]);
+    }
+  
+    $this->validate($request, [
+      'fractureRadio' => array('required', 'regex:/^(manual_fracture|auto_fracture)$/'),
+      'ore_value' => 'required|regex:/^[0-9]+$/',
+      'ores' => 'required|regex:/^[a-zA-Z,\s]+$/',
+    ]);
+
+    ExtractionData::updateOrCreate(['structure_id' => $structure->structure_id],
+      ['value' => $request->ore_value,
+      'ores' => $request->ores,
+      'fracture_pref' => $request->fractureRadio]
+    );
+
+    return redirect()->to("/home/structure/$structure_id");
+  }
 }

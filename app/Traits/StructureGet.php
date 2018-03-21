@@ -258,7 +258,7 @@ trait StructureGet {
         );
 
         if($type_name == 'Tatara' || $type_name == 'Athanor') {
-          $this->getExtractions($character->corporation_id, $character->access_token);
+          $this->getExtractions($character);
         }
 
       } catch (ServerException $e ) {

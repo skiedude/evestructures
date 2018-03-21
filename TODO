@@ -1,5 +1,1 @@
-Extraction Slug:
-  * Allow user to create a public/password protected extractions page to share
-  * Allow user to input ore/value of belt to be displayed
-  * If authed show a button to send notification Now that belt was fractured (for manual fractures)
-  * allow user to define if they manual or auto fracture (helps with notifications)
+
