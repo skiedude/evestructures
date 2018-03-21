@@ -7,6 +7,7 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\ServerException;
 use App\Character;
+use App\Slug;
 use App\NotificationManager;
 use Log;
 
@@ -44,6 +45,7 @@ class CharacterController extends Controller
       }
 
       NotificationManager::where('user_id', \Auth::id())->where('character_id', $character_id)->delete();
+      Slug::where('user_id', \Auth::id())->where('character_id', $character_id)->delete();
 
       if(!isset($account_del)) {
         $success = "Successfully deleted $character->character_name, structures and revoked ESI privileges";
@@ -140,8 +142,13 @@ class CharacterController extends Controller
           ]
         );
 
+        Slug::updateOrCreate(
+          ['user_id' => \Auth::id(), 'character_id' => $verify->CharacterID], 
+          ['corporation_id' => $character->corporation_id]
+        );
       } catch (\Exception $e) {
         $alert = "We failed to fetch the public data for $verify->CharacterName. ESI may be having problems. Please try again later";
+        Log::error("Exception caught on public data for $verify->CharacterName: " . $e->getMessage());
         return redirect()->to('/home')->with('alert', [$alert]);
       }
       return redirect()->to('/home'); 

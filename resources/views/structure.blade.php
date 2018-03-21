@@ -2,9 +2,9 @@
 
 @section('content')
 <div class="container">
-  @include ('layouts.errors')
   <div class="row">
     <div class="col-sm-12">
+    @include ('layouts.errors')
       <div class="panel panel-primary">
         <div class="panel-heading"> 
           <a href="{{ url('/home') }}" style="color:white" ><i class="fa fa-arrow-circle-left" aria-hidden="true"></i> Back</a>
@@ -130,6 +130,32 @@
                       </tr>
                     </table>
                   </div>
+                </div>
+                <div class="col-sm-4">
+                  <form method="POST" action="{{ url('/home/structure') }}/{{$structure->structure_id}}" >
+                    {{ csrf_field() }}
+                    <div class="form-group">
+                      <label for="ores">Ores</label>
+                      <input type="text" class="form-control" name="ores" id="ores" value="{{$extraction_data->ores ?? ''}}" required>
+                    </div>
+                    <div class="form-group">
+                      <label for="value">Ore Value</label>
+                      <input type="text" class="form-control" name="ore_value" id="ore_value" value="{{$extraction_data->value ?? '0'}}" required>
+                    </div>
+                    <div class="radio">
+                      <label for="auto_fracture">
+                      <input type="radio" name="fractureRadio" id="auto_fracture" value="auto_fracture" @if(isset($extraction_data->fracture_pref) && $extraction_data->fracture_pref == 'auto_fracture') checked @endif>
+                      Auto Fracture
+                      </label>
+                    </div>
+                    <div class="radio">
+                      <label for="manual_fracture">
+                      <input type="radio" name="fractureRadio" id="manual_fracture" value="manual_fracture" @if(isset($extraction_data->fracture_pref) && $extraction_data->fracture_pref == 'manual_fracture') checked @endif>
+                      Manual Fracture
+                      </label>
+                    </div>
+                    <button type="submit" class="btn btn-success btn-xs">Update</button>
+                  </form>
                 </div>
               </div> <!-- end row -->
               @endif
