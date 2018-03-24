@@ -14,6 +14,7 @@
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <link href="{{ asset('/css/main.css') }}" rel="stylesheet">
+    <script defer src="https://use.fontawesome.com/releases/v5.0.6/js/all.js"></script>
     <link rel="shortcut icon" href="{{ asset('/images/favicon.ico') }}" type="image/x-icon">
 </head>
 <body style="background-attachment:fixed;background-color:#35383D;background-size:cover;" background="{{ asset('/images/nebula.jpg') }}">
