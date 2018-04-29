@@ -9,7 +9,7 @@
       <h3 class="panel-title">Moon Extractions for {{$character->corporation_name}}</h3>
     </div>
     <div class="panel-body">
-    <table class="table-stripedi table-responsive table">
+    <table class="table-striped table-responsive table table-bordered">
       <thead>
       <tr>
         <th>Location</th>
