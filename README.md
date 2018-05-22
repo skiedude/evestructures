@@ -29,14 +29,11 @@ More info can be found [ESI Docs](http://eveonline-third-party-documentation.rea
 
 ## Install
 ### Databases
-We need 2 databases created.
+We need 1 database created.
 ```
-create database sde
 create database evestructures
 ```
-Create one user and give it privileges on both databases. 
-
-Get the latest DB dump of the SDE from [Fuzzworks](https://www.fuzzwork.co.uk/dump/) and import it into the SDE database.
+Create one user and give it privileges. 
 
 ### Git Repo
 Pull down the repo and Run (I made composer a global binary by following [binary](https://getcomposer.org/doc/00-intro.md#globally) )
@@ -53,8 +50,7 @@ APP_ENV=prod  //use prod
 APP_URL= //url of your website for the emails
 SITE_NAME= //used in disclaimer
 
-DB_DATABASE_SDE= //name of the sde database you created
-DB_DATABASE= // 2nd database you created
+DB_DATABASE= // database you created 
 DB_USERNAME= // username that has access to both databases
 DB_PASSWORD= // password for ^ user
 QUEUE_DRIVER= //use database if you intend to use supervisord
