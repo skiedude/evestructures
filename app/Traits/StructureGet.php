@@ -23,12 +23,14 @@ trait StructureGet {
 
     $auth_headers = [
       'headers' => [
-      'User-Agent' => env('USERAGENT'),
+        'User-Agent' => env('USERAGENT'),
+        'Authorization' => "Bearer $character->access_token"
       ],
-      'query' => [
-        'datasource' => 'tranquility',
-        'token'   => $character->access_token
-      ]
+    ];
+    $noauth_headers = [
+      'headers' => [
+        'User-Agent' => env('USERAGENT'),
+      ],
     ];
 
     try {
@@ -103,11 +105,24 @@ trait StructureGet {
     }
 
     foreach($esi_structures as $strct) {
-      $query = '
-        SELECT solarSystemName
-          FROM mapSolarSystems
-          WHERE solarSystemID = ?';
-      $system_name = \DB::connection('mysql2')->select($query, [$strct->system_id]);
+      try {
+        $sys_url = "/v3/universe/systems/$strct->system_id/";
+        $resp_sys = $client->get($sys_url, $noauth_headers);
+        $sys = json_decode($resp_sys->getBody());
+        $system_name = $sys->name;
+      } catch (ServerException $e ) {
+        Log::error("ServerException thrown on System fetch: " . $e->getMessage());
+        $msg = "We received a 5xx error from ESI, this usually means an issue on CCP's end, please try again later.";
+        //5xx error, usually and issue with ESI
+        $alert->{'exception'} = $msg;
+        return $alert;
+      } catch (\Exception $e) {
+        //Everything else
+        Log::error("Exception thrown on System fetch: " . $e->getMessage());
+        $msg = "We failed to pull your structures, please try again later.";
+        $alert->{'exception'} = $msg;
+        return $alert;
+      }
 
       switch ($strct->type_id) {
         case 35825:
@@ -185,7 +200,7 @@ trait StructureGet {
            'type_id' => $strct->type_id,
            'type_name' => $type_name,
            'system_id' => $strct->system_id,
-           'system_name' => $system_name[0]->solarSystemName,
+           'system_name' => $system_name,
            'profile_id' => $strct->profile_id,
            'fuel_expires' => $fuel_expires,
            'fuel_time_left' => $fuel_time_left,
