@@ -55,7 +55,9 @@
                         <!-- Authentication Links -->
                         @guest
                             <li><a href="{{ route('login') }}">Login</a></li>
+                            @unless(env('DISABLE_REGISTER'))
                             <li><a href="{{ route('register') }}">Register</a></li>
+                            @endunless
                         @else
                             <li><a href="{{ route('home') }}">Home</a></li>
                             <li><a href="{{ route('extraction') }}">Public Sites</a></li>
