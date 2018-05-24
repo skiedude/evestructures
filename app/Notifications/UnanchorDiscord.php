@@ -46,10 +46,10 @@ class UnanchorDiscord extends Notification
 
         if($this->unotice == 'START') {
           $embed->color( 0xf0ba3c );
-          $embed->description(":anchor: **START Unanchor Alert** :anchor:");
+          $embed->description(":anchor: **START Unanchor Alert** for {$this->character->corporation_name} :anchor:");
         } else {
           $embed->color( 0xff2d32 );
-          $embed->description(":anchor: **FINAL Unanchor Alert** :anchor:");
+          $embed->description(":anchor: **FINAL Unanchor Alert** for {$this->character->corporation_name}:anchor:");
         }
 
         $embed->title("{$this->structure->structure_name}", env('APP_URL') . "/home/structure/{$this->structure->structure_id}");

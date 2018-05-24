@@ -43,7 +43,7 @@ class LowFuelDiscord extends Notification
 
         $embed = new Embed();
         $embed->title("{$this->structure->structure_name}", env('APP_URL') . "/home/structure/{$this->structure->structure_id}");
-        $embed->description(':warning: **Fuel Alert** :warning:');
+        $embed->description(":warning: **Fuel Alert** for {$this->character->corporation_name} :warning:");
         $embed->color( 15105570 );
         $embed->thumbnail("https://imageserver.eveonline.com/Type/{$this->structure->type_id}_64.png");
         $embed->author(env('APP_NAME'). 'Bot', null, "https://imageserver.eveonline.com/Character/{$notifiable->character_id}_64.jpg");

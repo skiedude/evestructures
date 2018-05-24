@@ -57,7 +57,7 @@ class StrctStateChange extends Notification
         } else {
            $embed->color( 0xff2d32 );
         }
-        $embed->description(":no_entry: **Structure Changed State** :no_entry:");
+        $embed->description(":no_entry: **Structure Changed State** for {$this->character->corporation_name} :no_entry:");
         $embed->title("{$this->structure->structure_name}", env('APP_URL') . "/home/structure/{$this->structure->structure_id}");
         $embed->thumbnail("https://imageserver.eveonline.com/Type/{$this->structure->type_id}_64.png");
         $embed->author(env('APP_NAME'). 'Bot', null, "https://imageserver.eveonline.com/Character/{$notifiable->character_id}_64.jpg");
