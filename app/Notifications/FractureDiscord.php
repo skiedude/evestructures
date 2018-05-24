@@ -19,12 +19,13 @@ class FractureDiscord extends Notification
      *
      * @return void
      */
-    public function __construct($type, $extraction, $moon, $extraction_data)
+    public function __construct($type, $extraction, $moon, $extraction_data, $character)
     {
       $this->type = $type;
       $this->extraction = $extraction;
       $this->moon = $moon;
       $this->extraction_data = $extraction_data;
+      $this->character = $character;
     }
 
     /**
@@ -46,10 +47,10 @@ class FractureDiscord extends Notification
 
         if($this->type == 'manual') {
           $embed->field("Manual Fracture", $this->extraction->chunk_arrival_time);
-          $embed->description(":pick: {$this->moon->name} is ready to Manual Fracture! :pick:");
+          $embed->description(":boom: {$this->moon->name} is ready to Manual Fracture for {$this->character->corporation_name}! :boom:");
         } else {
           $embed->field("Auto Fracture", $this->extraction->natural_decay_time);
-          $embed->description(":pick: {$this->moon->name} is about to Auto Fracture! :pick:");
+          $embed->description(":boom: {$this->moon->name} is about to Auto Fracture for {$this->character->corporation_name}! :boom:");
         }
 
         $embed->field("Moon", $this->moon->name);

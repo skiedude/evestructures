@@ -89,7 +89,7 @@ trait MoonExtractions {
       if($fracture_data->fracture_pref == 'manual_fracture') {
         if($diff_manual->days == 0 && $diff_manual->h <= 1 && $diff_manual->invert == 1 && !is_null($notification->extraction_webhook)) {
           if(is_null($fracture_notice) || $fracture_notice->notice == FALSE) {
-            $notification->notify(new FractureDiscord('manual', $ext, $moon, $fracture_data)); 
+            $notification->notify(new FractureDiscord('manual', $ext, $moon, $fracture_data, $character)); 
             FractureNotice::updateOrCreate(['structure_id' => $ext->structure_id, 'character_id' => $character->character_id],['notice' => TRUE]);
           }
         }
@@ -98,7 +98,7 @@ trait MoonExtractions {
       if($fracture_data->fracture_pref == 'auto_fracture') {
         if($diff_auto->days == 0 && $diff_auto->h <= 0 && $diff_auto->invert == 0 && !is_null($notification->extraction_webhook)) {
           if(is_null($fracture_notice) || $fracture_notice->notice == FALSE) {
-            $notification->notify(new FractureDiscord('auto', $ext, $moon, $fracture_data));
+            $notification->notify(new FractureDiscord('auto', $ext, $moon, $fracture_data, $character));
             FractureNotice::updateOrCreate(['structure_id' => $ext->structure_id, 'character_id' => $character->character_id],['notice' => TRUE]);
           }
         }

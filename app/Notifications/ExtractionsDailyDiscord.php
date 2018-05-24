@@ -47,7 +47,7 @@ class ExtractionsDailyDiscord extends Notification
         }
 
         $embed->color( 0x24d04a );
-        $embed->title(":pick: **Upcoming 7 Day Extractions** :pick:");
+        $embed->title(":pick: **Upcoming 7 Day Extractions for {$this->character->corporation_name}** :pick:");
         $embed->author(env('APP_NAME'). 'Bot', null, "https://imageserver.eveonline.com/Character/{$notifiable->character_id}_64.jpg");
 
         $client->username(env('APP_NAME'))
