@@ -80,7 +80,7 @@
               <option value="state_webhook">Structure State</option>
             @endisset
             @isset($notify->unanchor_webhook)
-              <option value="unanchor_webhook">Unanchor</option>
+              <option value="unanchor_webhook">Anchor/Unanchor</option>
             @endisset
             @isset($notify->extraction_webhook)
               <option value="extraction_webhook">Extraction</option>
