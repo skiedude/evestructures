@@ -48,7 +48,7 @@
           <form method="POST" action="{{ url('/webhook') }}/{{$notify->char_id}}">
             {{ csrf_field() }}
             <div class="form-group">
-              <label for="unanchor_webhook">Unanchor Webhook</label>
+              <label for="unanchor_webhook">Anchor/Unanchor Webhook</label>
               <input type="text" class="form-control" name="unanchor_webhook" id="unanchor_webhook" width="10" value="{{$notify->unanchor_webhook ?? ''}}" >
             </div>
             <div class="form-group">
