@@ -24,6 +24,9 @@
               <li>and much more!</li>
             </ul>
           <p>Create and save a <a href="https://support.discordapp.com/hc/en-us/articles/228383668-Intro-to-Webhooks" target="_blank">Discord Webhook</a> for each character you want to receive notifications on. EveStructureBot will let you know when you have <7days and <24h fuel left, State of your structure changing, Unanchor warnings, and Moon Extractions!</p>
+        @unless(env('PRIVATE_INSTALL'))
+        <p>Want to privately host your own? Go check out the <a href="https://github.com/skiedude/evestructures" target="_blank">Github Repo</a></p>
+        @endunless
         </div>
     </div>
 
