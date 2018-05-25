@@ -87,7 +87,6 @@ or SSL
 Run the php artisan migration command to set create your database tables
 ```
 php artisan migrate
-php artisan db:seed   //this fills in all the demo data, not really required for private installs.
 ```
 
 ### Logs
@@ -134,6 +133,16 @@ php artisan check:orphans //Checks for structures with no matching characters of
 php artisan check:unanchor //Checks for structures unanchoring and sends notifications if its the right time left
 php artisan extraction:daily //Sends a message for the extractions coming up in the next 7 days
 php artisan strct:state {structure_id} {old_state} {new_state} //Sends a notification that the State of a Structure changed
+```
+
+### Private Hosting
+To hide some of the more public features for private installs you can add the following variables to the .env:  
+```
+Hides the Tools drop down in the menu
+PRIVATE_INSTALL=1
+
+Hides the register link (still works if manually navigated to)
+DISABLE_REGISTER=1
 ```
 
 ## License

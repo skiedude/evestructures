@@ -23,8 +23,7 @@
               <li>unanchor timer</li>  
               <li>and much more!</li>
             </ul>
-          <p>Create and save a <a href="https://support.discordapp.com/hc/en-us/articles/228383668-Intro-to-Webhooks" target="_blank">Discord Webhook</a> for each character you want to receive notifications on. EveStructureBot will let you know when you have <7days and <24h fuel left on your structures, so you never run out again!</p>
-          <p>Check out the <a href="/demo">Demo view</a> to see how it works.</p>
+          <p>Create and save a <a href="https://support.discordapp.com/hc/en-us/articles/228383668-Intro-to-Webhooks" target="_blank">Discord Webhook</a> for each character you want to receive notifications on. EveStructureBot will let you know when you have <7days and <24h fuel left, State of your structure changing, Unanchor warnings, and Moon Extractions!</p>
         </div>
     </div>
 
@@ -42,24 +41,31 @@
         <div class="panel-body">
           <p>The scopes required to pull all the necessary info are:
             <ul>
-              <li><a href="https://esi.tech.ccp.is/ui/#/Corporation/get_corporations_corporation_id_structures" target="_blank">esi-corporations.read_structures.v1</a>
+              <li><a href="https://esi.evetech.net/ui/#/Corporation/get_corporations_corporation_id_structures" target="_blank">esi-corporations.read_structures.v1</a>
                 <ul style="list-style-type:none">
                   <li>Get a list of corporation structures (cached for up to 3600 seconds)</li>
                   <li>This requires the character to have the Station Manager role in game.</li>
                 </ul>
               </li> 
-              <li><a href="https://esi.tech.ccp.is/ui/#/Character/get_characters_character_id_roles" target="_blank">esi-characters.read_corporation_roles.v1</a>
+              <li><a href="https://esi.evetech.net/ui/#/Character/get_characters_character_id_roles" target="_blank">esi-characters.read_corporation_roles.v1</a>
                 <ul style="list-style-type:none">
                   <li>Returns a character's corporation roles (cached for up to 3600 seconds)</li>
                   <li>Before requesting structures, we confirm the character has the Station Manager role in game, this reduces the number of errors we can cause requesting with an unauthorized character</li>
                 </ul>
               </li>
-              <li><a href="https://esi.tech.ccp.is/ui/#/Universe/get_universe_structures_structure_id" target="_blank">esi-universe.read_structures.v1</a>
+              <li><a href="https://esi.evetech.net/ui/#/Universe/get_universe_structures_structure_id" target="_blank">esi-universe.read_structures.v1</a>
                 <ul style="list-style-type:none">
                   <li>Returns information on requested structure, if you are on the ACL. Otherwise, returns "Forbidden" for all inputs. (cached for up to 3600 seconds)</li>
                   <li>In order to get the stations name, we have to hit this ESI Endpoint with the structure_id on a character that has ACL access.</li>
                 </ul>
               </li> 
+              <li><a href="https://esi.evetech.net/ui/#/Industry/get_corporation_corporation_id_mining_extractions" target="_blank">esi-industry.read_corporation_mining.v1</a>
+                <ul style="list-style-type:none">
+                  <li>Returns data on a corporations moon extractions (cached for up to 1800 seconds)</li>
+                  <li>This requires the character to have the Structure Manager role in game.</li>
+                </ul>
+              </li> 
+
             </ul>
             You can always see (and revoke) which Eve Websites/Apps have access to your information through ESI by visiting: <a href="https://community.eveonline.com/support/third-party-applications/" target="_blank">Third Party Applications</a>.
           </p>

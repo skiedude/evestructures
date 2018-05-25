@@ -39,9 +39,9 @@
 
                 <div class="collapse navbar-collapse" id="app-navbar-collapse">
                     <!-- Left Side Of Navbar -->
-                    <ul class="nav navbar-nav">
 
-                      <li><a href="{{ route('demo') }}">Demo View</a></li>
+                    @unless(env('PRIVATE_INSTALL'))
+                    <ul class="nav navbar-nav">
                       <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Tools <span class="caret"></span></a>
                           <ul class="dropdown-menu">
@@ -49,6 +49,7 @@
                           </ul>
                       </li>
                     </ul>
+                    @endunless
 
                     <!-- Right Side Of Navbar -->
                     <ul class="nav navbar-nav navbar-right">
