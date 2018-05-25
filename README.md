@@ -43,7 +43,7 @@ composer install
 
 ### Environment File
 We need to update/add some values to the .env file. (If one is not created, copy the .env.example to be .env
-Update the following in the .env file (add if missing)
+Update the following in the .env file (add if missing) REMOVE THE //COMMENTS
 ```
 APP_NAME=  //used in the emails
 APP_ENV=prod  //use prod
@@ -64,24 +64,10 @@ SECRET_KEY= // retrieved from your developer account
 ```
 
 ### Web Service
-I won't go in depth on how to configure apache for each OS type. But you need to point the home directory to the public folder of your installation.
-Here is what mine looks like using httpd on Centos 7
-```
-<VirtualHost *:80>
-  ServerName structures.eveskillboard.com
-  DocumentRoot "/var/www/html/structures/public"
-</VirtualHost>
-```
-or SSL
-```
-<VirtualHost *:443>
-  ServerName structures.eveskillboard.com
-  DocumentRoot "/var/www/html/structures/public"
-  SSLEngine on
-  SSLCertificateFile /etc/ssl/certs/eveskillboard.com.crt
-  SSLCertificateKeyFile /etc/ssl/private/eveskillboard.com.key
-</VirtualHost>
-```
+I won't go in depth on how to configure apache for each OS type. But you need to point the home directory to the public folder of your installation. *Make Sure you update the paths to files in these to your install*  
+Here is an example httpd conf file (CentOS7) https://pastebin.com/F71CCb1e  
+Here is an example nginx conf file (CentOS7) https://pastebin.com/7xy5dtJn
+
 
 ### Database Migrations
 Run the php artisan migration command to set create your database tables
@@ -91,9 +77,9 @@ php artisan migrate
 
 ### Logs
 Laravel requires special permissions on the the sub folders in storage, you can set everything to 777, but I'd warn against that. I wrote a bash alias that fixes this for me. You will need to adjust this based off the user your web service runs under.
-https://stackoverflow.com/a/37266353
+https://stackoverflow.com/a/37266353 . I put this as a cron for the root user to run as * * * * *
 ```
-alias fixstorage='sudo chgrp -R apache storage bootstrap/cache && sudo chmod -R ug+rwx storage bootstrap/cache'
+alias fixstorage='sudo chgrp -R USER_HERE storage bootstrap/cache && sudo chmod -R ug+rwx storage bootstrap/cache'
 ```
 ### Supervisord
 Supervisord takes care of running the jobs as they enter the queue.
