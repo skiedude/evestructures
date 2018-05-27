@@ -47,6 +47,7 @@ Update the following in the .env file (add if missing) REMOVE THE //COMMENTS
 ```
 APP_NAME=  //used in the emails
 APP_ENV=prod  //use prod
+APP_KEY= //generate yourself if not already set
 APP_URL= //url of your website for the emails
 SITE_NAME= //used in disclaimer
 
@@ -62,6 +63,7 @@ CALLBACK_URL=https://URL_GOES_HERE.COM/sso/callback  //update the URL there in t
 CLIENT_ID=  //retrieved from your developer account
 SECRET_KEY= // retrieved from your developer account
 ```
+In some cases you will need to generate your own APP_KEY, you can do so by running `php artisan key:generate` and pasting that value in the .env file for `APP_KEY`  
 
 ### Web Service
 I won't go in depth on how to configure apache for each OS type. But you need to point the home directory to the public folder of your installation. *Make Sure you update the paths to files in these to your install*  
