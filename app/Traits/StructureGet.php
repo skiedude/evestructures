@@ -106,7 +106,7 @@ trait StructureGet {
 
     foreach($esi_structures as $strct) {
       try {
-        $sys_url = "/v3/universe/systems/$strct->system_id/";
+        $sys_url = "/v4/universe/systems/$strct->system_id/";
         $resp_sys = $client->get($sys_url, $noauth_headers);
         $sys = json_decode($resp_sys->getBody());
         $system_name = $sys->name;
