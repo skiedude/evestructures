@@ -65,6 +65,13 @@ trait MoonExtractions {
         FractureNotice::updateOrCreate(['structure_id' => $cs->structure_id, 'character_id' => $character->character_id],['notice' => FALSE]);
         Log::debug("Deleting Extraction for $cs->structure_id for corporation $character->corporation_name character $character->character_name, it was not returned from ESI or was older than 48hrs");
       }
+
+      $current_notice = FractureNotice::where('structure_id', $cs->structure_id)->where('character_id', $character->character_id)->first(); 
+      if($diff->invert == 0 && $diff->days >= 1 && !is_null($current_notice) && $current_notice->notice == TRUE) {
+        //We need to reset this to false on extractions that have notified for their first extraction and are now on the next
+        // So we can notify on subsequent extractions
+        FractureNotice::updateOrCreate(['structure_id' => $cs->structure_id, 'character_id' => $character->character_id],['notice' => FALSE]);
+      }
     }
 
     $notification = NotificationManager::where('character_id', $character->character_id)->first();
@@ -91,6 +98,8 @@ trait MoonExtractions {
           if(is_null($fracture_notice) || $fracture_notice->notice == FALSE) {
             $notification->notify(new FractureDiscord('manual', $ext, $moon, $fracture_data, $character)); 
             FractureNotice::updateOrCreate(['structure_id' => $ext->structure_id, 'character_id' => $character->character_id],['notice' => TRUE]);
+          } else {
+            Log::debug("Not sending fracture notification for $character->character_name for structure_id $ext->structure_id, already set TRUE");
           }
         }
       }
@@ -100,6 +109,8 @@ trait MoonExtractions {
           if(is_null($fracture_notice) || $fracture_notice->notice == FALSE) {
             $notification->notify(new FractureDiscord('auto', $ext, $moon, $fracture_data, $character));
             FractureNotice::updateOrCreate(['structure_id' => $ext->structure_id, 'character_id' => $character->character_id],['notice' => TRUE]);
+          } else {
+            Log::debug("Not sending fracture notification for $character->character_name for structure_id $ext->structure_id, already set TRUE");
           }
         }
       }
