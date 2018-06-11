@@ -7,18 +7,14 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
-use App\Http\Controllers\CharacterController;
-use App\Traits\StructureGet;
 use App\Traits\MoonExtractions;
-use App\Character;
 use App\Traits\Tokens;
+use App\Character;
 use Log;
 
-
-
-class StructureUpdate implements ShouldQueue
+class FractureCheck implements ShouldQueue
 {
-    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels, StructureGet, MoonExtractions, Tokens;
+    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels, MoonExtractions, Tokens;
 
     protected $character;
     /**
@@ -56,15 +52,6 @@ class StructureUpdate implements ShouldQueue
           break;
       }
 
-      $update = $this->getStructures($this->character);
-
-      if(isset($update->exception)) {
-        $alert = $update->exception;
-        Log::error("Failed Structure pull for character {$this->character->character_name}: $alert");
-        return;
-      }
-
-      return;
+      $this->getExtractions($this->character);
     }
 }
-

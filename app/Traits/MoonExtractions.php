@@ -17,30 +17,39 @@ use Log;
 trait MoonExtractions {
 
   public function getExtractions($character) {
+    Log::debug("Checking Extractions for $character->character_name");
 
     $noauth_headers = [
       'headers' => [
         'User-Agent' => env('USERAGENT'),
       ],
-      'query' => [
-        'datasource' => 'tranquility',
-      ]
     ];
     $auth_headers = [
       'headers' => [
         'User-Agent' => env('USERAGENT'),
+        'Authorization' => "Bearer $character->access_token"
       ],
-      'query' => [
-        'datasource' => 'tranquility',
-        'token'   => $character->access_token
-      ]
     ];
+    try {
+      $client = new Client(['base_uri' => 'https://esi.tech.ccp.is/']);
 
-    $client = new Client(['base_uri' => 'https://esi.tech.ccp.is/']);
+      $extr_url = "/v1/corporation/$character->corporation_id/mining/extractions/";
+      $resp = $client->get($extr_url, $auth_headers);
+      $extractions = json_decode($resp->getBody());
+    } catch (ClientException $e) {
+      //4xx error, usually encountered when token has been revoked on CCP website
+      Log::Error("Failed 4xx received \n" . $e->getMessage());
+      return;
+    } catch (ServerException $e ) {
+      //5xx error, usually and issue with ESI
+      Log::Error("Failed 5xx received \n" . $e->getMessage());
+      return;
+    } catch (\Exception $e) {
+      //Everything else
+      Log::Error("Failed ?xx received \n" . $e->getMessage());
+      return;
+    }
 
-    $extr_url = "/v1/corporation/$character->corporation_id/mining/extractions/";
-    $resp = $client->get($extr_url, $auth_headers);
-    $extractions = json_decode($resp->getBody());
 
     $current_structures = DB::table('extractions')
                   ->leftJoin('structures', 'extractions.structure_id', '=', 'structures.structure_id')

@@ -117,11 +117,8 @@ class CharacterController extends Controller
         $character_url = "https://esi.tech.ccp.is/v4/characters/$verify->CharacterID";
         $noauth_headers = [
           'headers' => [
-          'User-Agent' => env('USERAGENT'),
+            'User-Agent' => env('USERAGENT'),
           ],
-          'query' => [
-            'datasource' => 'tranquility',
-          ]
         ];
         $resp = $client->get($character_url, $noauth_headers);
         $character = json_decode($resp->getBody());
@@ -158,63 +155,6 @@ class CharacterController extends Controller
     }
 
   }
-
-  public static function tokenRefresh($characterID) {
-    $entry = Character::where('character_id', $characterID)->first();
-    $expires = $entry->expires;
-    if(($expires - 120) > time()) {
-      //not expired
-
-      return "not_expired";
-    }
-
-    $refresh_token = $entry->refresh_token;
-
-    try {
-    $client = new Client();
-    $authsite = 'https://login.eveonline.com/oauth/token';
-    $token_headers = [
-      'headers' => [
-        'Authorization' => 'Basic ' . base64_encode(env('CLIENT_ID') . ':' . env('SECRET_KEY')),
-        'User-Agent' => env('USERAGENT'),
-        'Content-Type' => 'application/x-www-form-urlencoded',
-      ],
-      'form_params' => [
-        'grant_type' => 'refresh_token',
-        'refresh_token' => $refresh_token
-      ]
-    ];
-    $result = $client->post($authsite, $token_headers);
-    $resp = json_decode($result->getBody());
-    $expires_new = time() + $resp->expires_in;
-    Character::updateOrCreate(
-      ['character_id' => $characterID],
-      ['access_token' => $resp->access_token,
-      'expires' => $expires_new]
-    );
-
-    } catch (ClientException $e) {
-      //4xx error, usually encountered when token has been revoked on CCP website
-      Log::error("ClientException caught in token refresh: " . $e->getMessage());
-      $alert = "We failed to refresh our access with your tokens. This usually means they were revoked on the CCP API website. Try re-adding your character.";
-      return redirect()->to('/home')->with('alert', [$alert]);
-    } catch (ServerException $e ) {
-      Log::error("ServerException caught in token refresh: " . $e->getMessage());
-      $alert = "We received a 5xx error from ESI, this usually means an issue on CCP's end, pleas try again later.";
-      //5xx error, usually and issue with ESI
-      return redirect()->to('/home')->with('alert', [$alert]);
-    } catch (\Exception $e) {
-      //Everything else
-      Log::error("Exception caught in token refresh: " . $e->getMessage());
-      $alert = "We failed to refresh your tokens, please try again later.";
-      return redirect()->to('/home')->with('alert', [$alert]);
-    }
-
-    return "refreshed";
-  }
-
-
-
 
   public static function swapName(String $name) {
 

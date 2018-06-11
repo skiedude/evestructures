@@ -17,6 +17,8 @@ trait StructureGet {
 
   public function getStructures($character) {
 
+    Log::debug("Starting Structure pull for character {$character->character_name}");
+
     $alert = new \stdClass();
     $tz = array("T", "Z");
     $client = new Client(['base_uri' => 'https://esi.tech.ccp.is/']);
@@ -272,10 +274,6 @@ trait StructureGet {
            'next_day' => $next_day, 'next_hour' => $next_hour, 'next_reinforce_apply' => $next_apply]
         );
 
-        if($type_name == 'Tatara' || $type_name == 'Athanor') {
-          $this->getExtractions($character);
-        }
-
       } catch (ServerException $e ) {
         //5xx error, usually and issue with ESI
         Log::error("ServerException thrown on Role fetch: " . $e->getMessage());
@@ -294,6 +292,7 @@ trait StructureGet {
     }
 
       $success = "Successfully added/updated structures.";
+      Log::debug("Finished Structure pull for character {$character->character_name}");
       return $success;
   }
 

@@ -121,6 +121,8 @@ php artisan check:orphans //Checks for structures with no matching characters of
 php artisan check:unanchor //Checks for structures unanchoring and sends notifications if its the right time left
 php artisan extraction:daily //Sends a message for the extractions coming up in the next 7 days
 php artisan strct:state {structure_id} {old_state} {new_state} //Sends a notification that the State of a Structure changed
+php artisan check:fracture {character_name} // name is optional, checks for moon extraction fractures
+php artisan update:character // updates characters public info  (ie corporation)
 ```
 
 ### Private Hosting

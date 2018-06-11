@@ -14,11 +14,11 @@ use App\Extractions;
 use App\ExtractionData;
 use App\Traits\StructureGet;
 use App\Traits\MoonExtractions;
-
+use App\Traits\Tokens;
 
 class StructureController extends Controller
 {
-  use StructureGet, MoonExtractions;
+  use StructureGet, MoonExtractions, Tokens;
 
   public function __construct() {
       $this->middleware('auth');
@@ -67,7 +67,7 @@ class StructureController extends Controller
       }
     }
 
-    $refresh = CharacterController::tokenRefresh($character->character_id);
+    $refresh = $this->refreshToken($character->character_name);
 
     switch ($refresh) {
       case "not_expired":
@@ -77,6 +77,25 @@ class StructureController extends Controller
       case "refreshed":
         //Pull down new info from DB
         $character = Character::where('user_id', \Auth::id())->where('character_id', $character_id)->first();
+        break;
+
+      case "failure limit reached":
+        //Must reauth
+        $alert = "We have failed to refresh your tokens too many times, no longer trying. Please reauth.";
+        return redirect()->to('/home')->with('alert', [$alert]);
+        break;
+
+      case "5xx":
+        Log::error("ServerException caught in token refresh: " . $e->getMessage());
+        $alert = "We received a 5xx error from ESI, this usually means an issue on CCP's end, please try again later.";
+        //5xx error, usually and issue with ESI
+        return redirect()->to('/home')->with('alert', [$alert]);
+        break;
+
+      case "failed":
+        Log::error("Exception caught in token refresh: " . $e->getMessage());
+        $alert = "We failed to refresh your tokens, please try again later.";
+        return redirect()->to('/home')->with('alert', [$alert]);
         break;
 
       default:

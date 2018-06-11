@@ -26,9 +26,11 @@ class Kernel extends ConsoleKernel
     {
       $schedule->command('check:orphans')->weekly();
       $schedule->command('update:structures')->hourly();
-      $schedule->command('check:fuel')->hourlyAt(30);
       $schedule->command('check:unanchor')->hourlyAt(15);
+      $schedule->command('check:fuel')->hourlyAt(30);
+      $schedule->command('check:fracture')->hourlyAt(45);
       $schedule->command('extraction:daily')->dailyAt('13:00');
+      $schedule->command('update:character')->twiceDaily(1,14);
     }
 
     /**
