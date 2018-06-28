@@ -170,7 +170,7 @@ trait StructureGet {
             \Artisan::call('strct:state', ['structure_id' => $strct->structure_id, 'old_state' => $current_state, 'new_state' => $strct->state]);
           }
         }
-        $unv_url = "/v1/universe/structures/$strct->structure_id/";
+        $unv_url = "/v2/universe/structures/$strct->structure_id/";
         $resp = $client->get($unv_url, $auth_headers);
         $unv = json_decode($resp->getBody());
 
