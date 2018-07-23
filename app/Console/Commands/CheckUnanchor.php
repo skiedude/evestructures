@@ -7,7 +7,8 @@ use App\Jobs\UnanchorCheck;
 use App\UnanchorNotice;
 use App\Structure;
 use App\NotificationManager;
-use App\Notifications\UnanchorDiscord;
+use App\Notifications\Discord\UnanchorDiscord;
+use App\Notifications\Slack\UnanchorSlack;
 
 use Log;
 
@@ -60,6 +61,7 @@ class CheckUnanchor extends Command
             Log::debug("Ending UnanchorCheck for $structure->structure_name for $character->character_name, no unanchor_webhook");
             continue;
           }
+
           if($structure->unanchors_at == 'n/a') {
             UnanchorNotice::updateOrCreate(
               ['structure_id' => $structure->structure_id, 'character_id' => $character->character_id],
@@ -84,7 +86,11 @@ class CheckUnanchor extends Command
               ['start_notice' => TRUE, 'finish_notice' => FALSE]
             );
 
-            $notification->notify(new UnanchorDiscord($structure, $character, 'START'));
+            if(preg_match("/slack/", $notification->unanchor_webhook)) {
+              $notification->slackChannel('unanchor_webhook')->notify(new UnanchorSlack($structure, $character, 'START'));
+            } else {
+              $notification->notify(new UnanchorDiscord($structure, $character, 'START'));
+            }
           }
 
           if($diff->days == 0 && $diff->h <= 24) {
@@ -95,7 +101,12 @@ class CheckUnanchor extends Command
                 ['start_notice' => TRUE, 'finish_notice' => TRUE]
               );
 
-              $notification->notify(new UnanchorDiscord($structure, $character, 'FINISH'));
+              if(preg_match("/slack/", $notification->unanchor_webhook)) {
+                $notification->slackChannel('unanchor_webhook')->notify(new UnanchorSlack($structure, $character, 'FINAL'));
+              } else {
+                $notification->notify(new UnanchorDiscord($structure, $character, 'FINISH'));
+              }
+
             }
           }
 

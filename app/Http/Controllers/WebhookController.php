@@ -5,7 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Character;
 use App\NotificationManager;
-use App\Notifications\testDiscord;
+use App\Notifications\Discord\testDiscord;
+use App\Notifications\Slack\testSlack;
 
 class WebhookController extends Controller
 {
@@ -21,9 +22,12 @@ class WebhookController extends Controller
       return redirect()->to('/home')->with('alert', [$alert]);
     }
 
+    #allow both slack/discord URLs
+    $validation = array('nullable','max:225','regex:/(^https:\/\/(canary.)?discordapp.com\/api\/webhooks.*)|(^https:\/\/hooks.slack.com\/services\/.*)/');
+
     if(isset($request->fuel_webhook)) {
       $this->validate($request, [
-        'fuel_webhook' => 'nullable|max:225|regex:/(^https:\/\/(canary.)?discordapp.com\/api\/webhooks.*)/',  
+         'fuel_webhook' => $validation
       ]);
       NotificationManager::updateOrCreate(
         ['user_id' => \Auth::id(), 'character_id' => $character->character_id],
@@ -32,7 +36,7 @@ class WebhookController extends Controller
 
     } elseif(isset($request->state_webhook)) {
       $this->validate($request, [
-        'state_webhook' => 'nullable|max:225|regex:/(^https:\/\/(canary.)?discordapp.com\/api\/webhooks.*)/',  
+        'state_webhook' => $validation,  
       ]);
       NotificationManager::updateOrCreate(
         ['user_id' => \Auth::id(), 'character_id' => $character->character_id],
@@ -41,7 +45,7 @@ class WebhookController extends Controller
 
     } elseif(isset($request->unanchor_webhook)) {
       $this->validate($request, [
-        'unanchor_webhook' => 'nullable|max:225|regex:/(^https:\/\/(canary.)?discordapp.com\/api\/webhooks.*)/',  
+        'unanchor_webhook' => $validation,  
       ]);
       NotificationManager::updateOrCreate(
         ['user_id' => \Auth::id(), 'character_id' => $character->character_id],
@@ -50,7 +54,7 @@ class WebhookController extends Controller
 
     } elseif(isset($request->extraction_webhook)) {
       $this->validate($request, [
-        'extraction_webhook' => 'nullable|max:225|regex:/(^https:\/\/(canary.)?discordapp.com\/api\/webhooks.*)/',  
+        'extraction_webhook' => $validation,  
       ]);
       NotificationManager::updateOrCreate(
         ['user_id' => \Auth::id(), 'character_id' => $character->character_id],
@@ -61,7 +65,7 @@ class WebhookController extends Controller
 
     }
     
-    $success = "Successfully added/updated your Discord Webhook for $character->character_name";
+    $success = "Successfully added/updated your Webhook for $character->character_name";
     return redirect()->to('/home/notifications')->with('success', [$success]);
   }
 
@@ -74,11 +78,11 @@ class WebhookController extends Controller
     
     NotificationManager::where('user_id', \Auth::id())->where('character_id', $character->character_id)->delete();
 
-    $success = "Successfully deleted your Discord Webhook for $character->character_name";
+    $success = "Successfully deleted your Webhook(s) for $character->character_name";
     return redirect()->to('/home/notifications')->with('success', [$success]);
   }
 
-  public function testDiscord($character_id, Request $request) {
+  public function testNotify($character_id, Request $request) {
     $character = Character::where('user_id', \Auth::id())->where('character_id', $character_id)->first();
     if(is_null($character)) {
       $alert = "Character not found on this account";
@@ -91,7 +95,11 @@ class WebhookController extends Controller
       return redirect()->to('/home/notifications')->with('alert', [$alert]);
     }
 
-    $notification->notify(new testDiscord($character, $request->webhook_test));
+    if(preg_match("/slack/", $notification->{$request->webhook_test})) {
+      $notification->slackChannel($request->webhook_test)->notify(new testSlack($character, $request->webhook_test));
+    } else {
+      $notification->notify(new testDiscord($character, $request->webhook_test));
+    }
 
     $success = "Test Successfully Sent";
     return redirect()->to('/home/notifications')->with('success', [$success]);

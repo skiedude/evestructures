@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Notifications;
+namespace App\Notifications\Discord;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;

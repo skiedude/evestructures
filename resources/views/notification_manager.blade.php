@@ -9,6 +9,12 @@
       <h3 class="panel-title"><strong>Notifications</strong></h3>
     </div>
     <div class="panel-body">
+      <p>Discord or Slack webhooks can be used, mix and match as you want!
+        <ul>
+          <li><a href="https://support.discordapp.com/hc/en-us/articles/228383668-Intro-to-Webhooks" target="_blank">How-to create Discord Webhooks</a></li>
+          <li><a href="https://get.slack.help/hc/en-us/articles/115005265063-Incoming-WebHooks-for-Slack" target="_blank">How-to create Slack Webhooks</a></li>
+        </ul>
+      </p>
       @if(isset($notifications) && count($notifications))
         @foreach($notifications as $notify)
 

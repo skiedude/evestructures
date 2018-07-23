@@ -47,7 +47,7 @@ Route::get('/account/delete', 'HomeController@deleteAccount');
 //WEBHOOK ROUTES//
 Route::post('/webhook/{character_id}', 'WebhookController@store');
 Route::delete('/webhook/delete/{character_id}', 'WebhookController@destroy');
-Route::post('/webhook/test/{character_id}', 'WebhookController@testDiscord');
+Route::post('/webhook/test/{character_id}', 'WebhookController@testNotify');
 
 //PUBLIC EXTRACTIONS//
 Route::get('/extraction/', 'SlugController@index')->name('extraction');

@@ -6,7 +6,8 @@ use Illuminate\Console\Command;
 use App\Structure;
 use App\Character;
 use App\NotificationManager;
-use App\Notifications\ExtractionsDailyDiscord;
+use App\Notifications\Discord\ExtractionsDailyDiscord;
+use App\Notifications\Slack\ExtractionsDailySlack;
 use Log;
 
 class DailyExtractions extends Command
@@ -67,7 +68,12 @@ class DailyExtractions extends Command
               continue;
             }
 
-            $notification->notify(new ExtractionsDailyDiscord($character, $extractions));
+            if(preg_match("/slack/", $notification->extraction_webhook)) {
+              $notification->slackChannel('extraction_webhook')->notify(new ExtractionsDailySlack($character, $extractions));
+            } else {
+              $notification->notify(new ExtractionsDailyDiscord($character, $extractions));
+            }
+
             Log::debug("Ending Daily Extractions Notification for $structure->structure_name for $character->character_name");
           }
         }

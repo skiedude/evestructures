@@ -3,7 +3,8 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
-use App\Notifications\StrctStateChange;
+use App\Notifications\Discord\StrctStateChange;
+use App\Notifications\Slack\StrctStateChangeSlack;
 use App\Structure;
 use App\NotificationManager;
 use Log;
@@ -52,7 +53,19 @@ class StructureStateChange extends Command
           continue;
         }
 
-        $notification->notify(new StrctStateChange($structure, $character, $this->argument('old_state'), $this->argument('new_state')));
+        if(preg_match("/slack/", $notification->unanchor_webhook)) {
+          #keep anything anchoring in the anchor channel
+          if(stripos($this->argument('old_state'), 'anchor') !== false || stripos($this->argument('new_state'), 'anchor') !== false) {
+            $webhook = 'unanchor_webhook';
+          } else {
+            $webhook = 'state_webhook';
+          }
+
+          $notification->slackChannel($webhook)->notify(new StrctStateChangeSlack($structure, $character, $this->argument('old_state'), $this->argument('new_state')));
+        } else {
+          $notification->notify(new StrctStateChange($structure, $character, $this->argument('old_state'), $this->argument('new_state')));
+        }
+
          Log::debug("Ending Structure State Change Notification for $structure->structure_name for $character->character_name, notification successfully sent");
       }
     }

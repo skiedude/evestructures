@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Notifications;
+namespace App\Notifications\Discord;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
@@ -46,7 +46,7 @@ class FractureDiscord extends Notification
         $embed = new Embed();
 
         if($this->type == 'manual') {
-          $embed->field("Manual Fracture", $this->extraction->chunk_arrival_time);
+          $embed->field("Expected Manual Fracture", $this->extraction->chunk_arrival_time);
           $embed->description(":boom: {$this->moon->name} is ready to Manual Fracture for {$this->character->corporation_name}! :boom:");
         } else {
           $embed->field("Auto Fracture", $this->extraction->natural_decay_time);
@@ -55,7 +55,7 @@ class FractureDiscord extends Notification
 
         $embed->field("Moon", $this->moon->name);
         $embed->field("Ores Available", $this->extraction_data->ores);
-        $embed->field("Estimated Value", $this->extraction_data->value);
+        $embed->field("Estimated Value", number_format($this->extraction_data->value));
         $embed->color( 0x24d04a );
         $embed->author(env('APP_NAME'). 'Bot', null, "https://imageserver.eveonline.com/Character/{$notifiable->character_id}_64.jpg");
 

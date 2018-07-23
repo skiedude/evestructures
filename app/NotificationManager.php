@@ -12,5 +12,14 @@ class NotificationManager extends Model
   protected $guarded = [];
   protected $table = 'notification_info';
 
+  public $slack_webhook;
 
+  public function routeNotificationForSlack() {
+    return $this->{$this->slack_webhook};
+  }
+
+  public function slackChannel($channel) {
+    $this->slack_webhook = $channel;
+    return $this;
+  }
 }

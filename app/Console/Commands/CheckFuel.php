@@ -6,7 +6,8 @@ use Illuminate\Console\Command;
 use App\FuelNotice;
 use App\Structure;
 use App\NotificationManager;
-use App\Notifications\LowFuelDiscord;
+use App\Notifications\Discord\LowFuelDiscord;
+use App\Notifications\Slack\LowFuelSlack;
 use Log;
 
 class CheckFuel extends Command
@@ -78,7 +79,12 @@ class CheckFuel extends Command
               FuelNotice::updateOrCreate(
                 ['structure_id' => $structure->structure_id, 'character_id' => $character->character_id],
                 ['twentyfour_hour' => TRUE]);
-              $notification->notify(new LowFuelDiscord($structure, $character));
+
+              if(preg_match("/slack/", $notification->unanchor_webhook)) {
+                $notification->slackChannel('fuel_webhook')->notify(new LowFuelSlack($structure, $character));
+              } else {
+                $notification->notify(new LowFuelDiscord($structure, $character));
+              }
             }
           } elseif($days_left > 0 && $days_left <= 7) {
               if((isset($fuel_notices) && $fuel_notices->seven_day == FALSE) || !isset($fuel_notices->seven_day)) {
@@ -88,7 +94,13 @@ class CheckFuel extends Command
                   ['structure_id' => $structure->structure_id, 'character_id' => $character->character_id],
                   ['seven_day' => TRUE, 'twentyfour_hour' => FALSE]
                 );
-                $notification->notify(new LowFuelDiscord($structure, $character));
+
+                if(preg_match("/slack/", $notification->unanchor_webhook)) {
+                  $notification->slackChannel('fuel_webhook')->notify(new LowFuelSlack($structure, $character));
+                } else {
+                  $notification->notify(new LowFuelDiscord($structure, $character));
+                }
+
             } elseif(isset($fuel_notices)) {
                 //If we are above 1 day, but less than 7 and we HAVE notified then mark the 24hour as not sent
                 // This catches people who only refuel for less than a week that we already notified for 24 hours
