@@ -42,7 +42,6 @@ class ExtractionsDailySlack extends Notification
           $extractions .= "*$ext->moon_name*\nChunk Arrives: $ext->chunk_arrival_time\nAuto Fracture: $ext->natural_decay_time\n";
         }
 
-        Log::debug(print_r($extractions, true));
         return (new SlackMessage)
           ->success()
           ->image(env('APP_URL') . "/images/avatar.png")
