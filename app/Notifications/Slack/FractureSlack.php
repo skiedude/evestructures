@@ -41,24 +41,24 @@ class FractureSlack extends Notification
     public function toSlack($notifiable) {
       try {
         Log::debug("Sending Fracture slack notification for {$this->moon->name} for character $notifiable->character_id");
-
+        $fracture_data = new \stdClass(); 
         if($this->type == 'manual') {
-          $fracture_type = "Expected Manual Fracture"; 
-          $fracture_time = $this->extraction->chunk_arrival_time;
-          $content = ":boom: {$this->moon->name} is ready to Manual Fracture for {$this->character->corporation_name}! :boom:";
+          $fracture_data->{'message'} = "Expected Manual Fracture"; 
+          $fracture_data->{'time'} = $this->extraction->chunk_arrival_time;
+          $fracture_data->{'content'} = ":boom: {$this->moon->name} is ready to Manual Fracture for {$this->character->corporation_name}! :boom:";
         } else {
-          $fracture_type = "Auto Fracture"; 
-          $fracture_time = $this->extraction->natural_decay_time;
-          $content = ":boom: {$this->moon->name} is about to Auto Fracture for {$this->character->corporation_name}! :boom:";
+          $fracture_data->{'message'} = "Auto Fracture"; 
+          $fracture_data->{'time'} = $this->extraction->natural_decay_time;
+          $fracture_data->{'content'} = ":boom: {$this->moon->name} is about to Auto Fracture for {$this->character->corporation_name}! :boom:";
         }
 
         return (new SlackMessage)
           ->image(env('APP_URL') . "/images/avatar.png")
-          ->content($content)
+          ->content($fracture_data->content)
           ->from(env('APP_NAME') . 'Bot')
-          ->attachment(function ($attachment) {
+          ->attachment(function ($attachment) use ($fracture_data) {
             $attachment->fields([
-                "$fracture_type" => $fracture_message,
+                $fracture_data->message => $fracture_data->time, 
                 'Moon' => $this->moon->name,
                 'Ores Available' => $this->extraction_data->ores,
                 'Estimated Value' => number_format($this->extraction_data->value),
