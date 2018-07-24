@@ -3,7 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\User;
+use App\NotificationManager;
+use App\Character;
 use DB;
 
 class NotificationManagerController extends Controller
@@ -20,10 +21,25 @@ class NotificationManagerController extends Controller
     $success = $success[0];
     $warning = $warning[0];
 
-    $notifications = DB::table('users')
-              ->join('characters', 'users.id', '=', 'characters.user_id')
-              ->leftJoin('notification_info', 'characters.character_id', '=', 'notification_info.character_id')
-              ->where('users.id',  auth()->id())
+
+    $characters = DB::table('characters')->where('user_id', auth()->id())->where('is_manager', TRUE)->select('character_id')->get();
+    foreach($characters as $char) {
+      #Delete entries for a character that was on a previous account that has been moved
+      $old = NotificationManager::where('user_id', '<>', auth()->id())->where('character_id', $char->character_id)->delete();
+
+      #If a character doesn't exit here, but should, create it
+      $find = NotificationManager::where('user_id', auth()->id())->where('character_id', $char->character_id)->get();
+      if(count($find) < 1) {
+        $new = new NotificationManager;
+        $new->character_id = $char->character_id;
+        $new->user_id = auth()->id();
+        $new->save();
+      };
+    }
+
+    $notifications = DB::table('characters')
+              ->join('notification_info', 'characters.character_id', '=', 'notification_info.character_id')
+              ->where('characters.user_id',  auth()->id())
               ->where('characters.is_manager', TRUE)
               ->select('characters.character_name', 'characters.character_id as char_id', 'notification_info.*')
               ->get();
