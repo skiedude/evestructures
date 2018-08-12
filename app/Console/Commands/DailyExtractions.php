@@ -61,6 +61,18 @@ class DailyExtractions extends Command
           }
           
           if(count($extractions) > 0) {
+
+            usort($extractions, function($a,$b) {
+              $ad = new \DateTime($a->chunk_arrival_time);
+              $bd = new \DateTime($b->chunk_arrival_time);
+
+              if($ad == $bd) {
+                return 0;
+              }
+
+              return $ad < $bd ? -1 : 1;
+            });
+
             $notification = NotificationManager::where('character_id', $character->character_id)->first();
             if(!isset($notification->extraction_webhook) || is_null($notification->extraction_webhook)) {
               //Nothing to send withot a webhook
