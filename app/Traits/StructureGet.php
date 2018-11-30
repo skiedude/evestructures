@@ -69,7 +69,7 @@ trait StructureGet {
     }
 
     try {
-      $structure_url = "/v2/corporations/$character->corporation_id/structures/";
+      $structure_url = "/v3/corporations/$character->corporation_id/structures/";
       $resp = $client->get($structure_url, $auth_headers);
       $esi_structures = json_decode($resp->getBody());
     } catch (ServerException $e ) {
@@ -154,9 +154,37 @@ trait StructureGet {
         case 35836:
           $type_name = 'Tatara';
           break;
+        case 47512:
+          $type_name = 'Moreau Fortizar';
+          break;
+        case 47513:
+          $type_name = 'Draccous Fortizar';
+          break;
+        case 47514:
+          $type_name = 'Horizon Fortizar';
+          break;
+        case 47515:
+          $type_name = 'Marginis Fortizar';
+          break;
+        case 47516:
+          $type_name = 'Prometheus Fortizar';
+          break;
+        case 35841:
+          $type_name = 'Ansiblex Jump Gate';
+          break;
+        case 35840:
+          $type_name = 'Pharolux Cyno Beacon';
+          break;
+        case 37534:
+          $type_name = 'Tenebrex Cyno Jammer';
+          break;
         default:
           $type_name = 'Unknown';
           break;
+      }
+
+      if($type_name == 'Unknown') { 
+        Log::DEBUG("UNKNOWN STRUCTURE TYPE: $strct->type_id");
       }
 
       try {
@@ -268,9 +296,12 @@ trait StructureGet {
           $next_apply = str_replace($tz, " ", $strct->next_reinforce_apply);
         }
 
+        #Flex structures don't return this
+        $ref_day = isset($strct->reinforce_weekday) ? $days[$strct->reinforce_weekday] : 'No Day';
+
         StructureVul::updateOrCreate(
           ['structure_id' => $strct->structure_id],
-          ['day' => $days[$strct->reinforce_weekday], 'hour' => $strct->reinforce_hour,
+          ['day' => $ref_day, 'hour' => $strct->reinforce_hour,
            'next_day' => $next_day, 'next_hour' => $next_hour, 'next_reinforce_apply' => $next_apply]
         );
 
