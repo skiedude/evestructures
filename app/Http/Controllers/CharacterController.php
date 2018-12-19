@@ -96,7 +96,7 @@ class CharacterController extends Controller
       }
       
       try { 
-        $verify_url='https://esi.tech.ccp.is/verify';
+        $verify_url= config('app.CCP_URL') . '/verify';
         $verify_headers = [
           'headers' => [
             'Authorization' => 'Bearer ' . $tokens->access_token,
@@ -114,7 +114,7 @@ class CharacterController extends Controller
       }
       
       try {
-        $character_url = "https://esi.tech.ccp.is/v4/characters/$verify->CharacterID";
+        $character_url = config('app.CCP_URL') . "/v4/characters/$verify->CharacterID";
         $noauth_headers = [
           'headers' => [
             'User-Agent' => env('USERAGENT'),
@@ -123,7 +123,7 @@ class CharacterController extends Controller
         $resp = $client->get($character_url, $noauth_headers);
         $character = json_decode($resp->getBody());
         
-        $corp_url = "https://esi.tech.ccp.is/v4/corporations/$character->corporation_id";
+        $corp_url = config('app.CCP_URL') . "/v4/corporations/$character->corporation_id";
         $resp = $client->get($corp_url, $noauth_headers);
         $corp = json_decode($resp->getBody());
 

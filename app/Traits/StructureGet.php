@@ -21,7 +21,7 @@ trait StructureGet {
 
     $alert = new \stdClass();
     $tz = array("T", "Z");
-    $client = new Client(['base_uri' => 'https://esi.tech.ccp.is/']);
+    $client = new Client(['base_uri' => config('app.CCP_URL') ]);
 
     $auth_headers = [
       'headers' => [

@@ -2,6 +2,9 @@
 
 return [
 
+
+    'CCP_URL' => env('ESI_URL', 'https://esi.evetech.net'),
+
 		/*
     |--------------------------------------------------------------------------
     | Application Name

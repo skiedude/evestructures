@@ -32,7 +32,7 @@ trait MoonExtractions {
       ],
     ];
     try {
-      $client = new Client(['base_uri' => 'https://esi.tech.ccp.is/']);
+      $client = new Client(['base_uri' => config('app.CCP_URL') ]);
 
       $extr_url = "/v1/corporation/$character->corporation_id/mining/extractions/";
       $resp = $client->get($extr_url, $auth_headers);

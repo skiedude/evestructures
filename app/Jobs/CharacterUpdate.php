@@ -37,7 +37,7 @@ class CharacterUpdate implements ShouldQueue
       Log::debug("Updating Public info for {$this->character->character_name}");
       try {
         $client = new Client();
-        $character_url = "https://esi.tech.ccp.is/v4/characters/{$this->character->character_id}";
+        $character_url = config('app.CCP_URL') . "/v4/characters/{$this->character->character_id}";
         $noauth_headers = [
           'headers' => [
             'User-Agent' => env('USERAGENT'),
@@ -46,7 +46,7 @@ class CharacterUpdate implements ShouldQueue
         $resp = $client->get($character_url, $noauth_headers);
         $updated_character = json_decode($resp->getBody());
 
-        $corp_url = "https://esi.tech.ccp.is/v4/corporations/$updated_character->corporation_id";
+        $corp_url = config('app.CCP_URL') . "/v4/corporations/$updated_character->corporation_id";
         $resp = $client->get($corp_url, $noauth_headers);
         $corp = json_decode($resp->getBody());
 
