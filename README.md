@@ -6,7 +6,7 @@ Join Our [Discord!](https://discord.gg/5vUQxMP)
 EveStrucutures is built with the Laravel PHP Framework. For more info on [Laravel](https://laravel.com/docs/5.5)
 
 ## Donate
-If you liked EveStructures, please consider donating ISK in game to [Brock Khans](https://evewho.com/pilot/Brock+Khans) or [PayPal](paypal.me/skiedude)
+If you liked EveStructures, please consider donating ISK in game to [Brock Khans](https://evewho.com/pilot/Brock+Khans) or [PayPal](https://paypal.me/skiedude)
 
 ## Prequisite Installs
 * [php] >= 7.0.0
