@@ -10,7 +10,7 @@ If you liked EveStructures, please consider donating ISK in game to [Brock Khans
 
 ## Prequisite Installs
 * [php] >= 7.0.0
-* mysql or mariadb - Download for your OS (I've found mariadb runs lighter on the memory)
+* mysql or mariadb 5.6+ - Download for your OS (I've found mariadb runs lighter on the memory)
 * [composer](https://getcomposer.org/doc/00-intro.md) - Used for installing Laravel, and other updates
 * [laravel requirements](https://laravel.com/docs/5.5) - Check page
 * [apache/httpd] - Whatever your OS supports
