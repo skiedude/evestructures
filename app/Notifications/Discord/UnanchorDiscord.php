@@ -58,9 +58,12 @@ class UnanchorDiscord extends Notification
         $embed->field('Unanchors At', $this->structure->unanchors_at, TRUE);
         $embed->field('System', $this->structure->system_name, TRUE);
 
+        $ping_here = $notifiable->anchor_ping_here == True ? '@here' : '';
+
         $client->username(env('APP_NAME'))
                 ->avatar(env('APP_URL') . "/images/avatar.png")
-                ->embed($embed);
+                ->embed($embed)
+                ->message($ping_here);
 
         return $client->send();
       } catch (\Exception $e) {

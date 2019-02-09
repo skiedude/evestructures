@@ -37,11 +37,13 @@ class LowFuelSlack extends Notification
 
     public function toSlack($notifiable) {
 
+      $ping_here = $notifiable->fuel_ping_here == True ? ' <!here>' : '';
+
       try {
         return (new SlackMessage)
           ->warning()
           ->image(env('APP_URL') . "/images/avatar.png")
-          ->content(":warning: *Fuel Alert* for {$this->character->corporation_name} :warning:")
+          ->content(":warning: *Fuel Alert* for {$this->character->corporation_name} :warning: $ping_here")
           ->from(env('APP_NAME') . 'Bot')
           ->attachment(function ($attachment) {
             $attachment->title("{$this->structure->structure_name}", env('APP_URL') . "/home/structure/{$this->structure->structure_id}")

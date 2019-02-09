@@ -45,8 +45,10 @@ class StrctStateChange extends Notification
         if(stripos($this->old_state, 'anchor') !== false || stripos($this->new_state, 'anchor') !== false) {
           //Keep anchoring things together
           $webhook = $notifiable->unanchor_webhook;
+          $ping_here = $notifiable->anchor_ping_here == True ? '@here' : '';
         } else {
           $webhook = $notifiable->state_webhook;
+          $ping_here = $notifiable->state_ping_here == True ? '@here' : '';
         }
 
         $client = new Client($webhook);
@@ -67,7 +69,8 @@ class StrctStateChange extends Notification
 
         $client->username(env('APP_NAME'))
                 ->avatar(env('APP_URL') . "/images/avatar.png")
-                ->embed($embed);
+                ->embed($embed)
+                ->message($ping_here);
 
         return $client->send();
       } catch (\Exception $e) {

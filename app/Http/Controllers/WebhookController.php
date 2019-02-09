@@ -29,36 +29,47 @@ class WebhookController extends Controller
       $this->validate($request, [
          'fuel_webhook' => $validation
       ]);
+      $ping = (isset($request->fuel_ping_here) && $request->fuel_ping_here) == 'True' ? True : False;
       NotificationManager::updateOrCreate(
         ['user_id' => \Auth::id(), 'character_id' => $character->character_id],
-        ['fuel_webhook' => $request->fuel_webhook,]
+        ['fuel_webhook' => $request->fuel_webhook,
+         'fuel_ping_here' => $ping]
       );
 
     } elseif(isset($request->state_webhook)) {
       $this->validate($request, [
         'state_webhook' => $validation,  
       ]);
+
+      $ping = (isset($request->state_ping_here) && $request->state_ping_here) == 'True' ? True : False;
       NotificationManager::updateOrCreate(
         ['user_id' => \Auth::id(), 'character_id' => $character->character_id],
-        ['state_webhook' => $request->state_webhook,]
+        ['state_webhook' => $request->state_webhook,
+         'state_ping_here' => $ping]
       );
 
     } elseif(isset($request->unanchor_webhook)) {
       $this->validate($request, [
         'unanchor_webhook' => $validation,  
       ]);
+
+      $ping = (isset($request->anchor_ping_here) && $request->anchor_ping_here) == 'True' ? True : False;
       NotificationManager::updateOrCreate(
         ['user_id' => \Auth::id(), 'character_id' => $character->character_id],
-         ['unanchor_webhook' => $request->unanchor_webhook]
+         ['unanchor_webhook' => $request->unanchor_webhook,
+          'anchor_ping_here' => $ping]
       );
 
     } elseif(isset($request->extraction_webhook)) {
       $this->validate($request, [
         'extraction_webhook' => $validation,  
       ]);
+
+      $ping = (isset($request->extraction_ping_here) && $request->extraction_ping_here) == 'True' ? True : False;
       NotificationManager::updateOrCreate(
         ['user_id' => \Auth::id(), 'character_id' => $character->character_id],
-        ['extraction_webhook' => $request->extraction_webhook,]
+        ['extraction_webhook' => $request->extraction_webhook,
+         'extraction_ping_here' => $ping]
       );
 
     } else {

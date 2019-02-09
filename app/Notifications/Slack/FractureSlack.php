@@ -42,14 +42,17 @@ class FractureSlack extends Notification
       try {
         Log::debug("Sending Fracture slack notification for {$this->moon->name} for character $notifiable->character_id");
         $fracture_data = new \stdClass(); 
+
+        $ping_here = $notifiable->extraction_ping_here == True ? ' <!here>' : '';
+
         if($this->type == 'manual') {
           $fracture_data->{'message'} = "Expected Manual Fracture"; 
           $fracture_data->{'time'} = $this->extraction->chunk_arrival_time;
-          $fracture_data->{'content'} = ":boom: {$this->moon->name} is ready to Manual Fracture for {$this->character->corporation_name}! :boom:";
+          $fracture_data->{'content'} = ":boom: {$this->moon->name} is ready to Manual Fracture for {$this->character->corporation_name}! :boom: $ping_here";
         } else {
           $fracture_data->{'message'} = "Auto Fracture"; 
           $fracture_data->{'time'} = $this->extraction->natural_decay_time;
-          $fracture_data->{'content'} = ":boom: {$this->moon->name} is about to Auto Fracture for {$this->character->corporation_name}! :boom:";
+          $fracture_data->{'content'} = ":boom: {$this->moon->name} is about to Auto Fracture for {$this->character->corporation_name}! :boom: $ping_here";
         }
 
         return (new SlackMessage)

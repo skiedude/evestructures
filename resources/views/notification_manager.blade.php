@@ -35,38 +35,60 @@
               <label for="fuel_webhook">Low Fuel Webhook</label>
               <input type="text" class="form-control" name="fuel_webhook" id="fuel_webhook" value="{{$notify->fuel_webhook ?? ''}}">
             </div>
+            <div class="form-check">
+              <input name="fuel_ping_here" class="form-check-input" type="checkbox" value="True" id="fuel_ping_here" @if($notify->fuel_ping_here == True) checked @endif>
+              <label class="form-check-label" for="fuel_ping_here">
+                Ping @here for Fuel notifications
+              </label>
+            </div>
             <div class="form-group">
               <button type="submit" class="btn btn-success btn-xs">Update</button>
             </div>
           </form>
-
           <form method="POST" action="{{ url('/webhook') }}/{{$notify->char_id}}">
             {{ csrf_field() }}
             <div class="form-group">
               <label for="state_webhook">Structure State Webhook</label>
               <input type="text" class="form-control" name="state_webhook" id="state_webhook" width="10" value="{{$notify->state_webhook ?? ''}}">
             </div>
+            <div class="form-check">
+              <input class="form-check-input" name="state_ping_here" type="checkbox" value="True" id="state_ping_here" @if($notify->state_ping_here == True) checked @endif>
+              <label class="form-check-label" for="state_ping_here">
+                Ping @here for State notifications
+              </label>
+            </div>
             <div class="form-group">
               <button type="submit" class="btn btn-success btn-xs">Update</button>
             </div>
           </form>
-
           <form method="POST" action="{{ url('/webhook') }}/{{$notify->char_id}}">
             {{ csrf_field() }}
             <div class="form-group">
               <label for="unanchor_webhook">Anchor/Unanchor Webhook</label>
               <input type="text" class="form-control" name="unanchor_webhook" id="unanchor_webhook" width="10" value="{{$notify->unanchor_webhook ?? ''}}" >
             </div>
+            <div class="form-check">
+              <input class="form-check-input" name="anchor_ping_here" type="checkbox" value="True" id="anchor_ping_here" @if($notify->anchor_ping_here == True) checked @endif>
+              <label class="form-check-label" for="anchor_ping_here">
+                Ping @here for Anchor/Unanchor notifications
+              </label>
+            </div>
+
             <div class="form-group">
               <button type="submit" class="btn btn-success btn-xs">Update</button>
             </div>
           </form>
-
           <form method="POST" action="{{ url('/webhook') }}/{{$notify->char_id}}">
             {{ csrf_field() }}
             <div class="form-group">
               <label for="extraction_webhook">Extractions Webhook</label>
               <input type="text" class="form-control" name="extraction_webhook" id="extraction_webhook" width="10" value="{{$notify->extraction_webhook ?? ''}}" >
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" name="extraction_ping_here" type="checkbox" value="True" id="extraction_ping_here" @if($notify->extraction_ping_here == True) checked @endif>
+              <label class="form-check-label" for="extraction_ping_here">
+                Ping @here for Extraction notifications
+              </label>
             </div>
             <div class="form-group">
               <button type="submit" class="btn btn-success btn-xs">Update</button>

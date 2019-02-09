@@ -38,10 +38,12 @@ class StrctStateChangeSlack extends Notification
 
 
     public function toSlack($notifiable) {
+
+      $ping_here = $notifiable->state_ping_here == True ? ' <!here>' : '';
       try {
         return (new SlackMessage)
           ->image(env('APP_URL') . "/images/avatar.png")
-          ->content(":large_orange_diamond: *Structure Changed State* for {$this->character->corporation_name} :large_orange_diamond:")
+          ->content(":large_orange_diamond: *Structure Changed State* for {$this->character->corporation_name} :large_orange_diamond: $ping_here")
           ->from(env('APP_NAME') . 'Bot')
           ->attachment(function ($attachment) {
             $attachment->title("{$this->structure->structure_name}", env('APP_URL') . "/home/structure/{$this->structure->structure_id}")

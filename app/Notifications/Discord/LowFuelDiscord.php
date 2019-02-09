@@ -50,10 +50,13 @@ class LowFuelDiscord extends Notification
         $embed->field('Fuel Remaining', $this->structure->fuel_time_left, TRUE);
         $embed->field('Fuel Expiration', $this->structure->fuel_expires, TRUE);
         $embed->field('System', $this->structure->system_name, TRUE);
+        
+        $ping_here = $notifiable->fuel_ping_here == True ? '@here' : '';
 
         $client->username(env('APP_NAME'))
                 ->avatar(env('APP_URL') . "/images/avatar.png")
-                ->embed($embed);
+                ->embed($embed)
+                ->message($ping_here);
 
         return $client->send();
       } catch (\Exception $e) {

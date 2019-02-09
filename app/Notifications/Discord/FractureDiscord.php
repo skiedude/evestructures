@@ -59,9 +59,12 @@ class FractureDiscord extends Notification
         $embed->color( 0x24d04a );
         $embed->author(env('APP_NAME'). 'Bot', null, "https://imageserver.eveonline.com/Character/{$notifiable->character_id}_64.jpg");
 
+        $ping_here = $notifiable->extraction_ping_here == True ? '@here' : '';
+
         $client->username(env('APP_NAME'))
                 ->avatar(env('APP_URL') . "/images/avatar.png")
-                ->embed($embed);
+                ->embed($embed)
+                ->message($ping_here);
 
         Log::debug("Sending Fracture discord notification for {$this->moon->name} for character $notifiable->character_id");
         return $client->send();
