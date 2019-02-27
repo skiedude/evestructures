@@ -56,9 +56,9 @@ class StructureStateChange extends Command
         if(preg_match("/slack/", $notification->unanchor_webhook)) {
           #keep anything anchoring in the anchor channel
           if(stripos($this->argument('old_state'), 'anchor') !== false || stripos($this->argument('new_state'), 'anchor') !== false) {
-            $webhook = $notification->unanchor_webhook;
+            $webhook = 'unanchor_webhook';
           } else {
-            $webhook = $notification->state_webhook;
+            $webhook = 'state_webhook';
           }
 
           $notification->slackChannel($webhook)->notify(new StrctStateChangeSlack($structure, $character, $this->argument('old_state'), $this->argument('new_state')));

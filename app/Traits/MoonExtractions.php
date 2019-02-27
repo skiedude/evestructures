@@ -108,7 +108,7 @@ trait MoonExtractions {
           if(is_null($fracture_notice) || $fracture_notice->notice == FALSE) {
 
             if(preg_match("/slack/", $notification->extraction_webhook)) {
-              $notification->slackChannel($notification->extraction_webhook)->notify(new FractureSlack('manual', $ext, $moon, $fracture_data, $character)); 
+              $notification->slackChannel('extraction_webhook')->notify(new FractureSlack('manual', $ext, $moon, $fracture_data, $character)); 
             } else {
               $notification->notify(new FractureDiscord('manual', $ext, $moon, $fracture_data, $character)); 
             }
@@ -125,7 +125,7 @@ trait MoonExtractions {
           if(is_null($fracture_notice) || $fracture_notice->notice == FALSE) {
 
             if(preg_match("/slack/", $notification->extraction_webhook)) {
-              $notification->slackChannel($notification->extraction_webhook)->notify(new FractureSlack('auto', $ext, $moon, $fracture_data, $character)); 
+              $notification->slackChannel('extraction_webhook')->notify(new FractureSlack('auto', $ext, $moon, $fracture_data, $character)); 
             } else {
               $notification->notify(new FractureDiscord('auto', $ext, $moon, $fracture_data, $character)); 
             }
