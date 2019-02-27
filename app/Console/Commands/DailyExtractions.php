@@ -81,7 +81,7 @@ class DailyExtractions extends Command
             }
 
             if(preg_match("/slack/", $notification->extraction_webhook)) {
-              $notification->slackChannel('extraction_webhook')->notify(new ExtractionsDailySlack($character, $extractions));
+              $notification->slackChannel($notification->extraction_webhook)->notify(new ExtractionsDailySlack($character, $extractions));
             } else {
               $notification->notify(new ExtractionsDailyDiscord($character, $extractions));
             }

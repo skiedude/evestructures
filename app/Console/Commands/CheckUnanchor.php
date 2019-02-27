@@ -87,7 +87,7 @@ class CheckUnanchor extends Command
             );
 
             if(preg_match("/slack/", $notification->unanchor_webhook)) {
-              $notification->slackChannel('unanchor_webhook')->notify(new UnanchorSlack($structure, $character, 'START'));
+              $notification->slackChannel($notification->unanchor_webhook)->notify(new UnanchorSlack($structure, $character, 'START'));
             } else {
               $notification->notify(new UnanchorDiscord($structure, $character, 'START'));
             }
@@ -102,7 +102,7 @@ class CheckUnanchor extends Command
               );
 
               if(preg_match("/slack/", $notification->unanchor_webhook)) {
-                $notification->slackChannel('unanchor_webhook')->notify(new UnanchorSlack($structure, $character, 'FINAL'));
+                $notification->slackChannel($notification->unanchor_webhook)->notify(new UnanchorSlack($structure, $character, 'FINAL'));
               } else {
                 $notification->notify(new UnanchorDiscord($structure, $character, 'FINISH'));
               }

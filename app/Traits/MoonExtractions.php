@@ -107,8 +107,8 @@ trait MoonExtractions {
         if($diff_manual->days == 0 && $diff_manual->h <= 1 && $diff_manual->invert == 1 && !is_null($notification->extraction_webhook)) {
           if(is_null($fracture_notice) || $fracture_notice->notice == FALSE) {
 
-            if(preg_match("/slack/", $notification->unanchor_webhook)) {
-              $notification->slackChannel('extraction_webhook')->notify(new FractureSlack('manual', $ext, $moon, $fracture_data, $character)); 
+            if(preg_match("/slack/", $notification->extraction_webhook)) {
+              $notification->slackChannel($notification->extraction_webhook)->notify(new FractureSlack('manual', $ext, $moon, $fracture_data, $character)); 
             } else {
               $notification->notify(new FractureDiscord('manual', $ext, $moon, $fracture_data, $character)); 
             }
@@ -124,8 +124,8 @@ trait MoonExtractions {
         if($diff_auto->days == 0 && $diff_auto->h <= 0 && $diff_auto->invert == 0 && !is_null($notification->extraction_webhook)) {
           if(is_null($fracture_notice) || $fracture_notice->notice == FALSE) {
 
-            if(preg_match("/slack/", $notification->unanchor_webhook)) {
-              $notification->slackChannel('extraction_webhook')->notify(new FractureSlack('auto', $ext, $moon, $fracture_data, $character)); 
+            if(preg_match("/slack/", $notification->extraction_webhook)) {
+              $notification->slackChannel($notification->extraction_webhook)->notify(new FractureSlack('auto', $ext, $moon, $fracture_data, $character)); 
             } else {
               $notification->notify(new FractureDiscord('auto', $ext, $moon, $fracture_data, $character)); 
             }

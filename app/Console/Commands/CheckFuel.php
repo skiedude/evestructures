@@ -80,8 +80,8 @@ class CheckFuel extends Command
                 ['structure_id' => $structure->structure_id, 'character_id' => $character->character_id],
                 ['twentyfour_hour' => TRUE]);
 
-              if(preg_match("/slack/", $notification->unanchor_webhook)) {
-                $notification->slackChannel('fuel_webhook')->notify(new LowFuelSlack($structure, $character));
+              if(preg_match("/slack/", $notification->fuel_webhook)) {
+                $notification->slackChannel($notification->fuel_webhook)->notify(new LowFuelSlack($structure, $character));
               } else {
                 $notification->notify(new LowFuelDiscord($structure, $character));
               }
@@ -95,8 +95,8 @@ class CheckFuel extends Command
                   ['seven_day' => TRUE, 'twentyfour_hour' => FALSE]
                 );
 
-                if(preg_match("/slack/", $notification->unanchor_webhook)) {
-                  $notification->slackChannel('fuel_webhook')->notify(new LowFuelSlack($structure, $character));
+                if(preg_match("/slack/", $notification->fuel_webhook)) {
+                  $notification->slackChannel($notification->fuel_webhook)->notify(new LowFuelSlack($structure, $character));
                 } else {
                   $notification->notify(new LowFuelDiscord($structure, $character));
                 }
