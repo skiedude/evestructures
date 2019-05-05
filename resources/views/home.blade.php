@@ -34,6 +34,7 @@
               <th></th>
               <th>Name</th>
               <th>Corporation</th>
+              <th class="text-center">Token Status</th>
               <th class="text-center" colspan="2">Actions</th>
             </tr>
             </thead>
@@ -42,6 +43,12 @@
               <td><img src="https://imageserver.eveonline.com/Character/{{$char->character_id}}_32.jpg"></td>
               <td><a href="#{{$char->character_name}}">{{str_replace('_', ' ', $char->character_name)}}</a></td>
               <td>{{$char->corporation_name}}</td>
+              <td align="center">
+                @if($char->token_failures >= 5)<span style="color:red"><i class="fas fa-exclamation-triangle" title="5+ failures, reauth this character"></i>
+                @elseif($char->token_failures > 1 && $char->token_failures < 5)<span style="color:orange"><i class="fas fa-exclamation-triangle" title="Medium amount of failures, potential ESI issue"></i>
+                @else($char->token_failures == 0)<span style="color:green"><i class="fas fa-check-circle" title="Looking good champ!"></i>
+                @endif</span>
+              </td>
               <td align="right"><a href="{{ url('/fetch') }}/{{$char->character_id}}"><button class="btn btn-default">Fetch</button></a>
               <button class="btn btn-danger" type="button" data-toggle="modal" data-target="#delete_{{$char->character_id}}">Delete</button>
               </td>
