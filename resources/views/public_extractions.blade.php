@@ -13,6 +13,7 @@
       <thead>
       <tr>
         <th>Location</th>
+        <th>Structure Name</th>
         <th>Ores</th>
         <th>Estimated Value</th>
         <th>Fracture Time</th>
@@ -21,6 +22,7 @@
     @foreach($extractions as $extraction)
       <tr>
         <td>{{$extraction->moon_name}}</td>
+        <td>{{$extraction->structure_name}}</td>
         <td>{{$extraction->ores}}</td>
         <td>${{number_format($extraction->value)}}</td>
         <td>@if($extraction->fracture_pref == 'auto_fracture') {{$extraction->natural_decay_time}} @else {{$extraction->chunk_arrival_time}} @endif</td>

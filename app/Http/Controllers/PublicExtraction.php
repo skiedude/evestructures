@@ -30,6 +30,8 @@ class PublicExtraction extends Controller
         if($structure->corporation_id != $corporation_id) {
           continue;
         }
+        $structure_name = Structure::find($structure->structure_id);
+        $structure_name = $structure_name->structure_name;
         $extraction = Structure::find($structure->structure_id)->extractions;
         $data = ExtractionData::where('structure_id', $structure->structure_id)->first();
         if(!is_null($extraction)) {
@@ -42,6 +44,7 @@ class PublicExtraction extends Controller
             $extraction->ores = "None";
             $extraction->fracture_pref = "auto_fracture";
           }
+          $extraction->structure_name = $structure_name;
           array_push($extractions, $extraction);
         }
       }
