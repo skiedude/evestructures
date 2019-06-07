@@ -56,7 +56,14 @@ DB_USERNAME= // username that has access to both databases
 DB_PASSWORD= // password for ^ user
 QUEUE_DRIVER= //use database if you intend to use supervisord
 
-MAIL_* // based off what mail setup you wish to use
+//I use gmail to handle password resets
+MAIL_DRIVER=smtp
+MAIL_HOST=smtp.gmail.com
+MAIL_PORT=587
+MAIL_USERNAME=ADDRESS_HERE@gmail.com
+MAIL_PASSWORD=PASSWORD HERE
+MAIL_ENCRYPTION=tls
+MAIL_FROM_NAME=NAME_HERE
 
 USERAGENT= //used for the HTTP requests
 CALLBACK_URL=https://URL_GOES_HERE.COM/sso/callback  //update the URL there in the middle, adjust for non https
