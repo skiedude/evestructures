@@ -64,6 +64,7 @@ MAIL_USERNAME=ADDRESS_HERE@gmail.com
 MAIL_PASSWORD=PASSWORD HERE
 MAIL_ENCRYPTION=tls
 MAIL_FROM_NAME=NAME_HERE
+MAIL_FROM_ADDRESS=ADDRESS_HERE@gmail.com
 
 USERAGENT= //used for the HTTP requests
 CALLBACK_URL=https://URL_GOES_HERE.COM/sso/callback  //update the URL there in the middle, adjust for non https
