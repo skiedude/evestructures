@@ -6,6 +6,7 @@ use GuzzleHttp\Promise;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\ServerException;
+use GuzzleHttp\HandlerStack;
 use App\Extractions;
 use App\ExtractionData;
 use App\FractureNotice;
@@ -31,8 +32,23 @@ trait MoonExtractions {
         'Authorization' => "Bearer $character->access_token"
       ],
     ];
+
+    $handler_stack = HandlerStack::create();
+    $handler_stack->push(\GuzzleHttp\Middleware::retry(function($retry, $request, $value, $reason) {
+      // If we have a value already, we should be able to proceed quickly.
+      $sc = $value->getStatusCode();
+      if ($value !== NULL && $sc != 502) {
+        return FALSE;
+      }
+      if($sc == 502) {
+        Log::debug('Retrying 502');
+      }
+      // Reject after 1 additional retries.
+      return $retry < 1;
+      }));
+
     try {
-      $client = new Client(['base_uri' => config('app.CCP_URL') ]);
+      $client = new Client(['base_uri' => config('app.CCP_URL'), 'handler' => $handler_stack]);
 
       $extr_url = "/v1/corporation/$character->corporation_id/mining/extractions/";
       $resp = $client->get($extr_url, $auth_headers);
