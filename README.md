@@ -1,3 +1,5 @@
+# AS OF 11/6/19 EveStructures IS CURRENTLY NOT BEING UPDATED
+
 # EveStructures
 This provides a consolidated view of all your structures across multiple Eve Online Corporations. Gathers and displays important data like fuel, services, locations, states and much more.
 
