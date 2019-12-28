@@ -1,4 +1,4 @@
-# AS OF 11/6/19 EveStructures IS CURRENTLY NOT BEING UPDATED
+# AS OF 11/6/19 EveStructures IS CURRENTLY RECEIVING LIMITED UPDATES
 
 # EveStructures
 This provides a consolidated view of all your structures across multiple Eve Online Corporations. Gathers and displays important data like fuel, services, locations, states and much more.
@@ -6,9 +6,6 @@ This provides a consolidated view of all your structures across multiple Eve Onl
 Join Our [Discord!](https://discord.gg/5vUQxMP)  
 
 EveStrucutures is built with the Laravel PHP Framework. For more info on [Laravel](https://laravel.com/docs/5.5)
-
-## Donate
-If you liked EveStructures, please consider donating ISK in game to [Brock Khans](https://evewho.com/pilot/Brock+Khans) or [PayPal](https://paypal.me/skiedude)
 
 ## Prequisite Installs
 * [php] >= 7.0.0
