@@ -65,10 +65,6 @@
                         <td>{{$vul->hour}}:00</td>
                       </tr>
                       <tr>
-                        <td>Pending Reinforce Day</td>
-                        <td>{{$vul->next_day}}</td>
-                      </tr>
-                      <tr>
                         <td>Pending Reinforce Hour</td>
                         <td>@isset($vul->next_hour) {{$vul->next_hour}}:00 @else @endisset</td>
                       </tr>
