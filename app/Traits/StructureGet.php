@@ -307,7 +307,8 @@ trait StructureGet {
 
         if(isset($strct->next_reinforce_apply)) {
           //Set if they exist
-          $next_day = $days[$strct->next_reinforce_weekday];
+          //Kicking down castles update removed the ability for defenders to pick day of the week
+          //$next_day = $days[$strct->next_reinforce_weekday];
           $next_hour = $strct->next_reinforce_hour;
           $next_apply = str_replace($tz, " ", $strct->next_reinforce_apply);
         }
