@@ -9,8 +9,8 @@ class WelcomeController extends Controller
   public function index() {
       $alert = session()->pull('alert');
       $success = session()->pull('success');
-      $alert = $alert[0];
-      $success = $success[0];
+      $alert = isset($alert[0]) ? $alert[0] : null;
+      $success = isset($success[0]) ? $success[0] : null;
       return view('welcome', compact(['alert', 'success']));
 
   }
