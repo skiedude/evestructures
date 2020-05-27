@@ -31,9 +31,10 @@ class HomeController extends Controller
       $alert = session()->pull('alert');
       $success = session()->pull('success');
       $warning = session()->pull('warning');
-      $alert = $alert[0];
-      $success = $success[0];
-      $warning = $warning[0];
+      $alert = isset($alert[0]) ? $alert[0] : null;
+      $success = isset($success[0]) ? $success[0] : null;
+      $warning = isset($warning[0]) ? $warning[0] : null;
+
 
       $characters = User::find(auth()->id())->characters; 
       $structures = DB::table('users')

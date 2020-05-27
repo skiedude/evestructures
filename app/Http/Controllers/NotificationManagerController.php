@@ -17,10 +17,9 @@ class NotificationManagerController extends Controller
     $alert = session()->pull('alert');
     $success = session()->pull('success');
     $warning = session()->pull('warning');
-    $alert = $alert[0];
-    $success = $success[0];
-    $warning = $warning[0];
-
+    $alert = isset($alert[0]) ? $alert[0] : null;
+    $success = isset($success[0]) ? $success[0] : null;
+    $warning = isset($warning[0]) ? $warning[0] : null;
 
     $characters = DB::table('characters')->where('user_id', auth()->id())->where('is_manager', TRUE)->select('character_id')->get();
     foreach($characters as $char) {
