@@ -38,7 +38,7 @@
         "randomatic": "^3.0.0",
         "set-value": "^2.0.1",
         "sshpk": "^1.13.2",
-        "ssri": "^5.2.2",
+        "ssri": "^8.0.1",
         "stringstream": "^0.0.6",
         "tar": "^4.4.2",
         "url-parse": "^1.4.3",
